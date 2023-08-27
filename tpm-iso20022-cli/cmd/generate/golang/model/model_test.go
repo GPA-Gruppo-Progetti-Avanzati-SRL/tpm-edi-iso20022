@@ -3,9 +3,9 @@ package model_test
 import (
 	"fmt"
 	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-common/util"
-	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/cmds/generate/golang/model"
-	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/cmds/generate/parser"
-	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/cmds/generate/registry"
+	model2 "github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/tpm-iso20022-cli/cmd/generate/golang/model"
+	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/tpm-iso20022-cli/cmd/generate/parser"
+	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/tpm-iso20022-cli/cmd/generate/registry"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/stretchr/testify/require"
@@ -16,7 +16,7 @@ import (
 	"testing"
 )
 
-func NewModel() (model.GoModel, error) {
+func NewModel() (model2.GoModel, error) {
 
 	schemas := []string{
 		"~/iso-20022/schemas/pain.013.001.07.xsd", "~/iso-20022/schemas/pain.014.001.07.xsd",
@@ -30,30 +30,30 @@ func NewModel() (model.GoModel, error) {
 
 		fn, ok := util.ResolvePath(xsdFileName)
 		if !ok {
-			return model.GoModel{}, fmt.Errorf("could not resolve %s", xsdFileName)
+			return model2.GoModel{}, fmt.Errorf("could not resolve %s", xsdFileName)
 		}
 
 		b, err := ioutil.ReadFile(fn)
 		if err != nil {
-			return model.GoModel{}, err
+			return model2.GoModel{}, err
 		}
 
 		msg := registry.ISO20022Message{Name: msgName}
 		err = p.Parse(msg, b)
 		if err != nil {
-			return model.GoModel{}, err
+			return model2.GoModel{}, err
 		}
 	}
 
-	gm, err := model.NewModel(&model.DefaultModelCfg, []registry.ISO20022Message{{Name: "pain.013.001.07"}, {Name: "pain.014.001.07"}}, p.TypeRegistry)
+	gm, err := model2.NewModel(&model2.DefaultModelCfg, []registry.ISO20022Message{{Name: "pain.013.001.07"}, {Name: "pain.014.001.07"}}, p.TypeRegistry)
 	if err != nil {
-		return model.GoModel{}, err
+		return model2.GoModel{}, err
 	}
 
 	return gm, nil
 }
 
-var theModel model.GoModel
+var theModel model2.GoModel
 
 func TestMain(m *testing.M) {
 
@@ -77,7 +77,7 @@ func TestGoModel(t *testing.T) {
 func TestSimpleVisitGoModel(t *testing.T) {
 
 	t.Log("Simple Visiting GoModel.................")
-	sv := &model.SimpleVisitor{}
+	sv := &model2.SimpleVisitor{}
 	err := theModel.VisitDocument("pain_013_001_07", sv)
 	require.NoError(t, err)
 
@@ -87,7 +87,7 @@ func TestSimpleVisitGoModel(t *testing.T) {
 
 func TestTreeVisitGoModel(t *testing.T) {
 	t.Log("Tree Visiting GoModel.................")
-	tv := &model.TreeVisitor{}
+	tv := &model2.TreeVisitor{}
 	err := theModel.VisitDocument("pain_013_001_07", tv)
 	require.NoError(t, err)
 

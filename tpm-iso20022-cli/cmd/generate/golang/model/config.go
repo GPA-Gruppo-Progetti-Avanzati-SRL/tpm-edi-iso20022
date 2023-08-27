@@ -9,12 +9,12 @@ type ModelConfig struct {
 
 var DefaultModelCfg = ModelConfig{
 	BasePackageImport: "github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/iso-20022/messages",
-	XsDtPackageImport: "github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/iso-20022/messages/xsdt",
+	// XsDtPackageImport: "github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/iso-20022/messages/xsdt",
 }
 
 func (c *ModelConfig) PostProcess() error {
 	if c.XsDtPackageImport == "" {
-		c.XsDtPackageImport = "github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/iso-20022/messages/xsdt"
+		c.XsDtPackageImport = c.BasePackageImport + "/xsdt"
 	}
 
 	return nil

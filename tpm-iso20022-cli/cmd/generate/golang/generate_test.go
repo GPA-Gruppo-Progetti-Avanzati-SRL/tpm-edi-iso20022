@@ -2,10 +2,10 @@ package golang_test
 
 import (
 	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-common/util"
-	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/cmds/generate/golang"
-	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/cmds/generate/golang/model"
-	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/cmds/generate/parser"
-	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/cmds/generate/registry"
+	golang2 "github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/tpm-iso20022-cli/cmd/generate/golang"
+	model2 "github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/tpm-iso20022-cli/cmd/generate/golang/model"
+	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/tpm-iso20022-cli/cmd/generate/parser"
+	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/tpm-iso20022-cli/cmd/generate/registry"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/stretchr/testify/require"
@@ -40,8 +40,8 @@ func TestGoGenerate(t *testing.T) {
 		require.NoError(t, err)
 	}
 
-	gm, err := model.NewModel(
-		&model.DefaultModelCfg,
+	gm, err := model2.NewModel(
+		&model2.DefaultModelCfg,
 		[]registry.ISO20022Message{
 			{Name: "pain.013.001.07"},
 			{Name: "pain.014.001.07"},
@@ -51,11 +51,11 @@ func TestGoGenerate(t *testing.T) {
 
 	fld, _ := util.ResolvePath("~/iso-20022/messages")
 	require.NotEqual(t, fld, "", "could not resolve ~/iso-20022/messages path")
-	cfg := golang.Config{
+	cfg := golang2.Config{
 		OutFolder:  fld, // filepath.Join(fld, "messages"),
 		FormatCode: true,
 	}
-	err = golang.Generate(&cfg, &gm)
+	err = golang2.Generate(&cfg, &gm)
 	require.NoError(t, err)
 }
 
@@ -89,15 +89,15 @@ func TestGoGenerateAll(t *testing.T) {
 		require.NoError(t, err)
 	}
 
-	gm, err := model.NewModel(&model.DefaultModelCfg, msgs, p.TypeRegistry)
+	gm, err := model2.NewModel(&model2.DefaultModelCfg, msgs, p.TypeRegistry)
 	require.NoError(t, err)
 
 	fld, _ := util.ResolvePath("~/iso-20022/messages")
 	require.NotEqual(t, fld, "", "could not resolve ~/iso-20022/messages path")
-	cfg := golang.Config{
+	cfg := golang2.Config{
 		OutFolder:  fld, // filepath.Join(fld, "messages"),
 		FormatCode: true,
 	}
-	err = golang.Generate(&cfg, &gm)
+	err = golang2.Generate(&cfg, &gm)
 	require.NoError(t, err)
 }

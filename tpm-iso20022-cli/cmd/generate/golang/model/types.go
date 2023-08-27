@@ -4,7 +4,7 @@ import (
 	"aqwari.net/xml/xsd"
 	"fmt"
 	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-common/util"
-	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/cmds/generate/registry"
+	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/tpm-iso20022-cli/cmd/generate/registry"
 	"github.com/rs/zerolog/log"
 	"strings"
 )

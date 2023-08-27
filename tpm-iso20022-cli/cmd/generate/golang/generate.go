@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-common/util"
 	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-common/util/templateutil"
-	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/cmds/generate/golang/model"
-	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/cmds/generate/registry"
+	model2 "github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/tpm-iso20022-cli/cmd/generate/golang/model"
+	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/tpm-iso20022-cli/cmd/generate/registry"
 	"github.com/rs/zerolog/log"
 	"os"
 	"path/filepath"
@@ -194,10 +194,10 @@ type GenerationContext struct {
 	MsgName     string
 	PackageName string
 	ProducedAt  time.Time
-	Model       *model.GoModel
+	Model       *model2.GoModel
 }
 
-func Generate(cfg *Config, gm *model.GoModel) error {
+func Generate(cfg *Config, gm *model2.GoModel) error {
 
 	err := setupOutputFolders(cfg, gm.Msgs)
 	if err != nil {
@@ -415,6 +415,11 @@ func setupOutputFolders(cfg *Config, msgs []registry.ISO20022Message) error {
 		return err
 	}
 
+	_, err = cfg.SetupOutFolder("xsdt")
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -437,7 +442,7 @@ func emit(genCtx GenerationContext, outFolder string, generatedFileName string, 
 	return nil
 }
 
-func getTemplateUtilityFunctions(gm *model.GoModel) template.FuncMap {
+func getTemplateUtilityFunctions(gm *model2.GoModel) template.FuncMap {
 
 	fMap := template.FuncMap{
 		"getImportForPackage": func(pkgName string) string {
@@ -449,24 +454,24 @@ func getTemplateUtilityFunctions(gm *model.GoModel) template.FuncMap {
 		"getSimpleTypesImports": func(pkgName string) []string {
 			return gm.GetImports(pkgName, false)
 		},
-		"getComplexTypes": func(pkgName string) []model.GoTypeDefinition {
+		"getComplexTypes": func(pkgName string) []model2.GoTypeDefinition {
 			return gm.GetTypes(pkgName, true)
 		},
-		"getSimpleTypes": func(pkgName string) []model.GoTypeDefinition {
+		"getSimpleTypes": func(pkgName string) []model2.GoTypeDefinition {
 			return gm.GetTypes(pkgName, false)
 		},
-		"treeVisit": func(pkgName string) *model.TreeVisitor {
-			v := &model.TreeVisitor{}
+		"treeVisit": func(pkgName string) *model2.TreeVisitor {
+			v := &model2.TreeVisitor{}
 			_ = gm.VisitDocument(pkgName, v)
 			return v
 		},
-		"simpleVisit": func(pkgName string) *model.SimpleVisitor {
-			v := &model.SimpleVisitor{}
+		"simpleVisit": func(pkgName string) *model2.SimpleVisitor {
+			v := &model2.SimpleVisitor{}
 			_ = gm.VisitDocument(pkgName, v)
 			return v
 		},
-		"typesVisit": func(pkgName string) *model.TypeVisitor {
-			v := &model.TypeVisitor{}
+		"typesVisit": func(pkgName string) *model2.TypeVisitor {
+			v := &model2.TypeVisitor{}
 			_ = gm.VisitDocument(pkgName, v)
 			return v
 		},
