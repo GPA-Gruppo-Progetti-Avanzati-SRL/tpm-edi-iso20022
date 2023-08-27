@@ -32,7 +32,7 @@ func TestGoGenerate(t *testing.T) {
 		fn, ok := util.ResolvePath(xsdFileName)
 		require.True(t, ok, "could not resolve %s", xsdFileName)
 
-		b, err := ioutil.ReadFile(fn)
+		b, err := os.ReadFile(fn)
 		require.NoError(t, err)
 
 		msg := registry.ISO20022Message{Name: msgName}

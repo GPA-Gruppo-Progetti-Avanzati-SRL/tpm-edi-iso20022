@@ -1,7 +1,7 @@
 package generate_test
 
 import (
-	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/cmds/tpm-rtp-cli/generate"
+	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/cmds/tpm-iso20022-cli/generate"
 	"github.com/stretchr/testify/require"
 	"testing"
 )
