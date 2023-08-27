@@ -18,6 +18,7 @@ const Example_pain_008_001_02 = "example-document-pain_008_001_02.xml"
 func TestDocumentpain_008_001_02(t *testing.T) {
 
 	d := pain_008_001_02.Document{
+		//Xmlns_xsi: "http://www.w3.org/2001/XMLSchema-instance",
 		CstmrDrctDbtInitn: pain_008_001_02.CustomerDirectDebitInitiationV02{
 			GrpHdr: pain_008_001_02.GroupHeader39{
 				MsgId:   common.MustToMax35Text(common.Max35TextSample),
