@@ -199,9 +199,9 @@ func init() {
 	genCmd.Flags().StringVarP(&schemaFolder, "xsdfolder", "d", "", "xsd schema folder to process")
 	genCmd.MarkFlagsMutuallyExclusive("xsdfiles", "xsdfolder")
 
-	genCmd.Flags().StringVarP(&outFolder, "outFolder", "o", "", "message output folder")
+	genCmd.Flags().StringVarP(&outFolder, "outFolder", "o", "", "output folder")
 	_ = genCmd.MarkFlagRequired("outFolder")
 
 	genCmd.Flags().StringVarP(&basePackageImport, "basePkg", "", model.DefaultModelCfg.BasePackageImport, "base package import")
-	genCmd.Flags().StringVarP(&xsdtPackageImport, "xsdtPkg", "", model.DefaultModelCfg.XsDtPackageImport, "xsdt package import")
+	genCmd.Flags().StringVarP(&xsdtPackageImport, "xsdtPkg", "", model.DefaultModelCfg.XsDtPackageImport, "xsdt package import (default basePkg + /xsdt)")
 }

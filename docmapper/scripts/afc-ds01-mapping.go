@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/docmapper"
-	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/iso-20022/messages/pain_013_001_07"
+	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/iso-20022/messages/pain/013.001.07/pain_013_001_07"
 	"gopkg.in/yaml.v3"
 	"io/fs"
 	"io/ioutil"
