@@ -10,16 +10,52 @@ import (
 	"reflect"
 	"fmt"
 	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-common/util/dotnotation"
+	"github.com/rs/zerolog/log"
 )
 
 {{ $packageName := .PackageName }}
 
-func (d *Document) Set(path string, src interface{}) error {
+type SetOpOptions struct {
+	logVerbose bool
+}
+
+type SetOpOption func(opts *SetOpOptions)
+
+func SetOpWithLog(b bool) SetOpOption {
+	return func(opts *SetOpOptions) {
+		opts.logVerbose = b
+	}
+}
+
+type GetOpOptions struct {
+	logVerbose bool
+}
+
+type GetOpOption func(opts *GetOpOptions)
+
+func GetOpWithLog(b bool) GetOpOption {
+	return func(opts *GetOpOptions) {
+		opts.logVerbose = b
+	}
+}
+
+func (d *Document) Set(path string, src interface{}, opts ...SetOpOption) error {
+
+	const semLogContext = "{{ $packageName }}::set"
+
+	options := SetOpOptions{}
+	for _, o := range opts {
+		o(&options)
+	}
 
 	v := reflect.ValueOf(d)
 
 	p, err := dotnotation.NewPath(path)
 	if err != nil {
+	    if options.logVerbose {
+    		log.Error().Err(err).Str("path", path).Interface("value", src).Msg(semLogContext)
+    	}
+
 		return err
 	}
 	paths := []dotnotation.DotPath{p}
@@ -29,18 +65,31 @@ func (d *Document) Set(path string, src interface{}) error {
 	values := make([]interface{}, 1)
 	err = fieldsByTraversal(v, fields, paths, values, true, false)
 	if err != nil {
+		if options.logVerbose {
+			log.Error().Err(err).Str("path", path).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	}
 
-	return copy2Dest(path, values[0], src)
+	return copy2Dest(path, values[0], src, &options)
 }
 
-func (d *Document) Get(path string) (interface{}, error) {
+func (d *Document) Get(path string, opts ...GetOpOption) (interface{}, error) {
+
+	const semLogContext = "{{ $packageName }}::get"
+
+	options := GetOpOptions{}
+	for _, o := range opts {
+		o(&options)
+	}
 
 	v := reflect.ValueOf(d)
 
 	p, err := dotnotation.NewPath(path)
    	if err != nil {
+   		if options.logVerbose {
+    		log.Error().Err(err).Str("path", path).Msg(semLogContext)
+    	}
    		return nil, err
    	}
    	paths := []dotnotation.DotPath{p}
@@ -50,6 +99,9 @@ func (d *Document) Get(path string) (interface{}, error) {
 	values := make([]interface{}, 1)
 	err = fieldsByTraversal(v, fields, paths, values, true, true)
 	if err != nil {
+   		if options.logVerbose {
+    		log.Error().Err(err).Str("path", path).Msg(semLogContext)
+    	}
 		return nil, err
 	}
 
@@ -66,7 +118,9 @@ func (d *Document) Get(path string) (interface{}, error) {
 }
 
 {{ $types := typesVisit .PackageName }}
-func copy2Dest(docPath string, dest, src interface{}) error {
+func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) error {
+
+	const semLogContext = "{{ $packageName }}::copy-to-dest"
 
 	var err error
 	switch typedDest := dest.(type) {
@@ -74,15 +128,26 @@ func copy2Dest(docPath string, dest, src interface{}) error {
 {{- if not $tp.IsStruct }}
   case *{{$tp.TypeWithPackageTrimmed $packageName}}:
         if typedDest == nil {
-  			return errors.New("nil pointer... in unmarshalling {{$tp.TypeWithPackageTrimmed $packageName}} data for" + docPath)
+        	err = errors.New("nil pointer... in unmarshalling {{$tp.TypeWithPackageTrimmed $packageName}} data for" + docPath)
+        	if err != nil && options.logVerbose {
+        		log.Error().Err(err).Str("path", docPath).Interface("value", src).Msg(semLogContext)
+        	}
+        	return err
 	    }
 
   		*typedDest, err = {{$tp.NameOfTypeFunction "To" $packageName }}(src)
+  		if err != nil && options.logVerbose {
+        	log.Error().Err(err).Str("path", docPath).Interface("value", src).Msg(semLogContext)
+        }
   		return err
 {{- end }}
 {{- end }}
    default:
-        return fmt.Errorf("could not find the type to node %s of type %v", docPath, dest)
+        err = fmt.Errorf("could not find the type to node %s of type %v", docPath, dest)
+        if options.logVerbose {
+        	log.Error().Err(err).Str("path", docPath).Interface("value", src).Msg(semLogContext)
+        }
+        return err
  }
 
 }

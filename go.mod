@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	aqwari.net/xml v0.0.0-20210331023308-d9421b293817
-	github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-common v0.1.12
+	github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-common v0.1.19
 	github.com/PaesslerAG/gval v1.2.2
 	github.com/google/uuid v1.3.1
 	github.com/rs/zerolog v1.30.0
