@@ -2,6 +2,12 @@
 // Do not Edit. This stuff it's been automatically generated.
 package camt_053_001_02
 
+import (
+	"fmt"
+	"github.com/rs/zerolog/log"
+	"strings"
+)
+
 const (
 	Path_BkToCstmrStmt                                                                                     = "BkToCstmrStmt"
 	Path_BkToCstmrStmt_GrpHdr                                                                              = "BkToCstmrStmt.GrpHdr"
@@ -1805,3 +1811,30 @@ const (
 	Path_BkToCstmrStmt_Stmt_Ntry_AddtlNtryInf                                                              = "BkToCstmrStmt.Stmt[].Ntry[].AddtlNtryInf"
 	Path_BkToCstmrStmt_Stmt_AddtlStmtInf                                                                   = "BkToCstmrStmt.Stmt[].AddtlStmtInf"
 )
+
+func MustSetArrayItemPathModifiers(p string, modifiers []string) string {
+	var err error
+	p, err = SetArrayItemPathModifiers(p, modifiers)
+	if err != nil {
+		log.Fatal().Err(err).Send()
+	}
+
+	return p
+}
+
+func SetArrayItemPathModifiers(p string, modifiers []string) (string, error) {
+	numArrSpecifiers := strings.Count(p, "[]")
+	if len(modifiers) != numArrSpecifiers {
+		err := fmt.Errorf("the number of provided (%d) modifiers doesn't match the path provided", modifiers)
+		return p, err
+	}
+
+	for _, m := range modifiers {
+		if m == "" {
+			m = "last"
+		}
+		p = strings.Replace(p, "[]", fmt.Sprintf("[%s]", m), 1)
+	}
+
+	return p, nil
+}

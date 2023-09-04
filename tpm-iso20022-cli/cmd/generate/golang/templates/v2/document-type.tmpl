@@ -17,6 +17,7 @@ const (
     Iso20022MsgName = "{{.MsgName}}"
 )
 
+type DocumentAdapter func(iso20022Msg *Document) (*Document, error)
 
 {{ $msgName := .MsgName }}
 {{- range getComplexTypes .PackageName}}

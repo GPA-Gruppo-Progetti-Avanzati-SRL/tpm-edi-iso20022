@@ -15,6 +15,16 @@ import (
 
 const Example_camt_053_001_02 = "example-document-camt_053_001_02.xml"
 
+func TestDocumentcamt_053_001_02_SetOps(t *testing.T) {
+	doc := camt_053_001_02.NewDocument()
+	_ = doc.Set(camt_053_001_02.Path_BkToCstmrStmt_GrpHdr_AddtlInf, "", camt_053_001_02.SetOpWithLog(true))
+	_ = doc.Set(camt_053_001_02.Path_BkToCstmrStmt_Stmt_Ntry_NtryDtls_TxDtls_Refs_MsgId, "", camt_053_001_02.SetOpWithLog(true))
+
+	b, err := doc.ToXML()
+	require.NoError(t, err)
+	t.Log(string(b))
+}
+
 func TestDocumentcamt_053_001_02(t *testing.T) {
 
 	d := camt_053_001_02.Document{

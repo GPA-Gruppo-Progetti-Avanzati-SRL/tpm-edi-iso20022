@@ -17,6 +17,8 @@ const (
 	Iso20022MsgName = "camt.053.001.02"
 )
 
+type DocumentAdapter func(iso20022Msg *Document) (*Document, error)
+
 // Document type definition
 type Document struct {
 	XMLName       xml.Name                   `xml:"urn:iso:std:iso:20022:tech:xsd:camt.053.001.02 Document"`

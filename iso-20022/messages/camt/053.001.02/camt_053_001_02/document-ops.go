@@ -10,10 +10,12 @@ import (
 	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/iso-20022/messages/xsdt"
 	"github.com/rs/zerolog/log"
 	"reflect"
+	"strings"
 )
 
 type SetOpOptions struct {
-	logVerbose bool
+	logVerbose  bool
+	skipIfEmpty bool
 }
 
 type SetOpOption func(opts *SetOpOptions)
@@ -21,6 +23,12 @@ type SetOpOption func(opts *SetOpOptions)
 func SetOpWithLog(b bool) SetOpOption {
 	return func(opts *SetOpOptions) {
 		opts.logVerbose = b
+	}
+}
+
+func SetOpWithSkipIfEmpty(b bool) SetOpOption {
+	return func(opts *SetOpOptions) {
+		opts.skipIfEmpty = b
 	}
 }
 
@@ -43,6 +51,10 @@ func (d *Document) Set(path string, src interface{}, opts ...SetOpOption) error 
 	options := SetOpOptions{}
 	for _, o := range opts {
 		o(&options)
+	}
+
+	if options.skipIfEmpty && isEmpty(src) {
+		return nil
 	}
 
 	v := reflect.ValueOf(d)
@@ -112,6 +124,23 @@ func (d *Document) Get(path string, opts ...GetOpOption) (interface{}, error) {
 	*/
 
 	return deref(path, values[0])
+}
+
+func isEmpty(i interface{}) bool {
+	b := false
+
+	var s string
+	switch ti := i.(type) {
+	case fmt.Stringer:
+		s = ti.String()
+		b = strings.TrimSpace(s) == ""
+	case string:
+		s = ti
+		b = strings.TrimSpace(s) == ""
+
+	}
+
+	return b
 }
 
 func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) error {

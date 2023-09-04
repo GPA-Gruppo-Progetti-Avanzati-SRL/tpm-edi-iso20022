@@ -17,6 +17,7 @@ import (
 
 type SetOpOptions struct {
 	logVerbose bool
+	skipIfEmpty bool
 }
 
 type SetOpOption func(opts *SetOpOptions)
@@ -24,6 +25,12 @@ type SetOpOption func(opts *SetOpOptions)
 func SetOpWithLog(b bool) SetOpOption {
 	return func(opts *SetOpOptions) {
 		opts.logVerbose = b
+	}
+}
+
+func SetOpWithSkipIfEmpty(b bool) SetOpOption {
+	return func(opts *SetOpOptions) {
+		opts.skipIfEmpty = b
 	}
 }
 
@@ -46,6 +53,10 @@ func (d *Document) Set(path string, src interface{}, opts ...SetOpOption) error 
 	options := SetOpOptions{}
 	for _, o := range opts {
 		o(&options)
+	}
+
+	if options.skipIfEmpty && isEmpty(src) {
+		return nil
 	}
 
 	v := reflect.ValueOf(d)
