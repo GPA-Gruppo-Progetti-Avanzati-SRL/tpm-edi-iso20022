@@ -51,23 +51,23 @@ type ReferredDocumentType1Choice struct {
 
 // DirectDebitTransactionInformation9 type definition
 type DirectDebitTransactionInformation9 struct {
-	PmtId           PaymentIdentification1                       `xml:"PmtId"`
-	PmtTpInf        *PaymentTypeInformation20                    `xml:"PmtTpInf,omitempty"`
-	InstdAmt        ActiveOrHistoricCurrencyAndAmount            `xml:"InstdAmt"`
-	ChrgBr          common.ChargeBearerType1Code                 `xml:"ChrgBr,omitempty"`
-	DrctDbtTx       *DirectDebitTransaction6                     `xml:"DrctDbtTx,omitempty"`
-	UltmtCdtr       *PartyIdentification32                       `xml:"UltmtCdtr,omitempty"`
-	DbtrAgt         BranchAndFinancialInstitutionIdentification4 `xml:"DbtrAgt"`
-	DbtrAgtAcct     *CashAccount16                               `xml:"DbtrAgtAcct,omitempty"`
-	Dbtr            PartyIdentification32                        `xml:"Dbtr"`
-	DbtrAcct        CashAccount16                                `xml:"DbtrAcct"`
-	UltmtDbtr       *PartyIdentification32                       `xml:"UltmtDbtr,omitempty"`
-	InstrForCdtrAgt common.Max140Text                            `xml:"InstrForCdtrAgt,omitempty"`
-	Purp            *Purpose2Choice                              `xml:"Purp,omitempty"`
-	RgltryRptg      []RegulatoryReporting3                       `xml:"RgltryRptg,omitempty"`
-	Tax             *TaxInformation3                             `xml:"Tax,omitempty"`
-	RltdRmtInf      []RemittanceLocation2                        `xml:"RltdRmtInf,omitempty"`
-	RmtInf          *RemittanceInformation5                      `xml:"RmtInf,omitempty"`
+	PmtId           PaymentIdentification1                        `xml:"PmtId"`
+	PmtTpInf        *PaymentTypeInformation20                     `xml:"PmtTpInf,omitempty"`
+	InstdAmt        ActiveOrHistoricCurrencyAndAmount             `xml:"InstdAmt"`
+	ChrgBr          common.ChargeBearerType1Code                  `xml:"ChrgBr,omitempty"`
+	DrctDbtTx       *DirectDebitTransaction6                      `xml:"DrctDbtTx,omitempty"`
+	UltmtCdtr       *PartyIdentification32                        `xml:"UltmtCdtr,omitempty"`
+	DbtrAgt         *BranchAndFinancialInstitutionIdentification4 `xml:"DbtrAgt"`
+	DbtrAgtAcct     *CashAccount16                                `xml:"DbtrAgtAcct,omitempty"`
+	Dbtr            PartyIdentification32                         `xml:"Dbtr"`
+	DbtrAcct        CashAccount16                                 `xml:"DbtrAcct"`
+	UltmtDbtr       *PartyIdentification32                        `xml:"UltmtDbtr,omitempty"`
+	InstrForCdtrAgt common.Max140Text                             `xml:"InstrForCdtrAgt,omitempty"`
+	Purp            *Purpose2Choice                               `xml:"Purp,omitempty"`
+	RgltryRptg      []RegulatoryReporting3                        `xml:"RgltryRptg,omitempty"`
+	Tax             *TaxInformation3                              `xml:"Tax,omitempty"`
+	RltdRmtInf      []RemittanceLocation2                         `xml:"RltdRmtInf,omitempty"`
+	RmtInf          *RemittanceInformation5                       `xml:"RmtInf,omitempty"`
 }
 
 // TaxParty2 type definition
