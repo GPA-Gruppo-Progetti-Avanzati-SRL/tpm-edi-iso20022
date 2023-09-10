@@ -17,24 +17,41 @@ const Example_camt_053_001_02 = "example-document-camt_053_001_02.xml"
 
 func TestDocumentcamt_053_001_02_SetOps(t *testing.T) {
 	doc := camt_053_001_02.NewDocument()
-	_ = doc.Set(camt_053_001_02.Path_BkToCstmrStmt_GrpHdr_AddtlInf, "", camt_053_001_02.SetOpWithLog(true))
-	_ = doc.Set(camt_053_001_02.Path_BkToCstmrStmt_Stmt_Ntry_NtryDtls_TxDtls_Refs_MsgId, "", camt_053_001_02.SetOpWithLog(true))
+
+	// Setting a property
+	err := doc.Set(camt_053_001_02.Path_BkToCstmrStmt_GrpHdr_AddtlInf, "prop-val", camt_053_001_02.SetOpWithLog(true))
+	require.NoError(t, err)
+
+	// setting a property nested in a number of arrays and subarrays
+	err = doc.Set(camt_053_001_02.Path_BkToCstmrStmt_Stmt_Ntry_NtryDtls_TxDtls_Refs_MsgId, "msg-id-001", camt_053_001_02.SetOpWithLog(true))
+	require.NoError(t, err)
+
+	// getting a struct
 	getv, err := doc.GetNode(camt_053_001_02.Path_BkToCstmrStmt_GrpHdr_MsgRcpt)
 	require.NoError(t, err)
-	_ = doc.SetNode(camt_053_001_02.Path_BkToCstmrStmt_GrpHdr_MsgRcpt, camt_053_001_02.PartyIdentification32{Nm: "vabbuo'"}, camt_053_001_02.SetOpWithLog(true))
+	t.Log("value of ", camt_053_001_02.Path_BkToCstmrStmt_GrpHdr_MsgRcpt, getv)
+
+	// setting a struct
+	err = doc.SetNode(camt_053_001_02.Path_BkToCstmrStmt_GrpHdr_MsgRcpt, camt_053_001_02.PartyIdentification32{Nm: "value of a struct property"}, camt_053_001_02.SetOpWithLog(true))
+	require.NoError(t, err)
+
+	// getting back the struct
 	getv, err = doc.GetNode(camt_053_001_02.Path_BkToCstmrStmt_GrpHdr_MsgRcpt)
 	require.NoError(t, err)
-	t.Log(getv)
+	t.Log("value of ", camt_053_001_02.Path_BkToCstmrStmt_GrpHdr_MsgRcpt, getv)
 
+	// clearing a struct
 	err = doc.ClearNode(camt_053_001_02.Path_BkToCstmrStmt_GrpHdr_MsgRcpt)
 	require.NoError(t, err)
 
-	err = doc.ClearNode(camt_053_001_02.Path_BkToCstmrStmt_GrpHdr)
-	require.NoError(t, err)
-
+	// This is still a wip since the last path element is an array (in this case an array of structures and the property is indexed...
+	// this ClearNode doesn't clear anything... it adds a new element to the array....
 	err = doc.ClearNode(camt_053_001_02.Path_BkToCstmrStmt_Stmt)
 	require.NoError(t, err)
 
+	// This is still a wip since the last path element is an array (in this case an array of structures and the property is not indexed. It's put by hand since there is no path auto created
+	// this approach can leas to some sort of non backward compatible in some cases.
+	// this ClearNode doesn't clear anything... it adds a new element to the array.... at the end we got three stmt. Clearly not what you want....
 	err = doc.ClearNode("BkToCstmrStmt.Stmt")
 	require.NoError(t, err)
 
