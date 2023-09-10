@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-common/util/dotnotation"
 	"github.com/rs/zerolog/log"
+	"strings"
 )
 
 {{ $packageName := .PackageName }}
@@ -46,9 +47,15 @@ func GetOpWithLog(b bool) GetOpOption {
 	}
 }
 
+// Set
+// Deprecated: simply calls the SetProperty method
 func (d *Document) Set(path string, src interface{}, opts ...SetOpOption) error {
+	return d.SetProperty(path, src, opts...)
+}
 
-	const semLogContext = "{{ $packageName }}::set"
+func (d *Document) SetProperty(path string, src interface{}, opts ...SetOpOption) error {
+
+	const semLogContext = "camt_053_001_02::set-property"
 
 	options := SetOpOptions{}
 	for _, o := range opts {
@@ -61,10 +68,10 @@ func (d *Document) Set(path string, src interface{}, opts ...SetOpOption) error 
 
 	v := reflect.ValueOf(d)
 
-	p, err := dotnotation.NewPath(path)
+	p, err := dotnotation.NewPath(string(path))
 	if err != nil {
 	    if options.logVerbose {
-    		log.Error().Err(err).Str("path", path).Interface("value", src).Msg(semLogContext)
+    		log.Error().Err(err).Interface("path", path).Interface("value", src).Msg(semLogContext)
     	}
 
 		return err
@@ -77,7 +84,7 @@ func (d *Document) Set(path string, src interface{}, opts ...SetOpOption) error 
 	err = fieldsByTraversal(v, fields, paths, values, true, false)
 	if err != nil {
 		if options.logVerbose {
-			log.Error().Err(err).Str("path", path).Interface("value", src).Msg(semLogContext)
+			log.Error().Err(err).Interface("path", path).Interface("value", src).Msg(semLogContext)
 		}
 		return err
 	}
@@ -85,9 +92,32 @@ func (d *Document) Set(path string, src interface{}, opts ...SetOpOption) error 
 	return copy2Dest(path, values[0], src, &options)
 }
 
-func (d *Document) Get(path string, opts ...GetOpOption) (interface{}, error) {
+func isEmpty(i interface{}) bool {
+	b := false
 
-	const semLogContext = "{{ $packageName }}::get"
+	var s string
+	switch ti := i.(type) {
+	case fmt.Stringer:
+		s = ti.String()
+		b = strings.TrimSpace(s) == ""
+	case string:
+		s = ti
+		b = strings.TrimSpace(s) == ""
+
+	}
+
+	return b
+}
+
+// Get
+// Deprecated: the simply calls the GetProperty method
+func (d *Document) Get(path string, opts ...GetOpOption) (interface{}, error) {
+	return d.GetProperty(path, opts...)
+}
+
+func (d *Document) GetProperty(path string, opts ...GetOpOption) (interface{}, error) {
+
+	const semLogContext = "{{ $packageName }}::get-property"
 
 	options := GetOpOptions{}
 	for _, o := range opts {
@@ -96,10 +126,10 @@ func (d *Document) Get(path string, opts ...GetOpOption) (interface{}, error) {
 
 	v := reflect.ValueOf(d)
 
-	p, err := dotnotation.NewPath(path)
+	p, err := dotnotation.NewPath(string(path))
    	if err != nil {
    		if options.logVerbose {
-    		log.Error().Err(err).Str("path", path).Msg(semLogContext)
+    		log.Error().Err(err).Str("path", string(path)).Msg(semLogContext)
     	}
    		return nil, err
    	}
@@ -111,7 +141,7 @@ func (d *Document) Get(path string, opts ...GetOpOption) (interface{}, error) {
 	err = fieldsByTraversal(v, fields, paths, values, true, true)
 	if err != nil {
    		if options.logVerbose {
-    		log.Error().Err(err).Str("path", path).Msg(semLogContext)
+    		log.Error().Err(err).Str("path", string(path)).Msg(semLogContext)
     	}
 		return nil, err
 	}
@@ -125,7 +155,7 @@ func (d *Document) Get(path string, opts ...GetOpOption) (interface{}, error) {
 		}
 	*/
 
-	return deref(path, values[0])
+	return derefProperty(path, values[0])
 }
 
 {{ $types := typesVisit .PackageName }}
@@ -139,31 +169,31 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 {{- if not $tp.IsStruct }}
   case *{{$tp.TypeWithPackageTrimmed $packageName}}:
         if typedDest == nil {
-        	err = errors.New("nil pointer... in unmarshalling {{$tp.TypeWithPackageTrimmed $packageName}} data for" + docPath)
+        	err = errors.New("nil pointer... in unmarshalling {{$tp.TypeWithPackageTrimmed $packageName}} data for" + string(docPath))
         	if err != nil && options.logVerbose {
-        		log.Error().Err(err).Str("path", docPath).Interface("value", src).Msg(semLogContext)
+        		log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
         	}
         	return err
 	    }
 
   		*typedDest, err = {{$tp.NameOfTypeFunction "To" $packageName }}(src)
   		if err != nil && options.logVerbose {
-        	log.Error().Err(err).Str("path", docPath).Interface("value", src).Msg(semLogContext)
+        	log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
         }
   		return err
 {{- end }}
 {{- end }}
    default:
-        err = fmt.Errorf("could not find the type to node %s of type %v", docPath, dest)
+        err = fmt.Errorf("could not find the type to node %s of type %T", docPath, dest)
         if options.logVerbose {
-        	log.Error().Err(err).Str("path", docPath).Interface("value", src).Msg(semLogContext)
+        	log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
         }
         return err
  }
 
 }
 
-func deref(docPath string, val interface{}) (interface{}, error) {
+func derefProperty(docPath string, val interface{}) (interface{}, error) {
 
     if val == nil {
        return nil, nil
@@ -178,8 +208,9 @@ func deref(docPath string, val interface{}) (interface{}, error) {
 {{- end }}
 {{- end }}
    default:
-        err = fmt.Errorf("could not find the type to node %s of type %v", docPath, val)
+        err = fmt.Errorf("could not find the type to node %s of type %T", string(docPath), val)
  }
 
  return val, err
 }
+

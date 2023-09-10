@@ -12,7 +12,7 @@ const YamlExtension = ".yml"
 
 func InitEmbeddedRegistry(docClassFS embed.FS, docClassFSRootPath string) (int, error) {
 
-	Registry = make(map[string]MappingClass, 0)
+	Registry = make(map[string]MappingClass)
 	dirEntries, err := docClassFS.ReadDir(docClassFSRootPath)
 	if err != nil {
 		return len(Registry), err

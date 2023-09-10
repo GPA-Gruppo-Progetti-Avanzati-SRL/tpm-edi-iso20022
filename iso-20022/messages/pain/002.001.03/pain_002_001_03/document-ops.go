@@ -8,15 +8,69 @@ import (
 	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-common/util/dotnotation"
 	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/iso-20022/messages/pain/002.001.03/common"
 	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/iso-20022/messages/xsdt"
+	"github.com/rs/zerolog/log"
 	"reflect"
+	"strings"
 )
 
-func (d *Document) Set(path string, src interface{}) error {
+type SetOpOptions struct {
+	logVerbose  bool
+	skipIfEmpty bool
+}
+
+type SetOpOption func(opts *SetOpOptions)
+
+func SetOpWithLog(b bool) SetOpOption {
+	return func(opts *SetOpOptions) {
+		opts.logVerbose = b
+	}
+}
+
+func SetOpWithSkipIfEmpty(b bool) SetOpOption {
+	return func(opts *SetOpOptions) {
+		opts.skipIfEmpty = b
+	}
+}
+
+type GetOpOptions struct {
+	logVerbose bool
+}
+
+type GetOpOption func(opts *GetOpOptions)
+
+func GetOpWithLog(b bool) GetOpOption {
+	return func(opts *GetOpOptions) {
+		opts.logVerbose = b
+	}
+}
+
+// Set
+// Deprecated: simply calls the SetProperty method
+func (d *Document) Set(path string, src interface{}, opts ...SetOpOption) error {
+	return d.SetProperty(path, src, opts...)
+}
+
+func (d *Document) SetProperty(path string, src interface{}, opts ...SetOpOption) error {
+
+	const semLogContext = "camt_053_001_02::set-property"
+
+	options := SetOpOptions{}
+	for _, o := range opts {
+		o(&options)
+	}
+
+	if options.skipIfEmpty && isEmpty(src) {
+		return nil
+	}
 
 	v := reflect.ValueOf(d)
 
-	p, err := dotnotation.NewPath(path)
+	p, err := dotnotation.NewPath(string(path))
 	if err != nil {
+		if options.logVerbose {
+			log.Error().Err(err).Interface("path", path).Interface("value", src).Msg(semLogContext)
+		}
+
 		return err
 	}
 	paths := []dotnotation.DotPath{p}
@@ -26,18 +80,54 @@ func (d *Document) Set(path string, src interface{}) error {
 	values := make([]interface{}, 1)
 	err = fieldsByTraversal(v, fields, paths, values, true, false)
 	if err != nil {
+		if options.logVerbose {
+			log.Error().Err(err).Interface("path", path).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	}
 
-	return copy2Dest(path, values[0], src)
+	return copy2Dest(path, values[0], src, &options)
 }
 
-func (d *Document) Get(path string) (interface{}, error) {
+func isEmpty(i interface{}) bool {
+	b := false
+
+	var s string
+	switch ti := i.(type) {
+	case fmt.Stringer:
+		s = ti.String()
+		b = strings.TrimSpace(s) == ""
+	case string:
+		s = ti
+		b = strings.TrimSpace(s) == ""
+
+	}
+
+	return b
+}
+
+// Get
+// Deprecated: the simply calls the GetProperty method
+func (d *Document) Get(path string, opts ...GetOpOption) (interface{}, error) {
+	return d.GetProperty(path, opts...)
+}
+
+func (d *Document) GetProperty(path string, opts ...GetOpOption) (interface{}, error) {
+
+	const semLogContext = "pain_002_001_03::get-property"
+
+	options := GetOpOptions{}
+	for _, o := range opts {
+		o(&options)
+	}
 
 	v := reflect.ValueOf(d)
 
-	p, err := dotnotation.NewPath(path)
+	p, err := dotnotation.NewPath(string(path))
 	if err != nil {
+		if options.logVerbose {
+			log.Error().Err(err).Str("path", string(path)).Msg(semLogContext)
+		}
 		return nil, err
 	}
 	paths := []dotnotation.DotPath{p}
@@ -47,6 +137,9 @@ func (d *Document) Get(path string) (interface{}, error) {
 	values := make([]interface{}, 1)
 	err = fieldsByTraversal(v, fields, paths, values, true, true)
 	if err != nil {
+		if options.logVerbose {
+			log.Error().Err(err).Str("path", string(path)).Msg(semLogContext)
+		}
 		return nil, err
 	}
 
@@ -59,328 +152,642 @@ func (d *Document) Get(path string) (interface{}, error) {
 		}
 	*/
 
-	return deref(path, values[0])
+	return derefProperty(path, values[0])
 }
 
-func copy2Dest(docPath string, dest, src interface{}) error {
+func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) error {
+
+	const semLogContext = "pain_002_001_03::copy-to-dest"
 
 	var err error
 	switch typedDest := dest.(type) {
 	case *common.ActiveOrHistoricCurrencyCode:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.ActiveOrHistoricCurrencyCode data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.ActiveOrHistoricCurrencyCode data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToActiveOrHistoricCurrencyCode(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.AddressType2Code:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.AddressType2Code data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.AddressType2Code data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToAddressType2Code(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.AnyBICIdentifier:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.AnyBICIdentifier data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.AnyBICIdentifier data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToAnyBICIdentifier(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.BICIdentifier:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.BICIdentifier data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.BICIdentifier data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToBICIdentifier(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.CashAccountType4Code:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.CashAccountType4Code data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.CashAccountType4Code data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToCashAccountType4Code(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.ClearingChannel2Code:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.ClearingChannel2Code data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.ClearingChannel2Code data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToClearingChannel2Code(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.CountryCode:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.CountryCode data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.CountryCode data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToCountryCode(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.CreditDebitCode:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.CreditDebitCode data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.CreditDebitCode data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToCreditDebitCode(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.DocumentType3Code:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.DocumentType3Code data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.DocumentType3Code data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToDocumentType3Code(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.DocumentType5Code:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.DocumentType5Code data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.DocumentType5Code data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToDocumentType5Code(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.ExternalAccountIdentification1Code:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.ExternalAccountIdentification1Code data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.ExternalAccountIdentification1Code data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToExternalAccountIdentification1Code(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.ExternalCashClearingSystem1Code:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.ExternalCashClearingSystem1Code data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.ExternalCashClearingSystem1Code data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToExternalCashClearingSystem1Code(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.ExternalCategoryPurpose1Code:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.ExternalCategoryPurpose1Code data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.ExternalCategoryPurpose1Code data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToExternalCategoryPurpose1Code(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.ExternalClearingSystemIdentification1Code:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.ExternalClearingSystemIdentification1Code data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.ExternalClearingSystemIdentification1Code data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToExternalClearingSystemIdentification1Code(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.ExternalFinancialInstitutionIdentification1Code:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.ExternalFinancialInstitutionIdentification1Code data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.ExternalFinancialInstitutionIdentification1Code data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToExternalFinancialInstitutionIdentification1Code(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.ExternalLocalInstrument1Code:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.ExternalLocalInstrument1Code data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.ExternalLocalInstrument1Code data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToExternalLocalInstrument1Code(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.ExternalOrganisationIdentification1Code:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.ExternalOrganisationIdentification1Code data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.ExternalOrganisationIdentification1Code data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToExternalOrganisationIdentification1Code(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.ExternalPersonIdentification1Code:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.ExternalPersonIdentification1Code data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.ExternalPersonIdentification1Code data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToExternalPersonIdentification1Code(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.ExternalServiceLevel1Code:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.ExternalServiceLevel1Code data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.ExternalServiceLevel1Code data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToExternalServiceLevel1Code(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.ExternalStatusReason1Code:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.ExternalStatusReason1Code data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.ExternalStatusReason1Code data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToExternalStatusReason1Code(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.Frequency1Code:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.Frequency1Code data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.Frequency1Code data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToFrequency1Code(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.IBAN2007Identifier:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.IBAN2007Identifier data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.IBAN2007Identifier data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToIBAN2007Identifier(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.ISODate:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.ISODate data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.ISODate data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToISODate(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.ISODateTime:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.ISODateTime data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.ISODateTime data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToISODateTime(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.Max1025Text:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.Max1025Text data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.Max1025Text data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToMax1025Text(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.Max105Text:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.Max105Text data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.Max105Text data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToMax105Text(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.Max140Text:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.Max140Text data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.Max140Text data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToMax140Text(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.Max15NumericText:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.Max15NumericText data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.Max15NumericText data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToMax15NumericText(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.Max16Text:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.Max16Text data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.Max16Text data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToMax16Text(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.Max2048Text:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.Max2048Text data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.Max2048Text data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToMax2048Text(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.Max34Text:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.Max34Text data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.Max34Text data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToMax34Text(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.Max35Text:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.Max35Text data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.Max35Text data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToMax35Text(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.Max4Text:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.Max4Text data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.Max4Text data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToMax4Text(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.Max70Text:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.Max70Text data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.Max70Text data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToMax70Text(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.NamePrefix1Code:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.NamePrefix1Code data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.NamePrefix1Code data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToNamePrefix1Code(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.PaymentMethod4Code:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.PaymentMethod4Code data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.PaymentMethod4Code data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToPaymentMethod4Code(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.PhoneNumber:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.PhoneNumber data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.PhoneNumber data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToPhoneNumber(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.Priority2Code:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.Priority2Code data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.Priority2Code data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToPriority2Code(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.SequenceType1Code:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.SequenceType1Code data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.SequenceType1Code data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToSequenceType1Code(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.SettlementMethod1Code:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.SettlementMethod1Code data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.SettlementMethod1Code data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToSettlementMethod1Code(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.TransactionGroupStatus3Code:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.TransactionGroupStatus3Code data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.TransactionGroupStatus3Code data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToTransactionGroupStatus3Code(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *common.TransactionIndividualStatus3Code:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling common.TransactionIndividualStatus3Code data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling common.TransactionIndividualStatus3Code data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = common.ToTransactionIndividualStatus3Code(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *xsdt.Boolean:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling xsdt.Boolean data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling xsdt.Boolean data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = xsdt.ToBoolean(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	case *xsdt.Decimal:
 		if typedDest == nil {
-			return errors.New("nil pointer... in unmarshalling xsdt.Decimal data for" + docPath)
+			err = errors.New("nil pointer... in unmarshalling xsdt.Decimal data for" + string(docPath))
+			if err != nil && options.logVerbose {
+				log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+			}
+			return err
 		}
 
 		*typedDest, err = xsdt.ToDecimal(src)
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
 		return err
 	default:
-		return fmt.Errorf("could not find the type to node %s of type %v", docPath, dest)
+		err = fmt.Errorf("could not find the type to node %s of type %T", docPath, dest)
+		if options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
+		return err
 	}
 
 }
 
-func deref(docPath string, val interface{}) (interface{}, error) {
+func derefProperty(docPath string, val interface{}) (interface{}, error) {
 
 	if val == nil {
 		return nil, nil
@@ -477,7 +884,7 @@ func deref(docPath string, val interface{}) (interface{}, error) {
 	case *xsdt.Decimal:
 		return *tv, nil
 	default:
-		err = fmt.Errorf("could not find the type to node %s of type %v", docPath, val)
+		err = fmt.Errorf("could not find the type to node %s of type %T", string(docPath), val)
 	}
 
 	return val, err

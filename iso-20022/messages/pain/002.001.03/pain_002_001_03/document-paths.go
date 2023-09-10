@@ -2,6 +2,12 @@
 // Do not Edit. This stuff it's been automatically generated.
 package pain_002_001_03
 
+import (
+	"fmt"
+	"github.com/rs/zerolog/log"
+	"strings"
+)
+
 const (
 	Path_CstmrPmtStsRpt                                                                                                                           = "CstmrPmtStsRpt"
 	Path_CstmrPmtStsRpt_GrpHdr                                                                                                                    = "CstmrPmtStsRpt.GrpHdr"
@@ -1374,3 +1380,30 @@ const (
 	Path_CstmrPmtStsRpt_OrgnlPmtInfAndSts_TxInfAndSts_OrgnlTxRef_UltmtCdtr_CtctDtls_EmailAdr                                                      = "CstmrPmtStsRpt.OrgnlPmtInfAndSts[].TxInfAndSts[].OrgnlTxRef.UltmtCdtr.CtctDtls.EmailAdr"
 	Path_CstmrPmtStsRpt_OrgnlPmtInfAndSts_TxInfAndSts_OrgnlTxRef_UltmtCdtr_CtctDtls_Othr                                                          = "CstmrPmtStsRpt.OrgnlPmtInfAndSts[].TxInfAndSts[].OrgnlTxRef.UltmtCdtr.CtctDtls.Othr"
 )
+
+func MustSetArrayItemPathModifiers(p string, modifiers []string) string {
+	var err error
+	p, err = SetArrayItemPathModifiers(p, modifiers)
+	if err != nil {
+		log.Fatal().Err(err).Send()
+	}
+
+	return p
+}
+
+func SetArrayItemPathModifiers(p string, modifiers []string) (string, error) {
+	numArrSpecifiers := strings.Count(p, "[]")
+	if len(modifiers) != numArrSpecifiers {
+		err := fmt.Errorf("the number of provided (%d) modifiers doesn't match the path provided", len(modifiers))
+		return p, err
+	}
+
+	for _, m := range modifiers {
+		if m == "" {
+			m = "last"
+		}
+		p = strings.Replace(p, "[]", fmt.Sprintf("[%s]", m), 1)
+	}
+
+	return p, nil
+}

@@ -19,6 +19,24 @@ func TestDocumentcamt_053_001_02_SetOps(t *testing.T) {
 	doc := camt_053_001_02.NewDocument()
 	_ = doc.Set(camt_053_001_02.Path_BkToCstmrStmt_GrpHdr_AddtlInf, "", camt_053_001_02.SetOpWithLog(true))
 	_ = doc.Set(camt_053_001_02.Path_BkToCstmrStmt_Stmt_Ntry_NtryDtls_TxDtls_Refs_MsgId, "", camt_053_001_02.SetOpWithLog(true))
+	getv, err := doc.GetNode(camt_053_001_02.Path_BkToCstmrStmt_GrpHdr_MsgRcpt)
+	require.NoError(t, err)
+	_ = doc.SetNode(camt_053_001_02.Path_BkToCstmrStmt_GrpHdr_MsgRcpt, camt_053_001_02.PartyIdentification32{Nm: "vabbuo'"}, camt_053_001_02.SetOpWithLog(true))
+	getv, err = doc.GetNode(camt_053_001_02.Path_BkToCstmrStmt_GrpHdr_MsgRcpt)
+	require.NoError(t, err)
+	t.Log(getv)
+
+	err = doc.ClearNode(camt_053_001_02.Path_BkToCstmrStmt_GrpHdr_MsgRcpt)
+	require.NoError(t, err)
+
+	err = doc.ClearNode(camt_053_001_02.Path_BkToCstmrStmt_GrpHdr)
+	require.NoError(t, err)
+
+	err = doc.ClearNode(camt_053_001_02.Path_BkToCstmrStmt_Stmt)
+	require.NoError(t, err)
+
+	err = doc.ClearNode("BkToCstmrStmt.Stmt")
+	require.NoError(t, err)
 
 	b, err := doc.ToXML()
 	require.NoError(t, err)
@@ -28,8 +46,8 @@ func TestDocumentcamt_053_001_02_SetOps(t *testing.T) {
 func TestDocumentcamt_053_001_02(t *testing.T) {
 
 	d := camt_053_001_02.Document{
-		BkToCstmrStmt: camt_053_001_02.BankToCustomerStatementV02{
-			GrpHdr: camt_053_001_02.GroupHeader42{
+		BkToCstmrStmt: &camt_053_001_02.BankToCustomerStatementV02{
+			GrpHdr: &camt_053_001_02.GroupHeader42{
 				MsgId:   common.MustToMax35Text(common.Max35TextSample),
 				CreDtTm: common.MustToISODateTime(common.ISODateTimeSample),
 				MsgRcpt: &camt_053_001_02.PartyIdentification32{
@@ -108,8 +126,8 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 					Cd:    common.MustToExternalReportingSource1Code(common.ExternalReportingSource1CodeSample),
 					Prtry: common.MustToMax35Text(common.Max35TextSample),
 				},
-				Acct: camt_053_001_02.CashAccount20{
-					Id: camt_053_001_02.AccountIdentification4Choice{
+				Acct: &camt_053_001_02.CashAccount20{
+					Id: &camt_053_001_02.AccountIdentification4Choice{
 						IBAN: common.MustToIBAN2007Identifier(common.IBAN2007IdentifierSample),
 						Othr: &camt_053_001_02.GenericAccountIdentification1{
 							Id: common.MustToMax34Text(common.Max34TextSample),
@@ -183,7 +201,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 						},
 					},
 					Svcr: &camt_053_001_02.BranchAndFinancialInstitutionIdentification4{
-						FinInstnId: camt_053_001_02.FinancialInstitutionIdentification7{
+						FinInstnId: &camt_053_001_02.FinancialInstitutionIdentification7{
 							BIC: common.MustToBICIdentifier(common.BICIdentifierSample),
 							ClrSysMmbId: &camt_053_001_02.ClearingSystemMemberIdentification2{
 								ClrSysId: &camt_053_001_02.ClearingSystemIdentification2Choice{
@@ -237,7 +255,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 					},
 				},
 				RltdAcct: &camt_053_001_02.CashAccount16{
-					Id: camt_053_001_02.AccountIdentification4Choice{
+					Id: &camt_053_001_02.AccountIdentification4Choice{
 						IBAN: common.MustToIBAN2007Identifier(common.IBAN2007IdentifierSample),
 						Othr: &camt_053_001_02.GenericAccountIdentification1{
 							Id: common.MustToMax34Text(common.Max34TextSample),
@@ -261,12 +279,12 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 						Prtry: common.MustToMax35Text(common.Max35TextSample),
 					},
 					Rate: []camt_053_001_02.Rate3{{
-						Tp: camt_053_001_02.RateType4Choice{
+						Tp: &camt_053_001_02.RateType4Choice{
 							Pctg: xsdt.MustToDecimal(xsdt.DecimalSample),
 							Othr: common.MustToMax35Text(common.Max35TextSample),
 						},
 						VldtyRg: &camt_053_001_02.CurrencyAndAmountRange2{
-							Amt: camt_053_001_02.ImpliedCurrencyAmountRangeChoice{
+							Amt: &camt_053_001_02.ImpliedCurrencyAmountRangeChoice{
 								FrAmt: &camt_053_001_02.AmountRangeBoundary1{
 									BdryAmt: xsdt.MustToDecimal(xsdt.DecimalSample),
 									Incl:    xsdt.MustToBoolean(xsdt.BooleanSample),
@@ -276,11 +294,11 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 									Incl:    xsdt.MustToBoolean(xsdt.BooleanSample),
 								},
 								FrToAmt: &camt_053_001_02.FromToAmountRange{
-									FrAmt: camt_053_001_02.AmountRangeBoundary1{
+									FrAmt: &camt_053_001_02.AmountRangeBoundary1{
 										BdryAmt: xsdt.MustToDecimal(xsdt.DecimalSample),
 										Incl:    xsdt.MustToBoolean(xsdt.BooleanSample),
 									},
-									ToAmt: camt_053_001_02.AmountRangeBoundary1{
+									ToAmt: &camt_053_001_02.AmountRangeBoundary1{
 										BdryAmt: xsdt.MustToDecimal(xsdt.DecimalSample),
 										Incl:    xsdt.MustToBoolean(xsdt.BooleanSample),
 									},
@@ -299,8 +317,8 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 					Rsn: common.MustToMax35Text(common.Max35TextSample)},
 				},
 				Bal: []camt_053_001_02.CashBalance3{{
-					Tp: camt_053_001_02.BalanceType12{
-						CdOrPrtry: camt_053_001_02.BalanceType5Choice{
+					Tp: &camt_053_001_02.BalanceType12{
+						CdOrPrtry: &camt_053_001_02.BalanceType5Choice{
 							Cd:    common.MustToBalanceType12Code(common.BalanceType12CodeSample),
 							Prtry: common.MustToMax35Text(common.Max35TextSample),
 						},
@@ -316,21 +334,21 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 							Value: xsdt.MustToDecimal(xsdt.DecimalSample),
 						},
 					},
-					Amt: camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
+					Amt: &camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
 						Ccy:   common.MustToActiveOrHistoricCurrencyCode(common.ActiveOrHistoricCurrencyCodeSample),
 						Value: xsdt.MustToDecimal(xsdt.DecimalSample),
 					},
 					CdtDbtInd: common.MustToCreditDebitCode(common.CreditDebitCodeSample),
-					Dt: camt_053_001_02.DateAndDateTimeChoice{
+					Dt: &camt_053_001_02.DateAndDateTimeChoice{
 						Dt:   common.MustToISODate(common.ISODateSample),
 						DtTm: common.MustToISODateTime(common.ISODateTimeSample),
 					},
 					Avlbty: []camt_053_001_02.CashBalanceAvailability2{{
-						Dt: camt_053_001_02.CashBalanceAvailabilityDate1{
+						Dt: &camt_053_001_02.CashBalanceAvailabilityDate1{
 							NbOfDays: common.MustToMax15PlusSignedNumericText(common.Max15PlusSignedNumericTextSample),
 							ActlDt:   common.MustToISODate(common.ISODateSample),
 						},
-						Amt: camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
+						Amt: &camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
 							Ccy:   common.MustToActiveOrHistoricCurrencyCode(common.ActiveOrHistoricCurrencyCodeSample),
 							Value: xsdt.MustToDecimal(xsdt.DecimalSample),
 						},
@@ -358,10 +376,10 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 						TtlNetNtryAmt: xsdt.MustToDecimal(xsdt.DecimalSample),
 						CdtDbtInd:     common.MustToCreditDebitCode(common.CreditDebitCodeSample),
 						FcstInd:       xsdt.MustToBoolean(xsdt.BooleanSample),
-						BkTxCd: camt_053_001_02.BankTransactionCodeStructure4{
+						BkTxCd: &camt_053_001_02.BankTransactionCodeStructure4{
 							Domn: &camt_053_001_02.BankTransactionCodeStructure5{
 								Cd: common.MustToExternalBankTransactionDomain1Code(common.ExternalBankTransactionDomain1CodeSample),
-								Fmly: camt_053_001_02.BankTransactionCodeStructure6{
+								Fmly: &camt_053_001_02.BankTransactionCodeStructure6{
 									Cd:        common.MustToExternalBankTransactionFamily1Code(common.ExternalBankTransactionFamily1CodeSample),
 									SubFmlyCd: common.MustToExternalBankTransactionSubFamily1Code(common.ExternalBankTransactionSubFamily1CodeSample),
 								},
@@ -372,11 +390,11 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 							},
 						},
 						Avlbty: []camt_053_001_02.CashBalanceAvailability2{{
-							Dt: camt_053_001_02.CashBalanceAvailabilityDate1{
+							Dt: &camt_053_001_02.CashBalanceAvailabilityDate1{
 								NbOfDays: common.MustToMax15PlusSignedNumericText(common.Max15PlusSignedNumericTextSample),
 								ActlDt:   common.MustToISODate(common.ISODateSample),
 							},
-							Amt: camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
+							Amt: &camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
 								Ccy:   common.MustToActiveOrHistoricCurrencyCode(common.ActiveOrHistoricCurrencyCodeSample),
 								Value: xsdt.MustToDecimal(xsdt.DecimalSample),
 							},
@@ -386,7 +404,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 				},
 				Ntry: []camt_053_001_02.ReportEntry2{{
 					NtryRef: common.MustToMax35Text(common.Max35TextSample),
-					Amt: camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
+					Amt: &camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
 						Ccy:   common.MustToActiveOrHistoricCurrencyCode(common.ActiveOrHistoricCurrencyCodeSample),
 						Value: xsdt.MustToDecimal(xsdt.DecimalSample),
 					},
@@ -403,20 +421,20 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 					},
 					AcctSvcrRef: common.MustToMax35Text(common.Max35TextSample),
 					Avlbty: []camt_053_001_02.CashBalanceAvailability2{{
-						Dt: camt_053_001_02.CashBalanceAvailabilityDate1{
+						Dt: &camt_053_001_02.CashBalanceAvailabilityDate1{
 							NbOfDays: common.MustToMax15PlusSignedNumericText(common.Max15PlusSignedNumericTextSample),
 							ActlDt:   common.MustToISODate(common.ISODateSample),
 						},
-						Amt: camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
+						Amt: &camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
 							Ccy:   common.MustToActiveOrHistoricCurrencyCode(common.ActiveOrHistoricCurrencyCodeSample),
 							Value: xsdt.MustToDecimal(xsdt.DecimalSample),
 						},
 						CdtDbtInd: common.MustToCreditDebitCode(common.CreditDebitCodeSample)},
 					},
-					BkTxCd: camt_053_001_02.BankTransactionCodeStructure4{
+					BkTxCd: &camt_053_001_02.BankTransactionCodeStructure4{
 						Domn: &camt_053_001_02.BankTransactionCodeStructure5{
 							Cd: common.MustToExternalBankTransactionDomain1Code(common.ExternalBankTransactionDomain1CodeSample),
-							Fmly: camt_053_001_02.BankTransactionCodeStructure6{
+							Fmly: &camt_053_001_02.BankTransactionCodeStructure6{
 								Cd:        common.MustToExternalBankTransactionFamily1Code(common.ExternalBankTransactionFamily1CodeSample),
 								SubFmlyCd: common.MustToExternalBankTransactionSubFamily1Code(common.ExternalBankTransactionSubFamily1CodeSample),
 							},
@@ -433,7 +451,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 					},
 					AmtDtls: &camt_053_001_02.AmountAndCurrencyExchange3{
 						InstdAmt: &camt_053_001_02.AmountAndCurrencyExchangeDetails3{
-							Amt: camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
+							Amt: &camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
 								Ccy:   common.MustToActiveOrHistoricCurrencyCode(common.ActiveOrHistoricCurrencyCodeSample),
 								Value: xsdt.MustToDecimal(xsdt.DecimalSample),
 							},
@@ -447,7 +465,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 							},
 						},
 						TxAmt: &camt_053_001_02.AmountAndCurrencyExchangeDetails3{
-							Amt: camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
+							Amt: &camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
 								Ccy:   common.MustToActiveOrHistoricCurrencyCode(common.ActiveOrHistoricCurrencyCodeSample),
 								Value: xsdt.MustToDecimal(xsdt.DecimalSample),
 							},
@@ -461,7 +479,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 							},
 						},
 						CntrValAmt: &camt_053_001_02.AmountAndCurrencyExchangeDetails3{
-							Amt: camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
+							Amt: &camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
 								Ccy:   common.MustToActiveOrHistoricCurrencyCode(common.ActiveOrHistoricCurrencyCodeSample),
 								Value: xsdt.MustToDecimal(xsdt.DecimalSample),
 							},
@@ -475,7 +493,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 							},
 						},
 						AnncdPstngAmt: &camt_053_001_02.AmountAndCurrencyExchangeDetails3{
-							Amt: camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
+							Amt: &camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
 								Ccy:   common.MustToActiveOrHistoricCurrencyCode(common.ActiveOrHistoricCurrencyCodeSample),
 								Value: xsdt.MustToDecimal(xsdt.DecimalSample),
 							},
@@ -490,7 +508,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 						},
 						PrtryAmt: []camt_053_001_02.AmountAndCurrencyExchangeDetails4{{
 							Tp: common.MustToMax35Text(common.Max35TextSample),
-							Amt: camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
+							Amt: &camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
 								Ccy:   common.MustToActiveOrHistoricCurrencyCode(common.ActiveOrHistoricCurrencyCodeSample),
 								Value: xsdt.MustToDecimal(xsdt.DecimalSample),
 							},
@@ -509,7 +527,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 							Ccy:   common.MustToActiveOrHistoricCurrencyCode(common.ActiveOrHistoricCurrencyCodeSample),
 							Value: xsdt.MustToDecimal(xsdt.DecimalSample),
 						},
-						Amt: camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
+						Amt: &camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
 							Ccy:   common.MustToActiveOrHistoricCurrencyCode(common.ActiveOrHistoricCurrencyCodeSample),
 							Value: xsdt.MustToDecimal(xsdt.DecimalSample),
 						},
@@ -524,7 +542,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 						Rate: xsdt.MustToDecimal(xsdt.DecimalSample),
 						Br:   common.MustToChargeBearerType1Code(common.ChargeBearerType1CodeSample),
 						Pty: &camt_053_001_02.BranchAndFinancialInstitutionIdentification4{
-							FinInstnId: camt_053_001_02.FinancialInstitutionIdentification7{
+							FinInstnId: &camt_053_001_02.FinancialInstitutionIdentification7{
 								BIC: common.MustToBICIdentifier(common.BICIdentifierSample),
 								ClrSysMmbId: &camt_053_001_02.ClearingSystemMemberIdentification2{
 									ClrSysId: &camt_053_001_02.ClearingSystemIdentification2Choice{
@@ -590,7 +608,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 						Prtry: common.MustToMax35Text(common.Max35TextSample),
 					},
 					Intrst: []camt_053_001_02.TransactionInterest2{{
-						Amt: camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
+						Amt: &camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
 							Ccy:   common.MustToActiveOrHistoricCurrencyCode(common.ActiveOrHistoricCurrencyCodeSample),
 							Value: xsdt.MustToDecimal(xsdt.DecimalSample),
 						},
@@ -600,12 +618,12 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 							Prtry: common.MustToMax35Text(common.Max35TextSample),
 						},
 						Rate: []camt_053_001_02.Rate3{{
-							Tp: camt_053_001_02.RateType4Choice{
+							Tp: &camt_053_001_02.RateType4Choice{
 								Pctg: xsdt.MustToDecimal(xsdt.DecimalSample),
 								Othr: common.MustToMax35Text(common.Max35TextSample),
 							},
 							VldtyRg: &camt_053_001_02.CurrencyAndAmountRange2{
-								Amt: camt_053_001_02.ImpliedCurrencyAmountRangeChoice{
+								Amt: &camt_053_001_02.ImpliedCurrencyAmountRangeChoice{
 									FrAmt: &camt_053_001_02.AmountRangeBoundary1{
 										BdryAmt: xsdt.MustToDecimal(xsdt.DecimalSample),
 										Incl:    xsdt.MustToBoolean(xsdt.BooleanSample),
@@ -615,11 +633,11 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 										Incl:    xsdt.MustToBoolean(xsdt.BooleanSample),
 									},
 									FrToAmt: &camt_053_001_02.FromToAmountRange{
-										FrAmt: camt_053_001_02.AmountRangeBoundary1{
+										FrAmt: &camt_053_001_02.AmountRangeBoundary1{
 											BdryAmt: xsdt.MustToDecimal(xsdt.DecimalSample),
 											Incl:    xsdt.MustToBoolean(xsdt.BooleanSample),
 										},
-										ToAmt: camt_053_001_02.AmountRangeBoundary1{
+										ToAmt: &camt_053_001_02.AmountRangeBoundary1{
 											BdryAmt: xsdt.MustToDecimal(xsdt.DecimalSample),
 											Incl:    xsdt.MustToBoolean(xsdt.BooleanSample),
 										},
@@ -666,7 +684,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 							},
 							AmtDtls: &camt_053_001_02.AmountAndCurrencyExchange3{
 								InstdAmt: &camt_053_001_02.AmountAndCurrencyExchangeDetails3{
-									Amt: camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
+									Amt: &camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
 										Ccy:   common.MustToActiveOrHistoricCurrencyCode(common.ActiveOrHistoricCurrencyCodeSample),
 										Value: xsdt.MustToDecimal(xsdt.DecimalSample),
 									},
@@ -680,7 +698,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 									},
 								},
 								TxAmt: &camt_053_001_02.AmountAndCurrencyExchangeDetails3{
-									Amt: camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
+									Amt: &camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
 										Ccy:   common.MustToActiveOrHistoricCurrencyCode(common.ActiveOrHistoricCurrencyCodeSample),
 										Value: xsdt.MustToDecimal(xsdt.DecimalSample),
 									},
@@ -694,7 +712,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 									},
 								},
 								CntrValAmt: &camt_053_001_02.AmountAndCurrencyExchangeDetails3{
-									Amt: camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
+									Amt: &camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
 										Ccy:   common.MustToActiveOrHistoricCurrencyCode(common.ActiveOrHistoricCurrencyCodeSample),
 										Value: xsdt.MustToDecimal(xsdt.DecimalSample),
 									},
@@ -708,7 +726,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 									},
 								},
 								AnncdPstngAmt: &camt_053_001_02.AmountAndCurrencyExchangeDetails3{
-									Amt: camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
+									Amt: &camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
 										Ccy:   common.MustToActiveOrHistoricCurrencyCode(common.ActiveOrHistoricCurrencyCodeSample),
 										Value: xsdt.MustToDecimal(xsdt.DecimalSample),
 									},
@@ -723,7 +741,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 								},
 								PrtryAmt: []camt_053_001_02.AmountAndCurrencyExchangeDetails4{{
 									Tp: common.MustToMax35Text(common.Max35TextSample),
-									Amt: camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
+									Amt: &camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
 										Ccy:   common.MustToActiveOrHistoricCurrencyCode(common.ActiveOrHistoricCurrencyCodeSample),
 										Value: xsdt.MustToDecimal(xsdt.DecimalSample),
 									},
@@ -738,11 +756,11 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 								},
 							},
 							Avlbty: []camt_053_001_02.CashBalanceAvailability2{{
-								Dt: camt_053_001_02.CashBalanceAvailabilityDate1{
+								Dt: &camt_053_001_02.CashBalanceAvailabilityDate1{
 									NbOfDays: common.MustToMax15PlusSignedNumericText(common.Max15PlusSignedNumericTextSample),
 									ActlDt:   common.MustToISODate(common.ISODateSample),
 								},
-								Amt: camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
+								Amt: &camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
 									Ccy:   common.MustToActiveOrHistoricCurrencyCode(common.ActiveOrHistoricCurrencyCodeSample),
 									Value: xsdt.MustToDecimal(xsdt.DecimalSample),
 								},
@@ -751,7 +769,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 							BkTxCd: &camt_053_001_02.BankTransactionCodeStructure4{
 								Domn: &camt_053_001_02.BankTransactionCodeStructure5{
 									Cd: common.MustToExternalBankTransactionDomain1Code(common.ExternalBankTransactionDomain1CodeSample),
-									Fmly: camt_053_001_02.BankTransactionCodeStructure6{
+									Fmly: &camt_053_001_02.BankTransactionCodeStructure6{
 										Cd:        common.MustToExternalBankTransactionFamily1Code(common.ExternalBankTransactionFamily1CodeSample),
 										SubFmlyCd: common.MustToExternalBankTransactionSubFamily1Code(common.ExternalBankTransactionSubFamily1CodeSample),
 									},
@@ -766,7 +784,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 									Ccy:   common.MustToActiveOrHistoricCurrencyCode(common.ActiveOrHistoricCurrencyCodeSample),
 									Value: xsdt.MustToDecimal(xsdt.DecimalSample),
 								},
-								Amt: camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
+								Amt: &camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
 									Ccy:   common.MustToActiveOrHistoricCurrencyCode(common.ActiveOrHistoricCurrencyCodeSample),
 									Value: xsdt.MustToDecimal(xsdt.DecimalSample),
 								},
@@ -781,7 +799,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 								Rate: xsdt.MustToDecimal(xsdt.DecimalSample),
 								Br:   common.MustToChargeBearerType1Code(common.ChargeBearerType1CodeSample),
 								Pty: &camt_053_001_02.BranchAndFinancialInstitutionIdentification4{
-									FinInstnId: camt_053_001_02.FinancialInstitutionIdentification7{
+									FinInstnId: &camt_053_001_02.FinancialInstitutionIdentification7{
 										BIC: common.MustToBICIdentifier(common.BICIdentifierSample),
 										ClrSysMmbId: &camt_053_001_02.ClearingSystemMemberIdentification2{
 											ClrSysId: &camt_053_001_02.ClearingSystemIdentification2Choice{
@@ -843,7 +861,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 								}},
 							},
 							Intrst: []camt_053_001_02.TransactionInterest2{{
-								Amt: camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
+								Amt: &camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
 									Ccy:   common.MustToActiveOrHistoricCurrencyCode(common.ActiveOrHistoricCurrencyCodeSample),
 									Value: xsdt.MustToDecimal(xsdt.DecimalSample),
 								},
@@ -853,12 +871,12 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 									Prtry: common.MustToMax35Text(common.Max35TextSample),
 								},
 								Rate: []camt_053_001_02.Rate3{{
-									Tp: camt_053_001_02.RateType4Choice{
+									Tp: &camt_053_001_02.RateType4Choice{
 										Pctg: xsdt.MustToDecimal(xsdt.DecimalSample),
 										Othr: common.MustToMax35Text(common.Max35TextSample),
 									},
 									VldtyRg: &camt_053_001_02.CurrencyAndAmountRange2{
-										Amt: camt_053_001_02.ImpliedCurrencyAmountRangeChoice{
+										Amt: &camt_053_001_02.ImpliedCurrencyAmountRangeChoice{
 											FrAmt: &camt_053_001_02.AmountRangeBoundary1{
 												BdryAmt: xsdt.MustToDecimal(xsdt.DecimalSample),
 												Incl:    xsdt.MustToBoolean(xsdt.BooleanSample),
@@ -868,11 +886,11 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 												Incl:    xsdt.MustToBoolean(xsdt.BooleanSample),
 											},
 											FrToAmt: &camt_053_001_02.FromToAmountRange{
-												FrAmt: camt_053_001_02.AmountRangeBoundary1{
+												FrAmt: &camt_053_001_02.AmountRangeBoundary1{
 													BdryAmt: xsdt.MustToDecimal(xsdt.DecimalSample),
 													Incl:    xsdt.MustToBoolean(xsdt.BooleanSample),
 												},
-												ToAmt: camt_053_001_02.AmountRangeBoundary1{
+												ToAmt: &camt_053_001_02.AmountRangeBoundary1{
 													BdryAmt: xsdt.MustToDecimal(xsdt.DecimalSample),
 													Incl:    xsdt.MustToBoolean(xsdt.BooleanSample),
 												},
@@ -1004,7 +1022,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 									},
 								},
 								DbtrAcct: &camt_053_001_02.CashAccount16{
-									Id: camt_053_001_02.AccountIdentification4Choice{
+									Id: &camt_053_001_02.AccountIdentification4Choice{
 										IBAN: common.MustToIBAN2007Identifier(common.IBAN2007IdentifierSample),
 										Othr: &camt_053_001_02.GenericAccountIdentification1{
 											Id: common.MustToMax34Text(common.Max34TextSample),
@@ -1135,7 +1153,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 									},
 								},
 								CdtrAcct: &camt_053_001_02.CashAccount16{
-									Id: camt_053_001_02.AccountIdentification4Choice{
+									Id: &camt_053_001_02.AccountIdentification4Choice{
 										IBAN: common.MustToIBAN2007Identifier(common.IBAN2007IdentifierSample),
 										Othr: &camt_053_001_02.GenericAccountIdentification1{
 											Id: common.MustToMax34Text(common.Max34TextSample),
@@ -1267,7 +1285,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 								},
 								Prtry: []camt_053_001_02.ProprietaryParty2{{
 									Tp: common.MustToMax35Text(common.Max35TextSample),
-									Pty: camt_053_001_02.PartyIdentification32{
+									Pty: &camt_053_001_02.PartyIdentification32{
 										Nm: common.MustToMax140Text(common.Max140TextSample),
 										PstlAdr: &camt_053_001_02.PostalAddress6{
 											AdrTp:       common.MustToAddressType2Code(common.AddressType2CodeSample),
@@ -1327,7 +1345,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 							},
 							RltdAgts: &camt_053_001_02.TransactionAgents2{
 								DbtrAgt: &camt_053_001_02.BranchAndFinancialInstitutionIdentification4{
-									FinInstnId: camt_053_001_02.FinancialInstitutionIdentification7{
+									FinInstnId: &camt_053_001_02.FinancialInstitutionIdentification7{
 										BIC: common.MustToBICIdentifier(common.BICIdentifierSample),
 										ClrSysMmbId: &camt_053_001_02.ClearingSystemMemberIdentification2{
 											ClrSysId: &camt_053_001_02.ClearingSystemIdentification2Choice{
@@ -1380,7 +1398,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 									},
 								},
 								CdtrAgt: &camt_053_001_02.BranchAndFinancialInstitutionIdentification4{
-									FinInstnId: camt_053_001_02.FinancialInstitutionIdentification7{
+									FinInstnId: &camt_053_001_02.FinancialInstitutionIdentification7{
 										BIC: common.MustToBICIdentifier(common.BICIdentifierSample),
 										ClrSysMmbId: &camt_053_001_02.ClearingSystemMemberIdentification2{
 											ClrSysId: &camt_053_001_02.ClearingSystemIdentification2Choice{
@@ -1433,7 +1451,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 									},
 								},
 								IntrmyAgt1: &camt_053_001_02.BranchAndFinancialInstitutionIdentification4{
-									FinInstnId: camt_053_001_02.FinancialInstitutionIdentification7{
+									FinInstnId: &camt_053_001_02.FinancialInstitutionIdentification7{
 										BIC: common.MustToBICIdentifier(common.BICIdentifierSample),
 										ClrSysMmbId: &camt_053_001_02.ClearingSystemMemberIdentification2{
 											ClrSysId: &camt_053_001_02.ClearingSystemIdentification2Choice{
@@ -1486,7 +1504,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 									},
 								},
 								IntrmyAgt2: &camt_053_001_02.BranchAndFinancialInstitutionIdentification4{
-									FinInstnId: camt_053_001_02.FinancialInstitutionIdentification7{
+									FinInstnId: &camt_053_001_02.FinancialInstitutionIdentification7{
 										BIC: common.MustToBICIdentifier(common.BICIdentifierSample),
 										ClrSysMmbId: &camt_053_001_02.ClearingSystemMemberIdentification2{
 											ClrSysId: &camt_053_001_02.ClearingSystemIdentification2Choice{
@@ -1539,7 +1557,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 									},
 								},
 								IntrmyAgt3: &camt_053_001_02.BranchAndFinancialInstitutionIdentification4{
-									FinInstnId: camt_053_001_02.FinancialInstitutionIdentification7{
+									FinInstnId: &camt_053_001_02.FinancialInstitutionIdentification7{
 										BIC: common.MustToBICIdentifier(common.BICIdentifierSample),
 										ClrSysMmbId: &camt_053_001_02.ClearingSystemMemberIdentification2{
 											ClrSysId: &camt_053_001_02.ClearingSystemIdentification2Choice{
@@ -1592,7 +1610,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 									},
 								},
 								RcvgAgt: &camt_053_001_02.BranchAndFinancialInstitutionIdentification4{
-									FinInstnId: camt_053_001_02.FinancialInstitutionIdentification7{
+									FinInstnId: &camt_053_001_02.FinancialInstitutionIdentification7{
 										BIC: common.MustToBICIdentifier(common.BICIdentifierSample),
 										ClrSysMmbId: &camt_053_001_02.ClearingSystemMemberIdentification2{
 											ClrSysId: &camt_053_001_02.ClearingSystemIdentification2Choice{
@@ -1645,7 +1663,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 									},
 								},
 								DlvrgAgt: &camt_053_001_02.BranchAndFinancialInstitutionIdentification4{
-									FinInstnId: camt_053_001_02.FinancialInstitutionIdentification7{
+									FinInstnId: &camt_053_001_02.FinancialInstitutionIdentification7{
 										BIC: common.MustToBICIdentifier(common.BICIdentifierSample),
 										ClrSysMmbId: &camt_053_001_02.ClearingSystemMemberIdentification2{
 											ClrSysId: &camt_053_001_02.ClearingSystemIdentification2Choice{
@@ -1698,7 +1716,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 									},
 								},
 								IssgAgt: &camt_053_001_02.BranchAndFinancialInstitutionIdentification4{
-									FinInstnId: camt_053_001_02.FinancialInstitutionIdentification7{
+									FinInstnId: &camt_053_001_02.FinancialInstitutionIdentification7{
 										BIC: common.MustToBICIdentifier(common.BICIdentifierSample),
 										ClrSysMmbId: &camt_053_001_02.ClearingSystemMemberIdentification2{
 											ClrSysId: &camt_053_001_02.ClearingSystemIdentification2Choice{
@@ -1751,7 +1769,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 									},
 								},
 								SttlmPlc: &camt_053_001_02.BranchAndFinancialInstitutionIdentification4{
-									FinInstnId: camt_053_001_02.FinancialInstitutionIdentification7{
+									FinInstnId: &camt_053_001_02.FinancialInstitutionIdentification7{
 										BIC: common.MustToBICIdentifier(common.BICIdentifierSample),
 										ClrSysMmbId: &camt_053_001_02.ClearingSystemMemberIdentification2{
 											ClrSysId: &camt_053_001_02.ClearingSystemIdentification2Choice{
@@ -1805,8 +1823,8 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 								},
 								Prtry: []camt_053_001_02.ProprietaryAgent2{{
 									Tp: common.MustToMax35Text(common.Max35TextSample),
-									Agt: camt_053_001_02.BranchAndFinancialInstitutionIdentification4{
-										FinInstnId: camt_053_001_02.FinancialInstitutionIdentification7{
+									Agt: &camt_053_001_02.BranchAndFinancialInstitutionIdentification4{
+										FinInstnId: &camt_053_001_02.FinancialInstitutionIdentification7{
 											BIC: common.MustToBICIdentifier(common.BICIdentifierSample),
 											ClrSysMmbId: &camt_053_001_02.ClearingSystemMemberIdentification2{
 												ClrSysId: &camt_053_001_02.ClearingSystemIdentification2Choice{
@@ -1870,7 +1888,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 								RmtLctnElctrncAdr: common.MustToMax2048Text(common.Max2048TextSample),
 								RmtLctnPstlAdr: &camt_053_001_02.NameAndAddress10{
 									Nm: common.MustToMax140Text(common.Max140TextSample),
-									Adr: camt_053_001_02.PostalAddress6{
+									Adr: &camt_053_001_02.PostalAddress6{
 										AdrTp:       common.MustToAddressType2Code(common.AddressType2CodeSample),
 										Dept:        common.MustToMax70Text(common.Max70TextSample),
 										SubDept:     common.MustToMax70Text(common.Max70TextSample),
@@ -1893,7 +1911,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 								Strd: []camt_053_001_02.StructuredRemittanceInformation7{{
 									RfrdDocInf: []camt_053_001_02.ReferredDocumentInformation3{{
 										Tp: &camt_053_001_02.ReferredDocumentType2{
-											CdOrPrtry: camt_053_001_02.ReferredDocumentType1Choice{
+											CdOrPrtry: &camt_053_001_02.ReferredDocumentType1Choice{
 												Cd:    common.MustToDocumentType5Code(common.DocumentType5CodeSample),
 												Prtry: common.MustToMax35Text(common.Max35TextSample),
 											},
@@ -1920,7 +1938,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 											Value: xsdt.MustToDecimal(xsdt.DecimalSample),
 										},
 										AdjstmntAmtAndRsn: []camt_053_001_02.DocumentAdjustment1{{
-											Amt: camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
+											Amt: &camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
 												Ccy:   common.MustToActiveOrHistoricCurrencyCode(common.ActiveOrHistoricCurrencyCodeSample),
 												Value: xsdt.MustToDecimal(xsdt.DecimalSample),
 											},
@@ -1935,7 +1953,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 									},
 									CdtrRefInf: &camt_053_001_02.CreditorReferenceInformation2{
 										Tp: &camt_053_001_02.CreditorReferenceType2{
-											CdOrPrtry: camt_053_001_02.CreditorReferenceType1Choice{
+											CdOrPrtry: &camt_053_001_02.CreditorReferenceType1Choice{
 												Cd:    common.MustToDocumentType3Code(common.DocumentType3CodeSample),
 												Prtry: common.MustToMax35Text(common.Max35TextSample),
 											},
@@ -2070,7 +2088,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 								TxDtTm:                  common.MustToISODateTime(common.ISODateTimeSample),
 								Prtry: []camt_053_001_02.ProprietaryDate2{{
 									Tp: common.MustToMax35Text(common.Max35TextSample),
-									Dt: camt_053_001_02.DateAndDateTimeChoice{
+									Dt: &camt_053_001_02.DateAndDateTimeChoice{
 										Dt:   common.MustToISODate(common.ISODateSample),
 										DtTm: common.MustToISODateTime(common.ISODateTimeSample),
 									}},
@@ -2083,7 +2101,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 								},
 								Prtry: []camt_053_001_02.ProprietaryPrice2{{
 									Tp: common.MustToMax35Text(common.Max35TextSample),
-									Pric: camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
+									Pric: &camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
 										Ccy:   common.MustToActiveOrHistoricCurrencyCode(common.ActiveOrHistoricCurrencyCodeSample),
 										Value: xsdt.MustToDecimal(xsdt.DecimalSample),
 									}},
@@ -2169,7 +2187,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 													ToDt: common.MustToISODate(common.ISODateSample),
 												},
 											},
-											Amt: camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
+											Amt: &camt_053_001_02.ActiveOrHistoricCurrencyAndAmount{
 												Ccy:   common.MustToActiveOrHistoricCurrencyCode(common.ActiveOrHistoricCurrencyCodeSample),
 												Value: xsdt.MustToDecimal(xsdt.DecimalSample),
 											}},
@@ -2182,7 +2200,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 								OrgnlBkTxCd: &camt_053_001_02.BankTransactionCodeStructure4{
 									Domn: &camt_053_001_02.BankTransactionCodeStructure5{
 										Cd: common.MustToExternalBankTransactionDomain1Code(common.ExternalBankTransactionDomain1CodeSample),
-										Fmly: camt_053_001_02.BankTransactionCodeStructure6{
+										Fmly: &camt_053_001_02.BankTransactionCodeStructure6{
 											Cd:        common.MustToExternalBankTransactionFamily1Code(common.ExternalBankTransactionFamily1CodeSample),
 											SubFmlyCd: common.MustToExternalBankTransactionSubFamily1Code(common.ExternalBankTransactionSubFamily1CodeSample),
 										},
@@ -2262,7 +2280,7 @@ func TestDocumentcamt_053_001_02(t *testing.T) {
 								Prtry: common.MustToMax35Text(common.Max35TextSample),
 							},
 							SfkpgAcct: &camt_053_001_02.CashAccount16{
-								Id: camt_053_001_02.AccountIdentification4Choice{
+								Id: &camt_053_001_02.AccountIdentification4Choice{
 									IBAN: common.MustToIBAN2007Identifier(common.IBAN2007IdentifierSample),
 									Othr: &camt_053_001_02.GenericAccountIdentification1{
 										Id: common.MustToMax34Text(common.Max34TextSample),

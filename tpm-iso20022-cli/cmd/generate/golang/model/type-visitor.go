@@ -8,14 +8,15 @@ type TypeVisitor struct {
 }
 
 type TypeVisitedItem struct {
-	Name     string
-	IsStruct bool
-	IsPtr    bool
-	IsArray  bool
+	Name       string
+	IsStruct   bool
+	IsPtr      bool
+	IsArray    bool
+	IsDocument bool
 }
 
-func (sv *TypeVisitor) Visit(name, aType string, isStruct, isPrt, isArray bool) (string, error) {
-	item := TypeVisitedItem{Name: aType, IsStruct: isStruct, IsPtr: isPrt, IsArray: isArray}
+func (sv *TypeVisitor) Visit(name, aType string, isStruct, isPtr, isArray bool) (string, error) {
+	item := TypeVisitedItem{Name: aType, IsStruct: isStruct, IsPtr: isPtr, IsArray: isArray, IsDocument: name == "_self"}
 	if !isStruct {
 		sv.NumberOfLeaves++
 	}
@@ -25,7 +26,7 @@ func (sv *TypeVisitor) Visit(name, aType string, isStruct, isPrt, isArray bool) 
 		// In here in the map you could get different keys to the same type if it is used as a pointer or as an array or as a struct,
 		// This is wrong for simple types but I keep here for complex types for future use...
 		var sb strings.Builder
-		if isPrt {
+		if isPtr {
 			sb.WriteString("*")
 		}
 

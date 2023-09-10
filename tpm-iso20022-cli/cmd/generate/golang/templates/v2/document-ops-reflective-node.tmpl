@@ -1,0 +1,211 @@
+// Package {{.PackageName}}
+// Do not Edit. This stuff it's been automatically generated.
+package {{.PackageName}}
+
+import (
+	"reflect"
+	"fmt"
+	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-common/util/dotnotation"
+	"github.com/rs/zerolog/log"
+)
+
+{{ $packageName := .PackageName }}
+
+func (d *Document) SetNode(path string, src interface{}, opts ...SetOpOption) error {
+
+	const semLogContext = "camt_053_001_02::set-property"
+
+	options := SetOpOptions{}
+	for _, o := range opts {
+		o(&options)
+	}
+
+	if options.skipIfEmpty && isEmpty(src) {
+		return nil
+	}
+
+	v := reflect.ValueOf(d)
+
+	p, err := dotnotation.NewPath(string(path))
+	if err != nil {
+	    if options.logVerbose {
+    		log.Error().Err(err).Str("path", string(path)).Interface("value", src).Msg(semLogContext)
+    	}
+
+		return err
+	}
+	paths := []dotnotation.DotPath{p}
+
+	fields := d.mapper.TraversalsByName(v.Type(), paths)
+
+	values := make([]interface{}, 1)
+	err = fieldsByTraversal(v, fields, paths, values, true, false)
+	if err != nil {
+		if options.logVerbose {
+			log.Error().Err(err).Str("path", string(path)).Interface("value", src).Msg(semLogContext)
+		}
+		return err
+	}
+
+	return copy2DestNode(path, values[0], src, &options)
+}
+
+{{ $types := typesVisit .PackageName }}
+func copy2DestNode(docPath string, dest, src interface{}, options *SetOpOptions) error {
+
+	const semLogContext = "{{ $packageName }}::copy-to-dest"
+
+	var err error
+	switch typedDest := dest.(type) {
+{{- range $nm, $tp := $types.Types}}
+{{- if $tp.IsStruct }}
+  {{- if not $tp.IsDocument }}
+  case **{{$tp.TypeWithPackageTrimmed $packageName}}:
+        if typedStruct, ok := src.({{$tp.TypeWithPackageTrimmed $packageName}}); ok {
+  			*typedDest = &typedStruct
+  		} else {
+  		    err = fmt.Errorf("value of type %T cannot be assigned", src)
+  		}
+       if err != nil && options.logVerbose {
+           log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+       }
+       return err
+{{- end }}
+{{- end }}
+{{- end }}
+   default:
+        err = fmt.Errorf("could not find the type to node %s of type %T", string(docPath), dest)
+        if options.logVerbose {
+        	log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+        }
+        return err
+ }
+
+}
+
+func (d *Document) GetNode(path string, opts ...GetOpOption) (interface{}, error) {
+
+	const semLogContext = "camt_053_001_02::get-node"
+
+	options := GetOpOptions{}
+	for _, o := range opts {
+		o(&options)
+	}
+
+	v := reflect.ValueOf(d)
+
+	p, err := dotnotation.NewPath(string(path))
+	if err != nil {
+		if options.logVerbose {
+			log.Error().Err(err).Str("path", string(path)).Msg(semLogContext)
+		}
+		return nil, err
+	}
+	paths := []dotnotation.DotPath{p}
+
+	fields := d.mapper.TraversalsByName(v.Type(), paths)
+
+	values := make([]interface{}, 1)
+	err = fieldsByTraversal(v, fields, paths, values, true, true)
+	if err != nil {
+		if options.logVerbose {
+			log.Error().Err(err).Str("path", string(path)).Msg(semLogContext)
+		}
+		return nil, err
+	}
+
+	return derefNode(path, values[0])
+}
+
+func (d *Document) ClearNode(path string, opts ...SetOpOption) error {
+	const semLogContext = "{{ $packageName }}::clear-node"
+
+	options := SetOpOptions{}
+	for _, o := range opts {
+		o(&options)
+	}
+
+	i, err := d.GetNode(path)
+	if err != nil {
+		return err
+	}
+
+	if i == nil {
+		return nil
+	}
+
+	v := reflect.ValueOf(d)
+
+	p, err := dotnotation.NewPath(string(path))
+	if err != nil {
+		if options.logVerbose {
+			log.Error().Err(err).Str("path", string(path)).Msg(semLogContext)
+		}
+
+		return err
+	}
+	paths := []dotnotation.DotPath{p}
+
+	fields := d.mapper.TraversalsByName(v.Type(), paths)
+
+	values := make([]interface{}, 1)
+	err = fieldsByTraversal(v, fields, paths, values, true, false)
+	if err != nil {
+		if options.logVerbose {
+			log.Error().Err(err).Str("path", string(path)).Msg(semLogContext)
+		}
+		return err
+	}
+
+	return clearNode(path, values[0], &options)
+
+}
+
+func clearNode(docPath string, dest interface{}, options *SetOpOptions) error {
+
+	const semLogContext = "{{ $packageName }}::clear-node"
+
+	var err error
+	switch typedDest := dest.(type) {
+{{- range $nm, $tp := $types.Types}}
+{{- if $tp.IsStruct }}
+  {{- if not $tp.IsDocument }}
+  case **{{$tp.TypeWithPackageTrimmed $packageName}}:
+        *typedDest = nil
+  {{- end }}
+{{- end }}
+{{- end }}
+	default:
+		err = fmt.Errorf("could not find the type to node %s of type %T", string(docPath), dest)
+		if options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Msg(semLogContext)
+		}
+		return err
+	}
+
+    return nil
+}
+
+
+func derefNode(docPath string, val interface{}) (interface{}, error) {
+
+    if val == nil {
+       return nil, nil
+    }
+
+    var err error
+	switch tv := val.(type) {
+{{- range $nm, $tp := $types.Types}}
+{{- if $tp.IsStruct }}
+  {{- if not $tp.IsDocument }}
+  case **{{$tp.TypeWithPackageTrimmed $packageName}}:
+        return *tv, nil
+  {{- end }}
+{{- end }}
+{{- end }}
+   default:
+        err = fmt.Errorf("could not find the type to node %s of type %T", string(docPath), val)
+ }
+
+ return val, err
+}

@@ -1825,7 +1825,7 @@ func MustSetArrayItemPathModifiers(p string, modifiers []string) string {
 func SetArrayItemPathModifiers(p string, modifiers []string) (string, error) {
 	numArrSpecifiers := strings.Count(p, "[]")
 	if len(modifiers) != numArrSpecifiers {
-		err := fmt.Errorf("the number of provided (%d) modifiers doesn't match the path provided", modifiers)
+		err := fmt.Errorf("the number of provided (%d) modifiers doesn't match the path provided", len(modifiers))
 		return p, err
 	}
 

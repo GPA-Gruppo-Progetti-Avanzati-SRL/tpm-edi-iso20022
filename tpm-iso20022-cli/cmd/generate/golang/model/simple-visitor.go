@@ -162,8 +162,8 @@ func (sv SimpleVisitor) pathToString(p []SimpleVisitedItem) string {
 	return sb.String()
 }
 
-func (sv *SimpleVisitor) Visit(name, aType string, isStruct, isPrt, isArray bool) (string, error) {
-	item := SimpleVisitedItem{Name: name, Type: aType, IsStruct: isStruct, IsPtr: isPrt, IsArray: isArray}
+func (sv *SimpleVisitor) Visit(name, aType string, isStruct, isPtr, isArray bool) (string, error) {
+	item := SimpleVisitedItem{Name: name, Type: aType, IsStruct: isStruct, IsPtr: isPtr, IsArray: isArray}
 	if !isStruct {
 		sv.NumberOfLeaves++
 	}

@@ -2,6 +2,12 @@
 // Do not Edit. This stuff it's been automatically generated.
 package pain_013_001_07
 
+import (
+	"fmt"
+	"github.com/rs/zerolog/log"
+	"strings"
+)
+
 const (
 	Path_CdtrPmtActvtnReq                                                                                            = "CdtrPmtActvtnReq"
 	Path_CdtrPmtActvtnReq_GrpHdr                                                                                     = "CdtrPmtActvtnReq.GrpHdr"
@@ -1568,3 +1574,30 @@ const (
 	Path_CdtrPmtActvtnReq_SplmtryData_Envlp                                                                          = "CdtrPmtActvtnReq.SplmtryData[].Envlp"
 	Path_CdtrPmtActvtnReq_SplmtryData_Envlp_Item                                                                     = "CdtrPmtActvtnReq.SplmtryData[].Envlp.Item"
 )
+
+func MustSetArrayItemPathModifiers(p string, modifiers []string) string {
+	var err error
+	p, err = SetArrayItemPathModifiers(p, modifiers)
+	if err != nil {
+		log.Fatal().Err(err).Send()
+	}
+
+	return p
+}
+
+func SetArrayItemPathModifiers(p string, modifiers []string) (string, error) {
+	numArrSpecifiers := strings.Count(p, "[]")
+	if len(modifiers) != numArrSpecifiers {
+		err := fmt.Errorf("the number of provided (%d) modifiers doesn't match the path provided", len(modifiers))
+		return p, err
+	}
+
+	for _, m := range modifiers {
+		if m == "" {
+			m = "last"
+		}
+		p = strings.Replace(p, "[]", fmt.Sprintf("[%s]", m), 1)
+	}
+
+	return p, nil
+}

@@ -8,12 +8,13 @@ import (
 	"strings"
 )
 
+
 {{ $tree := simpleVisit .PackageName }}
 const (
 {{- range $tree.Paths}}
   {{- $lastNode := .LastItem }}
   {{- if ne $lastNode.Name "_self" }}
-  Path_{{ .Identifier }} = "{{.Value}}"
+    Path_{{ .Identifier }} = "{{.Value}}"
   {{- if $lastNode.IsArray }}
   Path_{{ .Identifier }}_Item = "{{.Value}}/Item"
   {{- end }}
@@ -34,7 +35,7 @@ func MustSetArrayItemPathModifiers(p string, modifiers []string) string {
 func SetArrayItemPathModifiers(p string, modifiers []string) (string, error) {
 	numArrSpecifiers := strings.Count(p, "[]")
 	if len(modifiers) != numArrSpecifiers {
-		err := fmt.Errorf("the number of provided (%d) modifiers doesn't match the path provided", modifiers)
+		err := fmt.Errorf("the number of provided (%d) modifiers doesn't match the path provided", len(modifiers))
 		return p, err
 	}
 

@@ -18,8 +18,8 @@ const Example_pain_001_001_03 = "example-document-pain_001_001_03.xml"
 func TestDocumentpain_001_001_03(t *testing.T) {
 
 	d := pain_001_001_03.Document{
-		CstmrCdtTrfInitn: pain_001_001_03.CustomerCreditTransferInitiationV03{
-			GrpHdr: pain_001_001_03.GroupHeader32{
+		CstmrCdtTrfInitn: &pain_001_001_03.CustomerCreditTransferInitiationV03{
+			GrpHdr: &pain_001_001_03.GroupHeader32{
 				MsgId:   common.MustToMax35Text(common.Max35TextSample),
 				CreDtTm: common.MustToISODateTime(common.ISODateTimeSample),
 				Authstn: []pain_001_001_03.Authorisation1Choice{{
@@ -28,7 +28,7 @@ func TestDocumentpain_001_001_03(t *testing.T) {
 				},
 				NbOfTxs: common.MustToMax15NumericText(common.Max15NumericTextSample),
 				CtrlSum: xsdt.MustToDecimal(xsdt.DecimalSample),
-				InitgPty: pain_001_001_03.PartyIdentification32{
+				InitgPty: &pain_001_001_03.PartyIdentification32{
 					Nm: common.MustToMax140Text(common.Max140TextSample),
 					PstlAdr: &pain_001_001_03.PostalAddress6{
 						AdrTp:       common.MustToAddressType2Code(common.AddressType2CodeSample),
@@ -85,7 +85,7 @@ func TestDocumentpain_001_001_03(t *testing.T) {
 					},
 				},
 				FwdgAgt: &pain_001_001_03.BranchAndFinancialInstitutionIdentification4{
-					FinInstnId: pain_001_001_03.FinancialInstitutionIdentification7{
+					FinInstnId: &pain_001_001_03.FinancialInstitutionIdentification7{
 						BIC: common.MustToBICIdentifier(common.BICIdentifierSample),
 						ClrSysMmbId: &pain_001_001_03.ClearingSystemMemberIdentification2{
 							ClrSysId: &pain_001_001_03.ClearingSystemIdentification2Choice{
@@ -161,7 +161,7 @@ func TestDocumentpain_001_001_03(t *testing.T) {
 				},
 				ReqdExctnDt:     common.MustToISODate(common.ISODateSample),
 				PoolgAdjstmntDt: common.MustToISODate(common.ISODateSample),
-				Dbtr: pain_001_001_03.PartyIdentification32{
+				Dbtr: &pain_001_001_03.PartyIdentification32{
 					Nm: common.MustToMax140Text(common.Max140TextSample),
 					PstlAdr: &pain_001_001_03.PostalAddress6{
 						AdrTp:       common.MustToAddressType2Code(common.AddressType2CodeSample),
@@ -217,8 +217,8 @@ func TestDocumentpain_001_001_03(t *testing.T) {
 						Othr:     common.MustToMax35Text(common.Max35TextSample),
 					},
 				},
-				DbtrAcct: pain_001_001_03.CashAccount16{
-					Id: pain_001_001_03.AccountIdentification4Choice{
+				DbtrAcct: &pain_001_001_03.CashAccount16{
+					Id: &pain_001_001_03.AccountIdentification4Choice{
 						IBAN: common.MustToIBAN2007Identifier(common.IBAN2007IdentifierSample),
 						Othr: &pain_001_001_03.GenericAccountIdentification1{
 							Id: common.MustToMax34Text(common.Max34TextSample),
@@ -236,8 +236,8 @@ func TestDocumentpain_001_001_03(t *testing.T) {
 					Ccy: common.MustToActiveOrHistoricCurrencyCode(common.ActiveOrHistoricCurrencyCodeSample),
 					Nm:  common.MustToMax70Text(common.Max70TextSample),
 				},
-				DbtrAgt: pain_001_001_03.BranchAndFinancialInstitutionIdentification4{
-					FinInstnId: pain_001_001_03.FinancialInstitutionIdentification7{
+				DbtrAgt: &pain_001_001_03.BranchAndFinancialInstitutionIdentification4{
+					FinInstnId: &pain_001_001_03.FinancialInstitutionIdentification7{
 						BIC: common.MustToBICIdentifier(common.BICIdentifierSample),
 						ClrSysMmbId: &pain_001_001_03.ClearingSystemMemberIdentification2{
 							ClrSysId: &pain_001_001_03.ClearingSystemIdentification2Choice{
@@ -290,7 +290,7 @@ func TestDocumentpain_001_001_03(t *testing.T) {
 					},
 				},
 				DbtrAgtAcct: &pain_001_001_03.CashAccount16{
-					Id: pain_001_001_03.AccountIdentification4Choice{
+					Id: &pain_001_001_03.AccountIdentification4Choice{
 						IBAN: common.MustToIBAN2007Identifier(common.IBAN2007IdentifierSample),
 						Othr: &pain_001_001_03.GenericAccountIdentification1{
 							Id: common.MustToMax34Text(common.Max34TextSample),
@@ -366,7 +366,7 @@ func TestDocumentpain_001_001_03(t *testing.T) {
 				},
 				ChrgBr: common.MustToChargeBearerType1Code(common.ChargeBearerType1CodeSample),
 				ChrgsAcct: &pain_001_001_03.CashAccount16{
-					Id: pain_001_001_03.AccountIdentification4Choice{
+					Id: &pain_001_001_03.AccountIdentification4Choice{
 						IBAN: common.MustToIBAN2007Identifier(common.IBAN2007IdentifierSample),
 						Othr: &pain_001_001_03.GenericAccountIdentification1{
 							Id: common.MustToMax34Text(common.Max34TextSample),
@@ -385,7 +385,7 @@ func TestDocumentpain_001_001_03(t *testing.T) {
 					Nm:  common.MustToMax70Text(common.Max70TextSample),
 				},
 				ChrgsAcctAgt: &pain_001_001_03.BranchAndFinancialInstitutionIdentification4{
-					FinInstnId: pain_001_001_03.FinancialInstitutionIdentification7{
+					FinInstnId: &pain_001_001_03.FinancialInstitutionIdentification7{
 						BIC: common.MustToBICIdentifier(common.BICIdentifierSample),
 						ClrSysMmbId: &pain_001_001_03.ClearingSystemMemberIdentification2{
 							ClrSysId: &pain_001_001_03.ClearingSystemIdentification2Choice{
@@ -438,7 +438,7 @@ func TestDocumentpain_001_001_03(t *testing.T) {
 					},
 				},
 				CdtTrfTxInf: []pain_001_001_03.CreditTransferTransactionInformation10{{
-					PmtId: pain_001_001_03.PaymentIdentification1{
+					PmtId: &pain_001_001_03.PaymentIdentification1{
 						InstrId:    common.MustToMax35Text(common.Max35TextSample),
 						EndToEndId: common.MustToMax35Text(common.Max35TextSample),
 					},
@@ -457,13 +457,13 @@ func TestDocumentpain_001_001_03(t *testing.T) {
 							Prtry: common.MustToMax35Text(common.Max35TextSample),
 						},
 					},
-					Amt: pain_001_001_03.AmountType3Choice{
+					Amt: &pain_001_001_03.AmountType3Choice{
 						InstdAmt: &pain_001_001_03.ActiveOrHistoricCurrencyAndAmount{
 							Ccy:   common.MustToActiveOrHistoricCurrencyCode(common.ActiveOrHistoricCurrencyCodeSample),
 							Value: xsdt.MustToDecimal(xsdt.DecimalSample),
 						},
 						EqvtAmt: &pain_001_001_03.EquivalentAmount2{
-							Amt: pain_001_001_03.ActiveOrHistoricCurrencyAndAmount{
+							Amt: &pain_001_001_03.ActiveOrHistoricCurrencyAndAmount{
 								Ccy:   common.MustToActiveOrHistoricCurrencyCode(common.ActiveOrHistoricCurrencyCodeSample),
 								Value: xsdt.MustToDecimal(xsdt.DecimalSample),
 							},
@@ -481,7 +481,7 @@ func TestDocumentpain_001_001_03(t *testing.T) {
 						ChqNb: common.MustToMax35Text(common.Max35TextSample),
 						ChqFr: &pain_001_001_03.NameAndAddress10{
 							Nm: common.MustToMax140Text(common.Max140TextSample),
-							Adr: pain_001_001_03.PostalAddress6{
+							Adr: &pain_001_001_03.PostalAddress6{
 								AdrTp:       common.MustToAddressType2Code(common.AddressType2CodeSample),
 								Dept:        common.MustToMax70Text(common.Max70TextSample),
 								SubDept:     common.MustToMax70Text(common.Max70TextSample),
@@ -502,7 +502,7 @@ func TestDocumentpain_001_001_03(t *testing.T) {
 						},
 						DlvrTo: &pain_001_001_03.NameAndAddress10{
 							Nm: common.MustToMax140Text(common.Max140TextSample),
-							Adr: pain_001_001_03.PostalAddress6{
+							Adr: &pain_001_001_03.PostalAddress6{
 								AdrTp:       common.MustToAddressType2Code(common.AddressType2CodeSample),
 								Dept:        common.MustToMax70Text(common.Max70TextSample),
 								SubDept:     common.MustToMax70Text(common.Max70TextSample),
@@ -583,7 +583,7 @@ func TestDocumentpain_001_001_03(t *testing.T) {
 						},
 					},
 					IntrmyAgt1: &pain_001_001_03.BranchAndFinancialInstitutionIdentification4{
-						FinInstnId: pain_001_001_03.FinancialInstitutionIdentification7{
+						FinInstnId: &pain_001_001_03.FinancialInstitutionIdentification7{
 							BIC: common.MustToBICIdentifier(common.BICIdentifierSample),
 							ClrSysMmbId: &pain_001_001_03.ClearingSystemMemberIdentification2{
 								ClrSysId: &pain_001_001_03.ClearingSystemIdentification2Choice{
@@ -636,7 +636,7 @@ func TestDocumentpain_001_001_03(t *testing.T) {
 						},
 					},
 					IntrmyAgt1Acct: &pain_001_001_03.CashAccount16{
-						Id: pain_001_001_03.AccountIdentification4Choice{
+						Id: &pain_001_001_03.AccountIdentification4Choice{
 							IBAN: common.MustToIBAN2007Identifier(common.IBAN2007IdentifierSample),
 							Othr: &pain_001_001_03.GenericAccountIdentification1{
 								Id: common.MustToMax34Text(common.Max34TextSample),
@@ -655,7 +655,7 @@ func TestDocumentpain_001_001_03(t *testing.T) {
 						Nm:  common.MustToMax70Text(common.Max70TextSample),
 					},
 					IntrmyAgt2: &pain_001_001_03.BranchAndFinancialInstitutionIdentification4{
-						FinInstnId: pain_001_001_03.FinancialInstitutionIdentification7{
+						FinInstnId: &pain_001_001_03.FinancialInstitutionIdentification7{
 							BIC: common.MustToBICIdentifier(common.BICIdentifierSample),
 							ClrSysMmbId: &pain_001_001_03.ClearingSystemMemberIdentification2{
 								ClrSysId: &pain_001_001_03.ClearingSystemIdentification2Choice{
@@ -708,7 +708,7 @@ func TestDocumentpain_001_001_03(t *testing.T) {
 						},
 					},
 					IntrmyAgt2Acct: &pain_001_001_03.CashAccount16{
-						Id: pain_001_001_03.AccountIdentification4Choice{
+						Id: &pain_001_001_03.AccountIdentification4Choice{
 							IBAN: common.MustToIBAN2007Identifier(common.IBAN2007IdentifierSample),
 							Othr: &pain_001_001_03.GenericAccountIdentification1{
 								Id: common.MustToMax34Text(common.Max34TextSample),
@@ -727,7 +727,7 @@ func TestDocumentpain_001_001_03(t *testing.T) {
 						Nm:  common.MustToMax70Text(common.Max70TextSample),
 					},
 					IntrmyAgt3: &pain_001_001_03.BranchAndFinancialInstitutionIdentification4{
-						FinInstnId: pain_001_001_03.FinancialInstitutionIdentification7{
+						FinInstnId: &pain_001_001_03.FinancialInstitutionIdentification7{
 							BIC: common.MustToBICIdentifier(common.BICIdentifierSample),
 							ClrSysMmbId: &pain_001_001_03.ClearingSystemMemberIdentification2{
 								ClrSysId: &pain_001_001_03.ClearingSystemIdentification2Choice{
@@ -780,7 +780,7 @@ func TestDocumentpain_001_001_03(t *testing.T) {
 						},
 					},
 					IntrmyAgt3Acct: &pain_001_001_03.CashAccount16{
-						Id: pain_001_001_03.AccountIdentification4Choice{
+						Id: &pain_001_001_03.AccountIdentification4Choice{
 							IBAN: common.MustToIBAN2007Identifier(common.IBAN2007IdentifierSample),
 							Othr: &pain_001_001_03.GenericAccountIdentification1{
 								Id: common.MustToMax34Text(common.Max34TextSample),
@@ -799,7 +799,7 @@ func TestDocumentpain_001_001_03(t *testing.T) {
 						Nm:  common.MustToMax70Text(common.Max70TextSample),
 					},
 					CdtrAgt: &pain_001_001_03.BranchAndFinancialInstitutionIdentification4{
-						FinInstnId: pain_001_001_03.FinancialInstitutionIdentification7{
+						FinInstnId: &pain_001_001_03.FinancialInstitutionIdentification7{
 							BIC: common.MustToBICIdentifier(common.BICIdentifierSample),
 							ClrSysMmbId: &pain_001_001_03.ClearingSystemMemberIdentification2{
 								ClrSysId: &pain_001_001_03.ClearingSystemIdentification2Choice{
@@ -852,7 +852,7 @@ func TestDocumentpain_001_001_03(t *testing.T) {
 						},
 					},
 					CdtrAgtAcct: &pain_001_001_03.CashAccount16{
-						Id: pain_001_001_03.AccountIdentification4Choice{
+						Id: &pain_001_001_03.AccountIdentification4Choice{
 							IBAN: common.MustToIBAN2007Identifier(common.IBAN2007IdentifierSample),
 							Othr: &pain_001_001_03.GenericAccountIdentification1{
 								Id: common.MustToMax34Text(common.Max34TextSample),
@@ -927,7 +927,7 @@ func TestDocumentpain_001_001_03(t *testing.T) {
 						},
 					},
 					CdtrAcct: &pain_001_001_03.CashAccount16{
-						Id: pain_001_001_03.AccountIdentification4Choice{
+						Id: &pain_001_001_03.AccountIdentification4Choice{
 							IBAN: common.MustToIBAN2007Identifier(common.IBAN2007IdentifierSample),
 							Othr: &pain_001_001_03.GenericAccountIdentification1{
 								Id: common.MustToMax34Text(common.Max34TextSample),
@@ -1092,7 +1092,7 @@ func TestDocumentpain_001_001_03(t *testing.T) {
 											ToDt: common.MustToISODate(common.ISODateSample),
 										},
 									},
-									Amt: pain_001_001_03.ActiveOrHistoricCurrencyAndAmount{
+									Amt: &pain_001_001_03.ActiveOrHistoricCurrencyAndAmount{
 										Ccy:   common.MustToActiveOrHistoricCurrencyCode(common.ActiveOrHistoricCurrencyCodeSample),
 										Value: xsdt.MustToDecimal(xsdt.DecimalSample),
 									}},
@@ -1107,7 +1107,7 @@ func TestDocumentpain_001_001_03(t *testing.T) {
 						RmtLctnElctrncAdr: common.MustToMax2048Text(common.Max2048TextSample),
 						RmtLctnPstlAdr: &pain_001_001_03.NameAndAddress10{
 							Nm: common.MustToMax140Text(common.Max140TextSample),
-							Adr: pain_001_001_03.PostalAddress6{
+							Adr: &pain_001_001_03.PostalAddress6{
 								AdrTp:       common.MustToAddressType2Code(common.AddressType2CodeSample),
 								Dept:        common.MustToMax70Text(common.Max70TextSample),
 								SubDept:     common.MustToMax70Text(common.Max70TextSample),
@@ -1130,7 +1130,7 @@ func TestDocumentpain_001_001_03(t *testing.T) {
 						Strd: []pain_001_001_03.StructuredRemittanceInformation7{{
 							RfrdDocInf: []pain_001_001_03.ReferredDocumentInformation3{{
 								Tp: &pain_001_001_03.ReferredDocumentType2{
-									CdOrPrtry: pain_001_001_03.ReferredDocumentType1Choice{
+									CdOrPrtry: &pain_001_001_03.ReferredDocumentType1Choice{
 										Cd:    common.MustToDocumentType5Code(common.DocumentType5CodeSample),
 										Prtry: common.MustToMax35Text(common.Max35TextSample),
 									},
@@ -1157,7 +1157,7 @@ func TestDocumentpain_001_001_03(t *testing.T) {
 									Value: xsdt.MustToDecimal(xsdt.DecimalSample),
 								},
 								AdjstmntAmtAndRsn: []pain_001_001_03.DocumentAdjustment1{{
-									Amt: pain_001_001_03.ActiveOrHistoricCurrencyAndAmount{
+									Amt: &pain_001_001_03.ActiveOrHistoricCurrencyAndAmount{
 										Ccy:   common.MustToActiveOrHistoricCurrencyCode(common.ActiveOrHistoricCurrencyCodeSample),
 										Value: xsdt.MustToDecimal(xsdt.DecimalSample),
 									},
@@ -1172,7 +1172,7 @@ func TestDocumentpain_001_001_03(t *testing.T) {
 							},
 							CdtrRefInf: &pain_001_001_03.CreditorReferenceInformation2{
 								Tp: &pain_001_001_03.CreditorReferenceType2{
-									CdOrPrtry: pain_001_001_03.CreditorReferenceType1Choice{
+									CdOrPrtry: &pain_001_001_03.CreditorReferenceType1Choice{
 										Cd:    common.MustToDocumentType3Code(common.DocumentType3CodeSample),
 										Prtry: common.MustToMax35Text(common.Max35TextSample),
 									},

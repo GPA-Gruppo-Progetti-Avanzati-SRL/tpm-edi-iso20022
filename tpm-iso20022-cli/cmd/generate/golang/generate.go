@@ -20,23 +20,24 @@ import (
 var templates embed.FS
 
 const (
-	TmplComplexTypes           = "templates/%s/complex-types.tmpl"
-	TmplComplexTypesOps        = "templates/%s/complex-types-ops.tmpl"
-	TmplSimpleTypes            = "templates/%s/simple-types.tmpl"
-	TmplSimpleTypesOps         = "templates/%s/simple-types-ops.tmpl"
-	TmplSimpleTypesStringOps   = "templates/%s/simple-types-string-ops.tmpl"
-	TmplSimpleTypesB64Ops      = "templates/%s/simple-types-b64-ops.tmpl"
-	TmplSimpleTypesDateOps     = "templates/%s/simple-types-date-ops.tmpl"
-	TmplSimpleTypesDateTimeOps = "templates/%s/simple-types-datetime-ops.tmpl"
-	RestrictionUtil            = "templates/%s/util.tmpl"
-	XsDtTypes                  = "templates/%s/xsdt-types.tmpl"
-	XsDtTypesMethods           = "templates/%s/xsdt-types-methods.tmpl"
-	DocumentType               = "templates/%s/document-type.tmpl"
-	DocumentPaths              = "templates/%s/document-paths.tmpl"
-	DocumentReadme             = "templates/%s/document-readme.tmpl"
-	DocumentExample            = "templates/%s/document-example.tmpl"
-	DocumentExampleNode        = "templates/%s/document-example-node.tmpl"
-	DocumentSetOpsReflective   = "templates/%s/document-ops-reflective.tmpl"
+	TmplComplexTypes             = "templates/%s/complex-types.tmpl"
+	TmplComplexTypesOps          = "templates/%s/complex-types-ops.tmpl"
+	TmplSimpleTypes              = "templates/%s/simple-types.tmpl"
+	TmplSimpleTypesOps           = "templates/%s/simple-types-ops.tmpl"
+	TmplSimpleTypesStringOps     = "templates/%s/simple-types-string-ops.tmpl"
+	TmplSimpleTypesB64Ops        = "templates/%s/simple-types-b64-ops.tmpl"
+	TmplSimpleTypesDateOps       = "templates/%s/simple-types-date-ops.tmpl"
+	TmplSimpleTypesDateTimeOps   = "templates/%s/simple-types-datetime-ops.tmpl"
+	RestrictionUtil              = "templates/%s/util.tmpl"
+	XsDtTypes                    = "templates/%s/xsdt-types.tmpl"
+	XsDtTypesMethods             = "templates/%s/xsdt-types-methods.tmpl"
+	DocumentType                 = "templates/%s/document-type.tmpl"
+	DocumentPaths                = "templates/%s/document-paths.tmpl"
+	DocumentReadme               = "templates/%s/document-readme.tmpl"
+	DocumentExample              = "templates/%s/document-example.tmpl"
+	DocumentExampleNode          = "templates/%s/document-example-node.tmpl"
+	DocumentSetOpsReflective     = "templates/%s/document-ops-reflective.tmpl"
+	DocumentSetOpsReflectiveNode = "templates/%s/document-ops-reflective-node.tmpl"
 	// DocumentSetComplexOps non reflective templates
 	DocumentSetComplexOps     = "templates/%s/document-complex-set-ops.tmpl"
 	DocumentGetComplexOps     = "templates/%s/document-complex-get-ops.tmpl"
@@ -113,6 +114,13 @@ func documentReadmeTmplList(version string) []string {
 func documentSetOpsReflective(version string) []string {
 	s := make([]string, 0, 1)
 	s = append(s, fmt.Sprintf(DocumentSetOpsReflective, version))
+
+	return s
+}
+
+func documentSetOpsReflectiveNode(version string) []string {
+	s := make([]string, 0, 1)
+	s = append(s, fmt.Sprintf(DocumentSetOpsReflectiveNode, version))
 
 	return s
 }
@@ -280,6 +288,12 @@ func emitPackage(pkgName string, genCtx GenerationContext, outFolder string, for
 				outFolder:   filepath.Join(outFolder, pkgName),
 				outFileName: strings.Join([]string{"document-ops", "go"}, "."),
 				templates:   documentSetOpsReflective("v2"),
+				formatCode:  formatCode,
+			},
+			EmitStep{
+				outFolder:   filepath.Join(outFolder, pkgName),
+				outFileName: strings.Join([]string{"document-ops-node", "go"}, "."),
+				templates:   documentSetOpsReflectiveNode("v2"),
 				formatCode:  formatCode,
 			},
 			EmitStep{

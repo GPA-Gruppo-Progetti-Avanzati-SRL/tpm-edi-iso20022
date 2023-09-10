@@ -21,9 +21,9 @@ type DocumentAdapter func(iso20022Msg *Document) (*Document, error)
 
 // Document type definition
 type Document struct {
-	XMLName           xml.Name                         `xml:"urn:iso:std:iso:20022:tech:xsd:pain.008.001.02 Document"`
-	CstmrDrctDbtInitn CustomerDirectDebitInitiationV02 `xml:"CstmrDrctDbtInitn"`
-	mapper            *common.Mapper                   `xml:"-"`
+	XMLName           xml.Name                          `xml:"urn:iso:std:iso:20022:tech:xsd:pain.008.001.02 Document"`
+	CstmrDrctDbtInitn *CustomerDirectDebitInitiationV02 `xml:"CstmrDrctDbtInitn,omitempty"`
+	mapper            *common.Mapper                    `xml:"-"`
 }
 
 func NewDocument() Document {
@@ -66,7 +66,7 @@ func NewDocumentFromXML(b []byte) (*Document, error) {
 func (d Document) IsValid(optional bool) bool {
 
 	valid := true
-	valid = valid && d.CstmrDrctDbtInitn.IsValid(false)
+	valid = valid && d.CstmrDrctDbtInitn != nil && d.CstmrDrctDbtInitn.IsValid(false)
 
 	return valid
 }

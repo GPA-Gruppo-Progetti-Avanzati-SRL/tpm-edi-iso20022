@@ -163,8 +163,11 @@ type GoAttr struct {
 }
 
 func (ga GoAttr) IsPtr() bool {
+
+	// Thinking about it.... used to set the not optional as structs and optionals as pointers to struct.
+	// This choice has some downsides in a numberof use cases. Let's do always a pointer...
 	if ga.StructType {
-		if ga.Optional && !ga.Array {
+		if /* ga.Optional && */ !ga.Array {
 			return true
 		}
 	}
@@ -187,9 +190,10 @@ func (ga GoAttr) XMLTags() string {
 		sb.WriteString(",attr")
 	}
 
-	if ga.Optional {
-		sb.WriteString(",omitempty")
-	}
+	// In any case I put the omitempty
+	// if ga.Optional {
+	sb.WriteString(",omitempty")
+	// }
 
 	if ga.Chardata {
 		sb.WriteString(",chardata")
