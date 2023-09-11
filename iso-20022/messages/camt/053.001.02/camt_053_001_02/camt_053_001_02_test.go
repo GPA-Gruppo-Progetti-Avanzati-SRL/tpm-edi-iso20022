@@ -35,6 +35,14 @@ func TestDocumentcamt_053_001_02_SetOps(t *testing.T) {
 	err = doc.SetNode(camt_053_001_02.Path_BkToCstmrStmt_GrpHdr_MsgRcpt, camt_053_001_02.PartyIdentification32{Nm: "value of a struct property"}, camt_053_001_02.SetOpWithLog(true))
 	require.NoError(t, err)
 
+	// Setting an array item of complex type
+	err = doc.SetNode(camt_053_001_02.MustSetArrayItemPathModifiers(camt_053_001_02.Path_BkToCstmrStmt_Stmt_Item, []string{"+"}), camt_053_001_02.AccountStatement2{Id: "Acct-Id"}, camt_053_001_02.SetOpWithLog(true))
+	require.NoError(t, err)
+
+	// Setting an entire array
+	err = doc.SetNode(camt_053_001_02.Path_BkToCstmrStmt_Stmt, []camt_053_001_02.AccountStatement2{{Id: "Acct-Id-2"}}, camt_053_001_02.SetOpWithLog(true))
+	require.NoError(t, err)
+
 	// getting back the struct
 	getv, err = doc.GetNode(camt_053_001_02.Path_BkToCstmrStmt_GrpHdr_MsgRcpt)
 	require.NoError(t, err)
@@ -46,13 +54,13 @@ func TestDocumentcamt_053_001_02_SetOps(t *testing.T) {
 
 	// This is still a wip since the last path element is an array (in this case an array of structures and the property is indexed...
 	// this ClearNode doesn't clear anything... it adds a new element to the array....
-	err = doc.ClearNode(camt_053_001_02.Path_BkToCstmrStmt_Stmt)
-	require.NoError(t, err)
+	err = doc.ClearNode(camt_053_001_02.Path_BkToCstmrStmt_Stmt_Item, camt_053_001_02.SetOpWithLog(true))
+	require.Error(t, err)
 
 	// This is still a wip since the last path element is an array (in this case an array of structures and the property is not indexed. It's put by hand since there is no path auto created
 	// this approach can leas to some sort of non backward compatible in some cases.
 	// this ClearNode doesn't clear anything... it adds a new element to the array.... at the end we got three stmt. Clearly not what you want....
-	err = doc.ClearNode("BkToCstmrStmt.Stmt")
+	err = doc.ClearNode(camt_053_001_02.Path_BkToCstmrStmt_Stmt)
 	require.NoError(t, err)
 
 	b, err := doc.ToXML()

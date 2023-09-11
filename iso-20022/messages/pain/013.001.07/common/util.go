@@ -303,27 +303,84 @@ func FieldByIndexesAndPathInfo(v reflect.Value, indexes []int, dotPath dotnotati
 	for i, ndx := range indexes {
 		v = reflect.Indirect(v).Field(ndx)
 
-		if UseChangedCode {
-			if v.Kind() == reflect.Slice {
-				// if the element is an array of length 0 or the array is a leaf (that is the array is of simple type)
-				// append a new element to support array modes
+		switch v.Kind() {
+		case reflect.Ptr:
+			if v.IsNil() {
+				alloc := reflect.New(Deref(v.Type()))
+				v.Set(alloc)
+			}
+		case reflect.Map:
+			if v.IsNil() {
+				v.Set(reflect.MakeMap(v.Type()))
+			}
+		case reflect.Slice:
+			// if the element is an array of length 0 or the array is a leaf (that is the array is of simple type)
+			// append a new element to support array modes
+			targetNdx := -1
+			ndxType := dotPath.Elems[i].IndexingType
+			// is an array but is not the last element and doen't have any notation...
+			// treat as empty...
+			if ndxType == dotnotation.None && i < len(indexes)-1 {
+				ndxType = dotnotation.Empty
+
+			}
+			switch ndxType {
+			case dotnotation.None:
+			case dotnotation.Empty:
+				fallthrough
+			case dotnotation.Last:
+				if v.Len() == 0 {
+					alloc := reflect.New(Deref(v.Type().Elem()))
+					v.Set(reflect.Append(v, alloc.Elem()))
+				}
+				targetNdx = v.Len() - 1
+			case dotnotation.First:
+				if v.Len() == 0 {
+					alloc := reflect.New(Deref(v.Type().Elem()))
+					v.Set(reflect.Append(v, alloc.Elem()))
+				}
+				targetNdx = 0
+			case dotnotation.Add:
+				alloc := reflect.New(Deref(v.Type().Elem()))
+				v.Set(reflect.Append(v, alloc.Elem()))
+				targetNdx = v.Len() - 1
+			case dotnotation.IndexValue:
+				if v.Len() == 0 {
+					alloc := reflect.New(Deref(v.Type().Elem()))
+					v.Set(reflect.Append(v, alloc.Elem()))
+					targetNdx = 0
+				} else {
+					if dotPath.Elems[i].IndexingValue >= v.Len() {
+						targetNdx = v.Len() - 1
+					} else {
+						targetNdx = dotPath.Elems[i].IndexingValue
+					}
+				}
+			}
+			/*
 				if v.Len() == 0 || i == len(indexes)-1 || dotPath.Elems[i].IndexingType == dotnotation.Add {
 					alloc := reflect.New(Deref(v.Type().Elem()))
 					// fmt.Println(alloc.Kind(), alloc.Type(), v.Kind(), v.Type().Elem().Kind())
 					v.Set(reflect.Append(v, alloc.Elem()))
 				}
-				v = v.Index(v.Len() - 1)
+			*/
+			if targetNdx >= 0 {
+				v = v.Index(targetNdx)
 			}
 		}
 
 		// if this is a pointer and it's nil, allocate a new value and set it
-		if v.Kind() == reflect.Ptr && v.IsNil() {
-			alloc := reflect.New(Deref(v.Type()))
-			v.Set(alloc)
-		}
-		if v.Kind() == reflect.Map && v.IsNil() {
-			v.Set(reflect.MakeMap(v.Type()))
-		}
+		/*
+				if v.Kind() == reflect.Ptr && v.IsNil() {
+					alloc := reflect.New(Deref(v.Type()))
+					v.Set(alloc)
+				}
+
+			if v.Kind() == reflect.Map && v.IsNil() {
+				v.Set(reflect.MakeMap(v.Type()))
+			}
+
+		*/
 	}
 	return v
 }

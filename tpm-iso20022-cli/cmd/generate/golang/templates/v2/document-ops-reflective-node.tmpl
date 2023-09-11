@@ -60,6 +60,28 @@ func copy2DestNode(docPath string, dest, src interface{}, options *SetOpOptions)
 {{- range $nm, $tp := $types.Types}}
 {{- if $tp.IsStruct }}
   {{- if not $tp.IsDocument }}
+  {{- if $tp.IsArray }}
+    case *{{$tp.TypeWithPackageTrimmed $packageName}}:
+          if typedStruct, ok := src.({{$tp.TypeWithPackageTrimmed $packageName}}); ok {
+    			*typedDest = typedStruct
+    		} else {
+    		    err = fmt.Errorf("value of type %T cannot be assigned", src)
+    		}
+         if err != nil && options.logVerbose {
+             log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+         }
+         return err
+    case *[]{{$tp.TypeWithPackageTrimmed $packageName}}:
+          if typedStruct, ok := src.([]{{$tp.TypeWithPackageTrimmed $packageName}}); ok {
+    			*typedDest = typedStruct
+    		} else {
+    		    err = fmt.Errorf("value of type %T cannot be assigned", src)
+    		}
+         if err != nil && options.logVerbose {
+             log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+         }
+         return err
+  {{- else }}
   case **{{$tp.TypeWithPackageTrimmed $packageName}}:
         if typedStruct, ok := src.({{$tp.TypeWithPackageTrimmed $packageName}}); ok {
   			*typedDest = &typedStruct
@@ -70,6 +92,7 @@ func copy2DestNode(docPath string, dest, src interface{}, options *SetOpOptions)
            log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
        }
        return err
+{{- end }}
 {{- end }}
 {{- end }}
 {{- end }}
@@ -170,8 +193,16 @@ func clearNode(docPath string, dest interface{}, options *SetOpOptions) error {
 {{- range $nm, $tp := $types.Types}}
 {{- if $tp.IsStruct }}
   {{- if not $tp.IsDocument }}
+  {{- if $tp.IsArray }}
+    case *{{$tp.TypeWithPackageTrimmed $packageName}}:
+          err = fmt.Errorf("unsupported feature of clearing single array items")
+          return err
+    case *[]{{$tp.TypeWithPackageTrimmed $packageName}}:
+          *typedDest = nil
+  {{- else }}
   case **{{$tp.TypeWithPackageTrimmed $packageName}}:
         *typedDest = nil
+  {{- end }}
   {{- end }}
 {{- end }}
 {{- end }}
@@ -198,8 +229,15 @@ func derefNode(docPath string, val interface{}) (interface{}, error) {
 {{- range $nm, $tp := $types.Types}}
 {{- if $tp.IsStruct }}
   {{- if not $tp.IsDocument }}
+  {{- if $tp.IsArray }}
+      case *{{$tp.TypeWithPackageTrimmed $packageName}}:
+            return tv, nil
+      case *[]{{$tp.TypeWithPackageTrimmed $packageName}}:
+            return *tv, nil
+    {{- else }}
   case **{{$tp.TypeWithPackageTrimmed $packageName}}:
         return *tv, nil
+    {{- end }}
   {{- end }}
 {{- end }}
 {{- end }}

@@ -518,6 +518,9 @@ func getTemplateUtilityFunctions(gm *model2.GoModel) template.FuncMap {
 		"camelize": func(s string) string {
 			return util.Camelize(s)
 		},
+		"trimSuffix": func(s string, suffix string) string {
+			return strings.TrimSuffix(s, suffix)
+		},
 		"_": func(pkgName string) string {
 			return fmt.Sprintf("Dollar: %s", pkgName)
 		},

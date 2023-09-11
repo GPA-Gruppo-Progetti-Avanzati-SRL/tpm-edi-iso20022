@@ -774,9 +774,9 @@ func copy2DestNode(docPath string, dest, src interface{}, options *SetOpOptions)
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
 		return err
-	case **CreditTransferTransaction35:
+	case *CreditTransferTransaction35:
 		if typedStruct, ok := src.(CreditTransferTransaction35); ok {
-			*typedDest = &typedStruct
+			*typedDest = typedStruct
 		} else {
 			err = fmt.Errorf("value of type %T cannot be assigned", src)
 		}
@@ -784,9 +784,19 @@ func copy2DestNode(docPath string, dest, src interface{}, options *SetOpOptions)
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
 		return err
-	case **DiscountAmountAndType1:
+	case *[]CreditTransferTransaction35:
+		if typedStruct, ok := src.([]CreditTransferTransaction35); ok {
+			*typedDest = typedStruct
+		} else {
+			err = fmt.Errorf("value of type %T cannot be assigned", src)
+		}
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
+		return err
+	case *DiscountAmountAndType1:
 		if typedStruct, ok := src.(DiscountAmountAndType1); ok {
-			*typedDest = &typedStruct
+			*typedDest = typedStruct
 		} else {
 			err = fmt.Errorf("value of type %T cannot be assigned", src)
 		}
@@ -794,9 +804,19 @@ func copy2DestNode(docPath string, dest, src interface{}, options *SetOpOptions)
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
 		return err
-	case **Document12:
+	case *[]DiscountAmountAndType1:
+		if typedStruct, ok := src.([]DiscountAmountAndType1); ok {
+			*typedDest = typedStruct
+		} else {
+			err = fmt.Errorf("value of type %T cannot be assigned", src)
+		}
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
+		return err
+	case *Document12:
 		if typedStruct, ok := src.(Document12); ok {
-			*typedDest = &typedStruct
+			*typedDest = typedStruct
 		} else {
 			err = fmt.Errorf("value of type %T cannot be assigned", src)
 		}
@@ -804,9 +824,19 @@ func copy2DestNode(docPath string, dest, src interface{}, options *SetOpOptions)
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
 		return err
-	case **DocumentAdjustment1:
+	case *[]Document12:
+		if typedStruct, ok := src.([]Document12); ok {
+			*typedDest = typedStruct
+		} else {
+			err = fmt.Errorf("value of type %T cannot be assigned", src)
+		}
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
+		return err
+	case *DocumentAdjustment1:
 		if typedStruct, ok := src.(DocumentAdjustment1); ok {
-			*typedDest = &typedStruct
+			*typedDest = typedStruct
 		} else {
 			err = fmt.Errorf("value of type %T cannot be assigned", src)
 		}
@@ -814,9 +844,19 @@ func copy2DestNode(docPath string, dest, src interface{}, options *SetOpOptions)
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
 		return err
-	case **DocumentLineIdentification1:
+	case *[]DocumentAdjustment1:
+		if typedStruct, ok := src.([]DocumentAdjustment1); ok {
+			*typedDest = typedStruct
+		} else {
+			err = fmt.Errorf("value of type %T cannot be assigned", src)
+		}
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
+		return err
+	case *DocumentLineIdentification1:
 		if typedStruct, ok := src.(DocumentLineIdentification1); ok {
-			*typedDest = &typedStruct
+			*typedDest = typedStruct
 		} else {
 			err = fmt.Errorf("value of type %T cannot be assigned", src)
 		}
@@ -824,9 +864,19 @@ func copy2DestNode(docPath string, dest, src interface{}, options *SetOpOptions)
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
 		return err
-	case **DocumentLineInformation1:
+	case *[]DocumentLineIdentification1:
+		if typedStruct, ok := src.([]DocumentLineIdentification1); ok {
+			*typedDest = typedStruct
+		} else {
+			err = fmt.Errorf("value of type %T cannot be assigned", src)
+		}
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
+		return err
+	case *DocumentLineInformation1:
 		if typedStruct, ok := src.(DocumentLineInformation1); ok {
-			*typedDest = &typedStruct
+			*typedDest = typedStruct
 		} else {
 			err = fmt.Errorf("value of type %T cannot be assigned", src)
 		}
@@ -834,9 +884,19 @@ func copy2DestNode(docPath string, dest, src interface{}, options *SetOpOptions)
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
 		return err
-	case **GenericOrganisationIdentification1:
+	case *[]DocumentLineInformation1:
+		if typedStruct, ok := src.([]DocumentLineInformation1); ok {
+			*typedDest = typedStruct
+		} else {
+			err = fmt.Errorf("value of type %T cannot be assigned", src)
+		}
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
+		return err
+	case *GenericOrganisationIdentification1:
 		if typedStruct, ok := src.(GenericOrganisationIdentification1); ok {
-			*typedDest = &typedStruct
+			*typedDest = typedStruct
 		} else {
 			err = fmt.Errorf("value of type %T cannot be assigned", src)
 		}
@@ -844,9 +904,19 @@ func copy2DestNode(docPath string, dest, src interface{}, options *SetOpOptions)
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
 		return err
-	case **GenericPersonIdentification1:
+	case *[]GenericOrganisationIdentification1:
+		if typedStruct, ok := src.([]GenericOrganisationIdentification1); ok {
+			*typedDest = typedStruct
+		} else {
+			err = fmt.Errorf("value of type %T cannot be assigned", src)
+		}
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
+		return err
+	case *GenericPersonIdentification1:
 		if typedStruct, ok := src.(GenericPersonIdentification1); ok {
-			*typedDest = &typedStruct
+			*typedDest = typedStruct
 		} else {
 			err = fmt.Errorf("value of type %T cannot be assigned", src)
 		}
@@ -854,9 +924,19 @@ func copy2DestNode(docPath string, dest, src interface{}, options *SetOpOptions)
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
 		return err
-	case **InstructionForCreditorAgent1:
+	case *[]GenericPersonIdentification1:
+		if typedStruct, ok := src.([]GenericPersonIdentification1); ok {
+			*typedDest = typedStruct
+		} else {
+			err = fmt.Errorf("value of type %T cannot be assigned", src)
+		}
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
+		return err
+	case *InstructionForCreditorAgent1:
 		if typedStruct, ok := src.(InstructionForCreditorAgent1); ok {
-			*typedDest = &typedStruct
+			*typedDest = typedStruct
 		} else {
 			err = fmt.Errorf("value of type %T cannot be assigned", src)
 		}
@@ -864,9 +944,19 @@ func copy2DestNode(docPath string, dest, src interface{}, options *SetOpOptions)
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
 		return err
-	case **OtherContact1:
+	case *[]InstructionForCreditorAgent1:
+		if typedStruct, ok := src.([]InstructionForCreditorAgent1); ok {
+			*typedDest = typedStruct
+		} else {
+			err = fmt.Errorf("value of type %T cannot be assigned", src)
+		}
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
+		return err
+	case *OtherContact1:
 		if typedStruct, ok := src.(OtherContact1); ok {
-			*typedDest = &typedStruct
+			*typedDest = typedStruct
 		} else {
 			err = fmt.Errorf("value of type %T cannot be assigned", src)
 		}
@@ -874,9 +964,19 @@ func copy2DestNode(docPath string, dest, src interface{}, options *SetOpOptions)
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
 		return err
-	case **PaymentInstruction31:
+	case *[]OtherContact1:
+		if typedStruct, ok := src.([]OtherContact1); ok {
+			*typedDest = typedStruct
+		} else {
+			err = fmt.Errorf("value of type %T cannot be assigned", src)
+		}
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
+		return err
+	case *PaymentInstruction31:
 		if typedStruct, ok := src.(PaymentInstruction31); ok {
-			*typedDest = &typedStruct
+			*typedDest = typedStruct
 		} else {
 			err = fmt.Errorf("value of type %T cannot be assigned", src)
 		}
@@ -884,9 +984,19 @@ func copy2DestNode(docPath string, dest, src interface{}, options *SetOpOptions)
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
 		return err
-	case **ReferredDocumentInformation7:
+	case *[]PaymentInstruction31:
+		if typedStruct, ok := src.([]PaymentInstruction31); ok {
+			*typedDest = typedStruct
+		} else {
+			err = fmt.Errorf("value of type %T cannot be assigned", src)
+		}
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
+		return err
+	case *ReferredDocumentInformation7:
 		if typedStruct, ok := src.(ReferredDocumentInformation7); ok {
-			*typedDest = &typedStruct
+			*typedDest = typedStruct
 		} else {
 			err = fmt.Errorf("value of type %T cannot be assigned", src)
 		}
@@ -894,9 +1004,19 @@ func copy2DestNode(docPath string, dest, src interface{}, options *SetOpOptions)
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
 		return err
-	case **RegulatoryReporting3:
+	case *[]ReferredDocumentInformation7:
+		if typedStruct, ok := src.([]ReferredDocumentInformation7); ok {
+			*typedDest = typedStruct
+		} else {
+			err = fmt.Errorf("value of type %T cannot be assigned", src)
+		}
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
+		return err
+	case *RegulatoryReporting3:
 		if typedStruct, ok := src.(RegulatoryReporting3); ok {
-			*typedDest = &typedStruct
+			*typedDest = typedStruct
 		} else {
 			err = fmt.Errorf("value of type %T cannot be assigned", src)
 		}
@@ -904,9 +1024,19 @@ func copy2DestNode(docPath string, dest, src interface{}, options *SetOpOptions)
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
 		return err
-	case **RemittanceLocation7:
+	case *[]RegulatoryReporting3:
+		if typedStruct, ok := src.([]RegulatoryReporting3); ok {
+			*typedDest = typedStruct
+		} else {
+			err = fmt.Errorf("value of type %T cannot be assigned", src)
+		}
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
+		return err
+	case *RemittanceLocation7:
 		if typedStruct, ok := src.(RemittanceLocation7); ok {
-			*typedDest = &typedStruct
+			*typedDest = typedStruct
 		} else {
 			err = fmt.Errorf("value of type %T cannot be assigned", src)
 		}
@@ -914,9 +1044,19 @@ func copy2DestNode(docPath string, dest, src interface{}, options *SetOpOptions)
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
 		return err
-	case **RemittanceLocationData1:
+	case *[]RemittanceLocation7:
+		if typedStruct, ok := src.([]RemittanceLocation7); ok {
+			*typedDest = typedStruct
+		} else {
+			err = fmt.Errorf("value of type %T cannot be assigned", src)
+		}
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
+		return err
+	case *RemittanceLocationData1:
 		if typedStruct, ok := src.(RemittanceLocationData1); ok {
-			*typedDest = &typedStruct
+			*typedDest = typedStruct
 		} else {
 			err = fmt.Errorf("value of type %T cannot be assigned", src)
 		}
@@ -924,9 +1064,19 @@ func copy2DestNode(docPath string, dest, src interface{}, options *SetOpOptions)
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
 		return err
-	case **ServiceLevel8Choice:
+	case *[]RemittanceLocationData1:
+		if typedStruct, ok := src.([]RemittanceLocationData1); ok {
+			*typedDest = typedStruct
+		} else {
+			err = fmt.Errorf("value of type %T cannot be assigned", src)
+		}
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
+		return err
+	case *ServiceLevel8Choice:
 		if typedStruct, ok := src.(ServiceLevel8Choice); ok {
-			*typedDest = &typedStruct
+			*typedDest = typedStruct
 		} else {
 			err = fmt.Errorf("value of type %T cannot be assigned", src)
 		}
@@ -934,9 +1084,19 @@ func copy2DestNode(docPath string, dest, src interface{}, options *SetOpOptions)
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
 		return err
-	case **StructuredRegulatoryReporting3:
+	case *[]ServiceLevel8Choice:
+		if typedStruct, ok := src.([]ServiceLevel8Choice); ok {
+			*typedDest = typedStruct
+		} else {
+			err = fmt.Errorf("value of type %T cannot be assigned", src)
+		}
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
+		return err
+	case *StructuredRegulatoryReporting3:
 		if typedStruct, ok := src.(StructuredRegulatoryReporting3); ok {
-			*typedDest = &typedStruct
+			*typedDest = typedStruct
 		} else {
 			err = fmt.Errorf("value of type %T cannot be assigned", src)
 		}
@@ -944,9 +1104,19 @@ func copy2DestNode(docPath string, dest, src interface{}, options *SetOpOptions)
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
 		return err
-	case **StructuredRemittanceInformation16:
+	case *[]StructuredRegulatoryReporting3:
+		if typedStruct, ok := src.([]StructuredRegulatoryReporting3); ok {
+			*typedDest = typedStruct
+		} else {
+			err = fmt.Errorf("value of type %T cannot be assigned", src)
+		}
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
+		return err
+	case *StructuredRemittanceInformation16:
 		if typedStruct, ok := src.(StructuredRemittanceInformation16); ok {
-			*typedDest = &typedStruct
+			*typedDest = typedStruct
 		} else {
 			err = fmt.Errorf("value of type %T cannot be assigned", src)
 		}
@@ -954,9 +1124,19 @@ func copy2DestNode(docPath string, dest, src interface{}, options *SetOpOptions)
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
 		return err
-	case **SupplementaryData1:
+	case *[]StructuredRemittanceInformation16:
+		if typedStruct, ok := src.([]StructuredRemittanceInformation16); ok {
+			*typedDest = typedStruct
+		} else {
+			err = fmt.Errorf("value of type %T cannot be assigned", src)
+		}
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
+		return err
+	case *SupplementaryData1:
 		if typedStruct, ok := src.(SupplementaryData1); ok {
-			*typedDest = &typedStruct
+			*typedDest = typedStruct
 		} else {
 			err = fmt.Errorf("value of type %T cannot be assigned", src)
 		}
@@ -964,9 +1144,19 @@ func copy2DestNode(docPath string, dest, src interface{}, options *SetOpOptions)
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
 		return err
-	case **TaxAmountAndType1:
+	case *[]SupplementaryData1:
+		if typedStruct, ok := src.([]SupplementaryData1); ok {
+			*typedDest = typedStruct
+		} else {
+			err = fmt.Errorf("value of type %T cannot be assigned", src)
+		}
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
+		return err
+	case *TaxAmountAndType1:
 		if typedStruct, ok := src.(TaxAmountAndType1); ok {
-			*typedDest = &typedStruct
+			*typedDest = typedStruct
 		} else {
 			err = fmt.Errorf("value of type %T cannot be assigned", src)
 		}
@@ -974,9 +1164,19 @@ func copy2DestNode(docPath string, dest, src interface{}, options *SetOpOptions)
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
 		return err
-	case **TaxRecord2:
+	case *[]TaxAmountAndType1:
+		if typedStruct, ok := src.([]TaxAmountAndType1); ok {
+			*typedDest = typedStruct
+		} else {
+			err = fmt.Errorf("value of type %T cannot be assigned", src)
+		}
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
+		return err
+	case *TaxRecord2:
 		if typedStruct, ok := src.(TaxRecord2); ok {
-			*typedDest = &typedStruct
+			*typedDest = typedStruct
 		} else {
 			err = fmt.Errorf("value of type %T cannot be assigned", src)
 		}
@@ -984,9 +1184,29 @@ func copy2DestNode(docPath string, dest, src interface{}, options *SetOpOptions)
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
 		return err
-	case **TaxRecordDetails2:
+	case *[]TaxRecord2:
+		if typedStruct, ok := src.([]TaxRecord2); ok {
+			*typedDest = typedStruct
+		} else {
+			err = fmt.Errorf("value of type %T cannot be assigned", src)
+		}
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
+		return err
+	case *TaxRecordDetails2:
 		if typedStruct, ok := src.(TaxRecordDetails2); ok {
-			*typedDest = &typedStruct
+			*typedDest = typedStruct
+		} else {
+			err = fmt.Errorf("value of type %T cannot be assigned", src)
+		}
+		if err != nil && options.logVerbose {
+			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
+		}
+		return err
+	case *[]TaxRecordDetails2:
+		if typedStruct, ok := src.([]TaxRecordDetails2); ok {
+			*typedDest = typedStruct
 		} else {
 			err = fmt.Errorf("value of type %T cannot be assigned", src)
 		}
@@ -1232,49 +1452,115 @@ func clearNode(docPath string, dest interface{}, options *SetOpOptions) error {
 		*typedDest = nil
 	case **TaxPeriod2:
 		*typedDest = nil
-	case **CreditTransferTransaction35:
+	case *CreditTransferTransaction35:
+		err = fmt.Errorf("unsupported feature of clearing single array items")
+		return err
+	case *[]CreditTransferTransaction35:
 		*typedDest = nil
-	case **DiscountAmountAndType1:
+	case *DiscountAmountAndType1:
+		err = fmt.Errorf("unsupported feature of clearing single array items")
+		return err
+	case *[]DiscountAmountAndType1:
 		*typedDest = nil
-	case **Document12:
+	case *Document12:
+		err = fmt.Errorf("unsupported feature of clearing single array items")
+		return err
+	case *[]Document12:
 		*typedDest = nil
-	case **DocumentAdjustment1:
+	case *DocumentAdjustment1:
+		err = fmt.Errorf("unsupported feature of clearing single array items")
+		return err
+	case *[]DocumentAdjustment1:
 		*typedDest = nil
-	case **DocumentLineIdentification1:
+	case *DocumentLineIdentification1:
+		err = fmt.Errorf("unsupported feature of clearing single array items")
+		return err
+	case *[]DocumentLineIdentification1:
 		*typedDest = nil
-	case **DocumentLineInformation1:
+	case *DocumentLineInformation1:
+		err = fmt.Errorf("unsupported feature of clearing single array items")
+		return err
+	case *[]DocumentLineInformation1:
 		*typedDest = nil
-	case **GenericOrganisationIdentification1:
+	case *GenericOrganisationIdentification1:
+		err = fmt.Errorf("unsupported feature of clearing single array items")
+		return err
+	case *[]GenericOrganisationIdentification1:
 		*typedDest = nil
-	case **GenericPersonIdentification1:
+	case *GenericPersonIdentification1:
+		err = fmt.Errorf("unsupported feature of clearing single array items")
+		return err
+	case *[]GenericPersonIdentification1:
 		*typedDest = nil
-	case **InstructionForCreditorAgent1:
+	case *InstructionForCreditorAgent1:
+		err = fmt.Errorf("unsupported feature of clearing single array items")
+		return err
+	case *[]InstructionForCreditorAgent1:
 		*typedDest = nil
-	case **OtherContact1:
+	case *OtherContact1:
+		err = fmt.Errorf("unsupported feature of clearing single array items")
+		return err
+	case *[]OtherContact1:
 		*typedDest = nil
-	case **PaymentInstruction31:
+	case *PaymentInstruction31:
+		err = fmt.Errorf("unsupported feature of clearing single array items")
+		return err
+	case *[]PaymentInstruction31:
 		*typedDest = nil
-	case **ReferredDocumentInformation7:
+	case *ReferredDocumentInformation7:
+		err = fmt.Errorf("unsupported feature of clearing single array items")
+		return err
+	case *[]ReferredDocumentInformation7:
 		*typedDest = nil
-	case **RegulatoryReporting3:
+	case *RegulatoryReporting3:
+		err = fmt.Errorf("unsupported feature of clearing single array items")
+		return err
+	case *[]RegulatoryReporting3:
 		*typedDest = nil
-	case **RemittanceLocation7:
+	case *RemittanceLocation7:
+		err = fmt.Errorf("unsupported feature of clearing single array items")
+		return err
+	case *[]RemittanceLocation7:
 		*typedDest = nil
-	case **RemittanceLocationData1:
+	case *RemittanceLocationData1:
+		err = fmt.Errorf("unsupported feature of clearing single array items")
+		return err
+	case *[]RemittanceLocationData1:
 		*typedDest = nil
-	case **ServiceLevel8Choice:
+	case *ServiceLevel8Choice:
+		err = fmt.Errorf("unsupported feature of clearing single array items")
+		return err
+	case *[]ServiceLevel8Choice:
 		*typedDest = nil
-	case **StructuredRegulatoryReporting3:
+	case *StructuredRegulatoryReporting3:
+		err = fmt.Errorf("unsupported feature of clearing single array items")
+		return err
+	case *[]StructuredRegulatoryReporting3:
 		*typedDest = nil
-	case **StructuredRemittanceInformation16:
+	case *StructuredRemittanceInformation16:
+		err = fmt.Errorf("unsupported feature of clearing single array items")
+		return err
+	case *[]StructuredRemittanceInformation16:
 		*typedDest = nil
-	case **SupplementaryData1:
+	case *SupplementaryData1:
+		err = fmt.Errorf("unsupported feature of clearing single array items")
+		return err
+	case *[]SupplementaryData1:
 		*typedDest = nil
-	case **TaxAmountAndType1:
+	case *TaxAmountAndType1:
+		err = fmt.Errorf("unsupported feature of clearing single array items")
+		return err
+	case *[]TaxAmountAndType1:
 		*typedDest = nil
-	case **TaxRecord2:
+	case *TaxRecord2:
+		err = fmt.Errorf("unsupported feature of clearing single array items")
+		return err
+	case *[]TaxRecord2:
 		*typedDest = nil
-	case **TaxRecordDetails2:
+	case *TaxRecordDetails2:
+		err = fmt.Errorf("unsupported feature of clearing single array items")
+		return err
+	case *[]TaxRecordDetails2:
 		*typedDest = nil
 	default:
 		err = fmt.Errorf("could not find the type to node %s of type %T", string(docPath), dest)
@@ -1439,49 +1725,93 @@ func derefNode(docPath string, val interface{}) (interface{}, error) {
 		return *tv, nil
 	case **TaxPeriod2:
 		return *tv, nil
-	case **CreditTransferTransaction35:
+	case *CreditTransferTransaction35:
+		return tv, nil
+	case *[]CreditTransferTransaction35:
 		return *tv, nil
-	case **DiscountAmountAndType1:
+	case *DiscountAmountAndType1:
+		return tv, nil
+	case *[]DiscountAmountAndType1:
 		return *tv, nil
-	case **Document12:
+	case *Document12:
+		return tv, nil
+	case *[]Document12:
 		return *tv, nil
-	case **DocumentAdjustment1:
+	case *DocumentAdjustment1:
+		return tv, nil
+	case *[]DocumentAdjustment1:
 		return *tv, nil
-	case **DocumentLineIdentification1:
+	case *DocumentLineIdentification1:
+		return tv, nil
+	case *[]DocumentLineIdentification1:
 		return *tv, nil
-	case **DocumentLineInformation1:
+	case *DocumentLineInformation1:
+		return tv, nil
+	case *[]DocumentLineInformation1:
 		return *tv, nil
-	case **GenericOrganisationIdentification1:
+	case *GenericOrganisationIdentification1:
+		return tv, nil
+	case *[]GenericOrganisationIdentification1:
 		return *tv, nil
-	case **GenericPersonIdentification1:
+	case *GenericPersonIdentification1:
+		return tv, nil
+	case *[]GenericPersonIdentification1:
 		return *tv, nil
-	case **InstructionForCreditorAgent1:
+	case *InstructionForCreditorAgent1:
+		return tv, nil
+	case *[]InstructionForCreditorAgent1:
 		return *tv, nil
-	case **OtherContact1:
+	case *OtherContact1:
+		return tv, nil
+	case *[]OtherContact1:
 		return *tv, nil
-	case **PaymentInstruction31:
+	case *PaymentInstruction31:
+		return tv, nil
+	case *[]PaymentInstruction31:
 		return *tv, nil
-	case **ReferredDocumentInformation7:
+	case *ReferredDocumentInformation7:
+		return tv, nil
+	case *[]ReferredDocumentInformation7:
 		return *tv, nil
-	case **RegulatoryReporting3:
+	case *RegulatoryReporting3:
+		return tv, nil
+	case *[]RegulatoryReporting3:
 		return *tv, nil
-	case **RemittanceLocation7:
+	case *RemittanceLocation7:
+		return tv, nil
+	case *[]RemittanceLocation7:
 		return *tv, nil
-	case **RemittanceLocationData1:
+	case *RemittanceLocationData1:
+		return tv, nil
+	case *[]RemittanceLocationData1:
 		return *tv, nil
-	case **ServiceLevel8Choice:
+	case *ServiceLevel8Choice:
+		return tv, nil
+	case *[]ServiceLevel8Choice:
 		return *tv, nil
-	case **StructuredRegulatoryReporting3:
+	case *StructuredRegulatoryReporting3:
+		return tv, nil
+	case *[]StructuredRegulatoryReporting3:
 		return *tv, nil
-	case **StructuredRemittanceInformation16:
+	case *StructuredRemittanceInformation16:
+		return tv, nil
+	case *[]StructuredRemittanceInformation16:
 		return *tv, nil
-	case **SupplementaryData1:
+	case *SupplementaryData1:
+		return tv, nil
+	case *[]SupplementaryData1:
 		return *tv, nil
-	case **TaxAmountAndType1:
+	case *TaxAmountAndType1:
+		return tv, nil
+	case *[]TaxAmountAndType1:
 		return *tv, nil
-	case **TaxRecord2:
+	case *TaxRecord2:
+		return tv, nil
+	case *[]TaxRecord2:
 		return *tv, nil
-	case **TaxRecordDetails2:
+	case *TaxRecordDetails2:
+		return tv, nil
+	case *[]TaxRecordDetails2:
 		return *tv, nil
 	default:
 		err = fmt.Errorf("could not find the type to node %s of type %T", string(docPath), val)

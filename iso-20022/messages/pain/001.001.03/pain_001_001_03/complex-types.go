@@ -7,6 +7,22 @@ import (
 	"github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/iso-20022/messages/xsdt"
 )
 
+// RemittanceAmount1 type definition
+type RemittanceAmount1 struct {
+	DuePyblAmt        *ActiveOrHistoricCurrencyAndAmount `xml:"DuePyblAmt,omitempty"`
+	DscntApldAmt      *ActiveOrHistoricCurrencyAndAmount `xml:"DscntApldAmt,omitempty"`
+	CdtNoteAmt        *ActiveOrHistoricCurrencyAndAmount `xml:"CdtNoteAmt,omitempty"`
+	TaxAmt            *ActiveOrHistoricCurrencyAndAmount `xml:"TaxAmt,omitempty"`
+	AdjstmntAmtAndRsn []DocumentAdjustment1              `xml:"AdjstmntAmtAndRsn,omitempty"`
+	RmtdAmt           *ActiveOrHistoricCurrencyAndAmount `xml:"RmtdAmt,omitempty"`
+}
+
+// ActiveOrHistoricCurrencyAndAmount type definition
+type ActiveOrHistoricCurrencyAndAmount struct {
+	Ccy   common.ActiveOrHistoricCurrencyCode `xml:"Ccy,attr,omitempty"`
+	Value xsdt.Decimal                        `xml:",chardata"`
+}
+
 // PartyIdentification32 type definition
 type PartyIdentification32 struct {
 	Nm        common.Max140Text  `xml:"Nm,omitempty"`
@@ -16,16 +32,79 @@ type PartyIdentification32 struct {
 	CtctDtls  *ContactDetails2   `xml:"CtctDtls,omitempty"`
 }
 
-// CreditorReferenceType2 type definition
-type CreditorReferenceType2 struct {
-	CdOrPrtry *CreditorReferenceType1Choice `xml:"CdOrPrtry,omitempty"`
-	Issr      common.Max35Text              `xml:"Issr,omitempty"`
+// CategoryPurpose1Choice type definition
+type CategoryPurpose1Choice struct {
+	Cd    common.ExternalCategoryPurpose1Code `xml:"Cd,omitempty"`
+	Prtry common.Max35Text                    `xml:"Prtry,omitempty"`
 }
 
-// DatePeriodDetails type definition
-type DatePeriodDetails struct {
-	FrDt common.ISODate `xml:"FrDt,omitempty"`
-	ToDt common.ISODate `xml:"ToDt,omitempty"`
+// TaxPeriod1 type definition
+type TaxPeriod1 struct {
+	Yr     common.ISODate              `xml:"Yr,omitempty"`
+	Tp     common.TaxRecordPeriod1Code `xml:"Tp,omitempty"`
+	FrToDt *DatePeriodDetails          `xml:"FrToDt,omitempty"`
+}
+
+// RemittanceInformation5 type definition
+type RemittanceInformation5 struct {
+	Ustrd []common.Max140Text                `xml:"Ustrd,omitempty"`
+	Strd  []StructuredRemittanceInformation7 `xml:"Strd,omitempty"`
+}
+
+// PersonIdentificationSchemeName1Choice type definition
+type PersonIdentificationSchemeName1Choice struct {
+	Cd    common.ExternalPersonIdentification1Code `xml:"Cd,omitempty"`
+	Prtry common.Max35Text                         `xml:"Prtry,omitempty"`
+}
+
+// GenericOrganisationIdentification1 type definition
+type GenericOrganisationIdentification1 struct {
+	Id      common.Max35Text                             `xml:"Id,omitempty"`
+	SchmeNm *OrganisationIdentificationSchemeName1Choice `xml:"SchmeNm,omitempty"`
+	Issr    common.Max35Text                             `xml:"Issr,omitempty"`
+}
+
+// ChequeDeliveryMethod1Choice type definition
+type ChequeDeliveryMethod1Choice struct {
+	Cd    common.ChequeDelivery1Code `xml:"Cd,omitempty"`
+	Prtry common.Max35Text           `xml:"Prtry,omitempty"`
+}
+
+// Cheque6 type definition
+type Cheque6 struct {
+	ChqTp       common.ChequeType2Code       `xml:"ChqTp,omitempty"`
+	ChqNb       common.Max35Text             `xml:"ChqNb,omitempty"`
+	ChqFr       *NameAndAddress10            `xml:"ChqFr,omitempty"`
+	DlvryMtd    *ChequeDeliveryMethod1Choice `xml:"DlvryMtd,omitempty"`
+	DlvrTo      *NameAndAddress10            `xml:"DlvrTo,omitempty"`
+	InstrPrty   common.Priority2Code         `xml:"InstrPrty,omitempty"`
+	ChqMtrtyDt  common.ISODate               `xml:"ChqMtrtyDt,omitempty"`
+	FrmsCd      common.Max35Text             `xml:"FrmsCd,omitempty"`
+	MemoFld     []common.Max35Text           `xml:"MemoFld,omitempty"`
+	RgnlClrZone common.Max35Text             `xml:"RgnlClrZone,omitempty"`
+	PrtLctn     common.Max35Text             `xml:"PrtLctn,omitempty"`
+}
+
+// PostalAddress6 type definition
+type PostalAddress6 struct {
+	AdrTp       common.AddressType2Code `xml:"AdrTp,omitempty"`
+	Dept        common.Max70Text        `xml:"Dept,omitempty"`
+	SubDept     common.Max70Text        `xml:"SubDept,omitempty"`
+	StrtNm      common.Max70Text        `xml:"StrtNm,omitempty"`
+	BldgNb      common.Max16Text        `xml:"BldgNb,omitempty"`
+	PstCd       common.Max16Text        `xml:"PstCd,omitempty"`
+	TwnNm       common.Max35Text        `xml:"TwnNm,omitempty"`
+	CtrySubDvsn common.Max35Text        `xml:"CtrySubDvsn,omitempty"`
+	Ctry        common.CountryCode      `xml:"Ctry,omitempty"`
+	AdrLine     []common.Max70Text      `xml:"AdrLine,omitempty"`
+}
+
+// PaymentTypeInformation19 type definition
+type PaymentTypeInformation19 struct {
+	InstrPrty common.Priority2Code    `xml:"InstrPrty,omitempty"`
+	SvcLvl    *ServiceLevel8Choice    `xml:"SvcLvl,omitempty"`
+	LclInstrm *LocalInstrument2Choice `xml:"LclInstrm,omitempty"`
+	CtgyPurp  *CategoryPurpose1Choice `xml:"CtgyPurp,omitempty"`
 }
 
 // GroupHeader32 type definition
@@ -39,35 +118,173 @@ type GroupHeader32 struct {
 	FwdgAgt  *BranchAndFinancialInstitutionIdentification4 `xml:"FwdgAgt,omitempty"`
 }
 
-// PersonIdentificationSchemeName1Choice type definition
-type PersonIdentificationSchemeName1Choice struct {
-	Cd    common.ExternalPersonIdentification1Code `xml:"Cd,omitempty"`
-	Prtry common.Max35Text                         `xml:"Prtry,omitempty"`
+// NameAndAddress10 type definition
+type NameAndAddress10 struct {
+	Nm  common.Max140Text `xml:"Nm,omitempty"`
+	Adr *PostalAddress6   `xml:"Adr,omitempty"`
 }
 
-// GenericFinancialIdentification1 type definition
-type GenericFinancialIdentification1 struct {
-	Id      common.Max35Text                          `xml:"Id,omitempty"`
-	SchmeNm *FinancialIdentificationSchemeName1Choice `xml:"SchmeNm,omitempty"`
-	Issr    common.Max35Text                          `xml:"Issr,omitempty"`
+// DatePeriodDetails type definition
+type DatePeriodDetails struct {
+	FrDt common.ISODate `xml:"FrDt,omitempty"`
+	ToDt common.ISODate `xml:"ToDt,omitempty"`
 }
 
-// AccountIdentification4Choice type definition
-type AccountIdentification4Choice struct {
-	IBAN common.IBAN2007Identifier      `xml:"IBAN,omitempty"`
-	Othr *GenericAccountIdentification1 `xml:"Othr,omitempty"`
+// FinancialInstitutionIdentification7 type definition
+type FinancialInstitutionIdentification7 struct {
+	BIC         common.BICIdentifier                 `xml:"BIC,omitempty"`
+	ClrSysMmbId *ClearingSystemMemberIdentification2 `xml:"ClrSysMmbId,omitempty"`
+	Nm          common.Max140Text                    `xml:"Nm,omitempty"`
+	PstlAdr     *PostalAddress6                      `xml:"PstlAdr,omitempty"`
+	Othr        *GenericFinancialIdentification1     `xml:"Othr,omitempty"`
 }
 
-// InstructionForCreditorAgent1 type definition
-type InstructionForCreditorAgent1 struct {
-	Cd       common.Instruction3Code `xml:"Cd,omitempty"`
-	InstrInf common.Max140Text       `xml:"InstrInf,omitempty"`
+// EquivalentAmount2 type definition
+type EquivalentAmount2 struct {
+	Amt      *ActiveOrHistoricCurrencyAndAmount  `xml:"Amt,omitempty"`
+	CcyOfTrf common.ActiveOrHistoricCurrencyCode `xml:"CcyOfTrf,omitempty"`
 }
 
-// CategoryPurpose1Choice type definition
-type CategoryPurpose1Choice struct {
-	Cd    common.ExternalCategoryPurpose1Code `xml:"Cd,omitempty"`
+// LocalInstrument2Choice type definition
+type LocalInstrument2Choice struct {
+	Cd    common.ExternalLocalInstrument1Code `xml:"Cd,omitempty"`
 	Prtry common.Max35Text                    `xml:"Prtry,omitempty"`
+}
+
+// CustomerCreditTransferInitiationV03 type definition
+type CustomerCreditTransferInitiationV03 struct {
+	GrpHdr *GroupHeader32                   `xml:"GrpHdr,omitempty"`
+	PmtInf []PaymentInstructionInformation3 `xml:"PmtInf,omitempty"`
+}
+
+// PaymentInstructionInformation3 type definition
+type PaymentInstructionInformation3 struct {
+	PmtInfId        common.Max35Text                              `xml:"PmtInfId,omitempty"`
+	PmtMtd          common.PaymentMethod3Code                     `xml:"PmtMtd,omitempty"`
+	BtchBookg       xsdt.Boolean                                  `xml:"BtchBookg,omitempty"`
+	NbOfTxs         common.Max15NumericText                       `xml:"NbOfTxs,omitempty"`
+	CtrlSum         xsdt.Decimal                                  `xml:"CtrlSum,omitempty"`
+	PmtTpInf        *PaymentTypeInformation19                     `xml:"PmtTpInf,omitempty"`
+	ReqdExctnDt     common.ISODate                                `xml:"ReqdExctnDt,omitempty"`
+	PoolgAdjstmntDt common.ISODate                                `xml:"PoolgAdjstmntDt,omitempty"`
+	Dbtr            *PartyIdentification32                        `xml:"Dbtr,omitempty"`
+	DbtrAcct        *CashAccount16                                `xml:"DbtrAcct,omitempty"`
+	DbtrAgt         *BranchAndFinancialInstitutionIdentification4 `xml:"DbtrAgt,omitempty"`
+	DbtrAgtAcct     *CashAccount16                                `xml:"DbtrAgtAcct,omitempty"`
+	UltmtDbtr       *PartyIdentification32                        `xml:"UltmtDbtr,omitempty"`
+	ChrgBr          common.ChargeBearerType1Code                  `xml:"ChrgBr,omitempty"`
+	ChrgsAcct       *CashAccount16                                `xml:"ChrgsAcct,omitempty"`
+	ChrgsAcctAgt    *BranchAndFinancialInstitutionIdentification4 `xml:"ChrgsAcctAgt,omitempty"`
+	CdtTrfTxInf     []CreditTransferTransactionInformation10      `xml:"CdtTrfTxInf,omitempty"`
+}
+
+// ServiceLevel8Choice type definition
+type ServiceLevel8Choice struct {
+	Cd    common.ExternalServiceLevel1Code `xml:"Cd,omitempty"`
+	Prtry common.Max35Text                 `xml:"Prtry,omitempty"`
+}
+
+// OrganisationIdentification4 type definition
+type OrganisationIdentification4 struct {
+	BICOrBEI common.AnyBICIdentifier              `xml:"BICOrBEI,omitempty"`
+	Othr     []GenericOrganisationIdentification1 `xml:"Othr,omitempty"`
+}
+
+// OrganisationIdentificationSchemeName1Choice type definition
+type OrganisationIdentificationSchemeName1Choice struct {
+	Cd    common.ExternalOrganisationIdentification1Code `xml:"Cd,omitempty"`
+	Prtry common.Max35Text                               `xml:"Prtry,omitempty"`
+}
+
+// TaxAuthorisation1 type definition
+type TaxAuthorisation1 struct {
+	Titl common.Max35Text  `xml:"Titl,omitempty"`
+	Nm   common.Max140Text `xml:"Nm,omitempty"`
+}
+
+// Authorisation1Choice type definition
+type Authorisation1Choice struct {
+	Cd    common.Authorisation1Code `xml:"Cd,omitempty"`
+	Prtry common.Max128Text         `xml:"Prtry,omitempty"`
+}
+
+// Party6Choice type definition
+type Party6Choice struct {
+	OrgId  *OrganisationIdentification4 `xml:"OrgId,omitempty"`
+	PrvtId *PersonIdentification5       `xml:"PrvtId,omitempty"`
+}
+
+// ClearingSystemIdentification2Choice type definition
+type ClearingSystemIdentification2Choice struct {
+	Cd    common.ExternalClearingSystemIdentification1Code `xml:"Cd,omitempty"`
+	Prtry common.Max35Text                                 `xml:"Prtry,omitempty"`
+}
+
+// CashAccount16 type definition
+type CashAccount16 struct {
+	Id  *AccountIdentification4Choice       `xml:"Id,omitempty"`
+	Tp  *CashAccountType2                   `xml:"Tp,omitempty"`
+	Ccy common.ActiveOrHistoricCurrencyCode `xml:"Ccy,omitempty"`
+	Nm  common.Max70Text                    `xml:"Nm,omitempty"`
+}
+
+// RegulatoryReporting3 type definition
+type RegulatoryReporting3 struct {
+	DbtCdtRptgInd common.RegulatoryReportingType1Code `xml:"DbtCdtRptgInd,omitempty"`
+	Authrty       *RegulatoryAuthority2               `xml:"Authrty,omitempty"`
+	Dtls          []StructuredRegulatoryReporting3    `xml:"Dtls,omitempty"`
+}
+
+// BranchData2 type definition
+type BranchData2 struct {
+	Id      common.Max35Text  `xml:"Id,omitempty"`
+	Nm      common.Max140Text `xml:"Nm,omitempty"`
+	PstlAdr *PostalAddress6   `xml:"PstlAdr,omitempty"`
+}
+
+// PersonIdentification5 type definition
+type PersonIdentification5 struct {
+	DtAndPlcOfBirth *DateAndPlaceOfBirth           `xml:"DtAndPlcOfBirth,omitempty"`
+	Othr            []GenericPersonIdentification1 `xml:"Othr,omitempty"`
+}
+
+// FinancialIdentificationSchemeName1Choice type definition
+type FinancialIdentificationSchemeName1Choice struct {
+	Cd    common.ExternalFinancialInstitutionIdentification1Code `xml:"Cd,omitempty"`
+	Prtry common.Max35Text                                       `xml:"Prtry,omitempty"`
+}
+
+// Purpose2Choice type definition
+type Purpose2Choice struct {
+	Cd    common.ExternalPurpose1Code `xml:"Cd,omitempty"`
+	Prtry common.Max35Text            `xml:"Prtry,omitempty"`
+}
+
+// TaxParty2 type definition
+type TaxParty2 struct {
+	TaxId   common.Max35Text   `xml:"TaxId,omitempty"`
+	RegnId  common.Max35Text   `xml:"RegnId,omitempty"`
+	TaxTp   common.Max35Text   `xml:"TaxTp,omitempty"`
+	Authstn *TaxAuthorisation1 `xml:"Authstn,omitempty"`
+}
+
+// CreditorReferenceType2 type definition
+type CreditorReferenceType2 struct {
+	CdOrPrtry *CreditorReferenceType1Choice `xml:"CdOrPrtry,omitempty"`
+	Issr      common.Max35Text              `xml:"Issr,omitempty"`
+}
+
+// ClearingSystemMemberIdentification2 type definition
+type ClearingSystemMemberIdentification2 struct {
+	ClrSysId *ClearingSystemIdentification2Choice `xml:"ClrSysId,omitempty"`
+	MmbId    common.Max35Text                     `xml:"MmbId,omitempty"`
+}
+
+// ReferredDocumentInformation3 type definition
+type ReferredDocumentInformation3 struct {
+	Tp     *ReferredDocumentType2 `xml:"Tp,omitempty"`
+	Nb     common.Max35Text       `xml:"Nb,omitempty"`
+	RltdDt common.ISODate         `xml:"RltdDt,omitempty"`
 }
 
 // CreditTransferTransactionInformation10 type definition
@@ -99,57 +316,23 @@ type CreditTransferTransactionInformation10 struct {
 	RmtInf          *RemittanceInformation5                       `xml:"RmtInf,omitempty"`
 }
 
-// EquivalentAmount2 type definition
-type EquivalentAmount2 struct {
-	Amt      *ActiveOrHistoricCurrencyAndAmount  `xml:"Amt,omitempty"`
-	CcyOfTrf common.ActiveOrHistoricCurrencyCode `xml:"CcyOfTrf,omitempty"`
-}
-
-// CreditorReferenceInformation2 type definition
-type CreditorReferenceInformation2 struct {
-	Tp  *CreditorReferenceType2 `xml:"Tp,omitempty"`
-	Ref common.Max35Text        `xml:"Ref,omitempty"`
-}
-
-// OrganisationIdentificationSchemeName1Choice type definition
-type OrganisationIdentificationSchemeName1Choice struct {
-	Cd    common.ExternalOrganisationIdentification1Code `xml:"Cd,omitempty"`
-	Prtry common.Max35Text                               `xml:"Prtry,omitempty"`
-}
-
-// CashAccount16 type definition
-type CashAccount16 struct {
-	Id  *AccountIdentification4Choice       `xml:"Id,omitempty"`
-	Tp  *CashAccountType2                   `xml:"Tp,omitempty"`
-	Ccy common.ActiveOrHistoricCurrencyCode `xml:"Ccy,omitempty"`
-	Nm  common.Max70Text                    `xml:"Nm,omitempty"`
-}
-
-// RemittanceLocation2 type definition
-type RemittanceLocation2 struct {
-	RmtId             common.Max35Text                     `xml:"RmtId,omitempty"`
-	RmtLctnMtd        common.RemittanceLocationMethod2Code `xml:"RmtLctnMtd,omitempty"`
-	RmtLctnElctrncAdr common.Max2048Text                   `xml:"RmtLctnElctrncAdr,omitempty"`
-	RmtLctnPstlAdr    *NameAndAddress10                    `xml:"RmtLctnPstlAdr,omitempty"`
-}
-
-// ChequeDeliveryMethod1Choice type definition
-type ChequeDeliveryMethod1Choice struct {
-	Cd    common.ChequeDelivery1Code `xml:"Cd,omitempty"`
-	Prtry common.Max35Text           `xml:"Prtry,omitempty"`
-}
-
-// CreditorReferenceType1Choice type definition
-type CreditorReferenceType1Choice struct {
-	Cd    common.DocumentType3Code `xml:"Cd,omitempty"`
-	Prtry common.Max35Text         `xml:"Prtry,omitempty"`
-}
-
 // ExchangeRateInformation1 type definition
 type ExchangeRateInformation1 struct {
 	XchgRate xsdt.Decimal                 `xml:"XchgRate,omitempty"`
 	RateTp   common.ExchangeRateType1Code `xml:"RateTp,omitempty"`
 	CtrctId  common.Max35Text             `xml:"CtrctId,omitempty"`
+}
+
+// InstructionForCreditorAgent1 type definition
+type InstructionForCreditorAgent1 struct {
+	Cd       common.Instruction3Code `xml:"Cd,omitempty"`
+	InstrInf common.Max140Text       `xml:"InstrInf,omitempty"`
+}
+
+// RegulatoryAuthority2 type definition
+type RegulatoryAuthority2 struct {
+	Nm   common.Max140Text  `xml:"Nm,omitempty"`
+	Ctry common.CountryCode `xml:"Ctry,omitempty"`
 }
 
 // TaxRecordDetails1 type definition
@@ -158,99 +341,26 @@ type TaxRecordDetails1 struct {
 	Amt *ActiveOrHistoricCurrencyAndAmount `xml:"Amt,omitempty"`
 }
 
-// BranchAndFinancialInstitutionIdentification4 type definition
-type BranchAndFinancialInstitutionIdentification4 struct {
-	FinInstnId *FinancialInstitutionIdentification7 `xml:"FinInstnId,omitempty"`
-	BrnchId    *BranchData2                         `xml:"BrnchId,omitempty"`
+// StructuredRemittanceInformation7 type definition
+type StructuredRemittanceInformation7 struct {
+	RfrdDocInf  []ReferredDocumentInformation3 `xml:"RfrdDocInf,omitempty"`
+	RfrdDocAmt  *RemittanceAmount1             `xml:"RfrdDocAmt,omitempty"`
+	CdtrRefInf  *CreditorReferenceInformation2 `xml:"CdtrRefInf,omitempty"`
+	Invcr       *PartyIdentification32         `xml:"Invcr,omitempty"`
+	Invcee      *PartyIdentification32         `xml:"Invcee,omitempty"`
+	AddtlRmtInf []common.Max140Text            `xml:"AddtlRmtInf,omitempty"`
 }
 
-// ClearingSystemMemberIdentification2 type definition
-type ClearingSystemMemberIdentification2 struct {
-	ClrSysId *ClearingSystemIdentification2Choice `xml:"ClrSysId,omitempty"`
-	MmbId    common.Max35Text                     `xml:"MmbId,omitempty"`
+// PaymentIdentification1 type definition
+type PaymentIdentification1 struct {
+	InstrId    common.Max35Text `xml:"InstrId,omitempty"`
+	EndToEndId common.Max35Text `xml:"EndToEndId,omitempty"`
 }
 
-// CustomerCreditTransferInitiationV03 type definition
-type CustomerCreditTransferInitiationV03 struct {
-	GrpHdr *GroupHeader32                   `xml:"GrpHdr,omitempty"`
-	PmtInf []PaymentInstructionInformation3 `xml:"PmtInf,omitempty"`
-}
-
-// RegulatoryReporting3 type definition
-type RegulatoryReporting3 struct {
-	DbtCdtRptgInd common.RegulatoryReportingType1Code `xml:"DbtCdtRptgInd,omitempty"`
-	Authrty       *RegulatoryAuthority2               `xml:"Authrty,omitempty"`
-	Dtls          []StructuredRegulatoryReporting3    `xml:"Dtls,omitempty"`
-}
-
-// DocumentAdjustment1 type definition
-type DocumentAdjustment1 struct {
-	Amt       *ActiveOrHistoricCurrencyAndAmount `xml:"Amt,omitempty"`
-	CdtDbtInd common.CreditDebitCode             `xml:"CdtDbtInd,omitempty"`
-	Rsn       common.Max4Text                    `xml:"Rsn,omitempty"`
-	AddtlInf  common.Max140Text                  `xml:"AddtlInf,omitempty"`
-}
-
-// RemittanceAmount1 type definition
-type RemittanceAmount1 struct {
-	DuePyblAmt        *ActiveOrHistoricCurrencyAndAmount `xml:"DuePyblAmt,omitempty"`
-	DscntApldAmt      *ActiveOrHistoricCurrencyAndAmount `xml:"DscntApldAmt,omitempty"`
-	CdtNoteAmt        *ActiveOrHistoricCurrencyAndAmount `xml:"CdtNoteAmt,omitempty"`
-	TaxAmt            *ActiveOrHistoricCurrencyAndAmount `xml:"TaxAmt,omitempty"`
-	AdjstmntAmtAndRsn []DocumentAdjustment1              `xml:"AdjstmntAmtAndRsn,omitempty"`
-	RmtdAmt           *ActiveOrHistoricCurrencyAndAmount `xml:"RmtdAmt,omitempty"`
-}
-
-// PaymentInstructionInformation3 type definition
-type PaymentInstructionInformation3 struct {
-	PmtInfId        common.Max35Text                              `xml:"PmtInfId,omitempty"`
-	PmtMtd          common.PaymentMethod3Code                     `xml:"PmtMtd,omitempty"`
-	BtchBookg       xsdt.Boolean                                  `xml:"BtchBookg,omitempty"`
-	NbOfTxs         common.Max15NumericText                       `xml:"NbOfTxs,omitempty"`
-	CtrlSum         xsdt.Decimal                                  `xml:"CtrlSum,omitempty"`
-	PmtTpInf        *PaymentTypeInformation19                     `xml:"PmtTpInf,omitempty"`
-	ReqdExctnDt     common.ISODate                                `xml:"ReqdExctnDt,omitempty"`
-	PoolgAdjstmntDt common.ISODate                                `xml:"PoolgAdjstmntDt,omitempty"`
-	Dbtr            *PartyIdentification32                        `xml:"Dbtr,omitempty"`
-	DbtrAcct        *CashAccount16                                `xml:"DbtrAcct,omitempty"`
-	DbtrAgt         *BranchAndFinancialInstitutionIdentification4 `xml:"DbtrAgt,omitempty"`
-	DbtrAgtAcct     *CashAccount16                                `xml:"DbtrAgtAcct,omitempty"`
-	UltmtDbtr       *PartyIdentification32                        `xml:"UltmtDbtr,omitempty"`
-	ChrgBr          common.ChargeBearerType1Code                  `xml:"ChrgBr,omitempty"`
-	ChrgsAcct       *CashAccount16                                `xml:"ChrgsAcct,omitempty"`
-	ChrgsAcctAgt    *BranchAndFinancialInstitutionIdentification4 `xml:"ChrgsAcctAgt,omitempty"`
-	CdtTrfTxInf     []CreditTransferTransactionInformation10      `xml:"CdtTrfTxInf,omitempty"`
-}
-
-// Party6Choice type definition
-type Party6Choice struct {
-	OrgId  *OrganisationIdentification4 `xml:"OrgId,omitempty"`
-	PrvtId *PersonIdentification5       `xml:"PrvtId,omitempty"`
-}
-
-// PersonIdentification5 type definition
-type PersonIdentification5 struct {
-	DtAndPlcOfBirth *DateAndPlaceOfBirth           `xml:"DtAndPlcOfBirth,omitempty"`
-	Othr            []GenericPersonIdentification1 `xml:"Othr,omitempty"`
-}
-
-// FinancialInstitutionIdentification7 type definition
-type FinancialInstitutionIdentification7 struct {
-	BIC         common.BICIdentifier                 `xml:"BIC,omitempty"`
-	ClrSysMmbId *ClearingSystemMemberIdentification2 `xml:"ClrSysMmbId,omitempty"`
-	Nm          common.Max140Text                    `xml:"Nm,omitempty"`
-	PstlAdr     *PostalAddress6                      `xml:"PstlAdr,omitempty"`
-	Othr        *GenericFinancialIdentification1     `xml:"Othr,omitempty"`
-}
-
-// StructuredRegulatoryReporting3 type definition
-type StructuredRegulatoryReporting3 struct {
-	Tp   common.Max35Text                   `xml:"Tp,omitempty"`
-	Dt   common.ISODate                     `xml:"Dt,omitempty"`
-	Ctry common.CountryCode                 `xml:"Ctry,omitempty"`
-	Cd   common.Max10Text                   `xml:"Cd,omitempty"`
-	Amt  *ActiveOrHistoricCurrencyAndAmount `xml:"Amt,omitempty"`
-	Inf  []common.Max35Text                 `xml:"Inf,omitempty"`
+// AccountSchemeName1Choice type definition
+type AccountSchemeName1Choice struct {
+	Cd    common.ExternalAccountIdentification1Code `xml:"Cd,omitempty"`
+	Prtry common.Max35Text                          `xml:"Prtry,omitempty"`
 }
 
 // TaxRecord1 type definition
@@ -266,32 +376,82 @@ type TaxRecord1 struct {
 	AddtlInf common.Max140Text `xml:"AddtlInf,omitempty"`
 }
 
-// DateAndPlaceOfBirth type definition
-type DateAndPlaceOfBirth struct {
-	BirthDt     common.ISODate     `xml:"BirthDt,omitempty"`
-	PrvcOfBirth common.Max35Text   `xml:"PrvcOfBirth,omitempty"`
-	CityOfBirth common.Max35Text   `xml:"CityOfBirth,omitempty"`
-	CtryOfBirth common.CountryCode `xml:"CtryOfBirth,omitempty"`
+// RemittanceLocation2 type definition
+type RemittanceLocation2 struct {
+	RmtId             common.Max35Text                     `xml:"RmtId,omitempty"`
+	RmtLctnMtd        common.RemittanceLocationMethod2Code `xml:"RmtLctnMtd,omitempty"`
+	RmtLctnElctrncAdr common.Max2048Text                   `xml:"RmtLctnElctrncAdr,omitempty"`
+	RmtLctnPstlAdr    *NameAndAddress10                    `xml:"RmtLctnPstlAdr,omitempty"`
 }
 
-// BranchData2 type definition
-type BranchData2 struct {
-	Id      common.Max35Text  `xml:"Id,omitempty"`
-	Nm      common.Max140Text `xml:"Nm,omitempty"`
-	PstlAdr *PostalAddress6   `xml:"PstlAdr,omitempty"`
+// ContactDetails2 type definition
+type ContactDetails2 struct {
+	NmPrfx   common.NamePrefix1Code `xml:"NmPrfx,omitempty"`
+	Nm       common.Max140Text      `xml:"Nm,omitempty"`
+	PhneNb   common.PhoneNumber     `xml:"PhneNb,omitempty"`
+	MobNb    common.PhoneNumber     `xml:"MobNb,omitempty"`
+	FaxNb    common.PhoneNumber     `xml:"FaxNb,omitempty"`
+	EmailAdr common.Max2048Text     `xml:"EmailAdr,omitempty"`
+	Othr     common.Max35Text       `xml:"Othr,omitempty"`
 }
 
-// Purpose2Choice type definition
-type Purpose2Choice struct {
-	Cd    common.ExternalPurpose1Code `xml:"Cd,omitempty"`
+// CashAccountType2 type definition
+type CashAccountType2 struct {
+	Cd    common.CashAccountType4Code `xml:"Cd,omitempty"`
 	Prtry common.Max35Text            `xml:"Prtry,omitempty"`
 }
 
-// GenericOrganisationIdentification1 type definition
-type GenericOrganisationIdentification1 struct {
-	Id      common.Max35Text                             `xml:"Id,omitempty"`
-	SchmeNm *OrganisationIdentificationSchemeName1Choice `xml:"SchmeNm,omitempty"`
-	Issr    common.Max35Text                             `xml:"Issr,omitempty"`
+// AmountType3Choice type definition
+type AmountType3Choice struct {
+	InstdAmt *ActiveOrHistoricCurrencyAndAmount `xml:"InstdAmt,omitempty"`
+	EqvtAmt  *EquivalentAmount2                 `xml:"EqvtAmt,omitempty"`
+}
+
+// DocumentAdjustment1 type definition
+type DocumentAdjustment1 struct {
+	Amt       *ActiveOrHistoricCurrencyAndAmount `xml:"Amt,omitempty"`
+	CdtDbtInd common.CreditDebitCode             `xml:"CdtDbtInd,omitempty"`
+	Rsn       common.Max4Text                    `xml:"Rsn,omitempty"`
+	AddtlInf  common.Max140Text                  `xml:"AddtlInf,omitempty"`
+}
+
+// CreditorReferenceInformation2 type definition
+type CreditorReferenceInformation2 struct {
+	Tp  *CreditorReferenceType2 `xml:"Tp,omitempty"`
+	Ref common.Max35Text        `xml:"Ref,omitempty"`
+}
+
+// AccountIdentification4Choice type definition
+type AccountIdentification4Choice struct {
+	IBAN common.IBAN2007Identifier      `xml:"IBAN,omitempty"`
+	Othr *GenericAccountIdentification1 `xml:"Othr,omitempty"`
+}
+
+// TaxAmount1 type definition
+type TaxAmount1 struct {
+	Rate         xsdt.Decimal                       `xml:"Rate,omitempty"`
+	TaxblBaseAmt *ActiveOrHistoricCurrencyAndAmount `xml:"TaxblBaseAmt,omitempty"`
+	TtlAmt       *ActiveOrHistoricCurrencyAndAmount `xml:"TtlAmt,omitempty"`
+	Dtls         []TaxRecordDetails1                `xml:"Dtls,omitempty"`
+}
+
+// ReferredDocumentType1Choice type definition
+type ReferredDocumentType1Choice struct {
+	Cd    common.DocumentType5Code `xml:"Cd,omitempty"`
+	Prtry common.Max35Text         `xml:"Prtry,omitempty"`
+}
+
+// BranchAndFinancialInstitutionIdentification4 type definition
+type BranchAndFinancialInstitutionIdentification4 struct {
+	FinInstnId *FinancialInstitutionIdentification7 `xml:"FinInstnId,omitempty"`
+	BrnchId    *BranchData2                         `xml:"BrnchId,omitempty"`
+}
+
+// GenericFinancialIdentification1 type definition
+type GenericFinancialIdentification1 struct {
+	Id      common.Max35Text                          `xml:"Id,omitempty"`
+	SchmeNm *FinancialIdentificationSchemeName1Choice `xml:"SchmeNm,omitempty"`
+	Issr    common.Max35Text                          `xml:"Issr,omitempty"`
 }
 
 // TaxInformation3 type definition
@@ -314,16 +474,12 @@ type ReferredDocumentType2 struct {
 	Issr      common.Max35Text             `xml:"Issr,omitempty"`
 }
 
-// TaxAuthorisation1 type definition
-type TaxAuthorisation1 struct {
-	Titl common.Max35Text  `xml:"Titl,omitempty"`
-	Nm   common.Max140Text `xml:"Nm,omitempty"`
-}
-
-// PaymentIdentification1 type definition
-type PaymentIdentification1 struct {
-	InstrId    common.Max35Text `xml:"InstrId,omitempty"`
-	EndToEndId common.Max35Text `xml:"EndToEndId,omitempty"`
+// DateAndPlaceOfBirth type definition
+type DateAndPlaceOfBirth struct {
+	BirthDt     common.ISODate     `xml:"BirthDt,omitempty"`
+	PrvcOfBirth common.Max35Text   `xml:"PrvcOfBirth,omitempty"`
+	CityOfBirth common.Max35Text   `xml:"CityOfBirth,omitempty"`
+	CtryOfBirth common.CountryCode `xml:"CtryOfBirth,omitempty"`
 }
 
 // GenericPersonIdentification1 type definition
@@ -333,143 +489,20 @@ type GenericPersonIdentification1 struct {
 	Issr    common.Max35Text                       `xml:"Issr,omitempty"`
 }
 
-// FinancialIdentificationSchemeName1Choice type definition
-type FinancialIdentificationSchemeName1Choice struct {
-	Cd    common.ExternalFinancialInstitutionIdentification1Code `xml:"Cd,omitempty"`
-	Prtry common.Max35Text                                       `xml:"Prtry,omitempty"`
-}
-
-// RemittanceInformation5 type definition
-type RemittanceInformation5 struct {
-	Ustrd []common.Max140Text                `xml:"Ustrd,omitempty"`
-	Strd  []StructuredRemittanceInformation7 `xml:"Strd,omitempty"`
-}
-
-// Authorisation1Choice type definition
-type Authorisation1Choice struct {
-	Cd    common.Authorisation1Code `xml:"Cd,omitempty"`
-	Prtry common.Max128Text         `xml:"Prtry,omitempty"`
-}
-
-// PostalAddress6 type definition
-type PostalAddress6 struct {
-	AdrTp       common.AddressType2Code `xml:"AdrTp,omitempty"`
-	Dept        common.Max70Text        `xml:"Dept,omitempty"`
-	SubDept     common.Max70Text        `xml:"SubDept,omitempty"`
-	StrtNm      common.Max70Text        `xml:"StrtNm,omitempty"`
-	BldgNb      common.Max16Text        `xml:"BldgNb,omitempty"`
-	PstCd       common.Max16Text        `xml:"PstCd,omitempty"`
-	TwnNm       common.Max35Text        `xml:"TwnNm,omitempty"`
-	CtrySubDvsn common.Max35Text        `xml:"CtrySubDvsn,omitempty"`
-	Ctry        common.CountryCode      `xml:"Ctry,omitempty"`
-	AdrLine     []common.Max70Text      `xml:"AdrLine,omitempty"`
-}
-
-// ContactDetails2 type definition
-type ContactDetails2 struct {
-	NmPrfx   common.NamePrefix1Code `xml:"NmPrfx,omitempty"`
-	Nm       common.Max140Text      `xml:"Nm,omitempty"`
-	PhneNb   common.PhoneNumber     `xml:"PhneNb,omitempty"`
-	MobNb    common.PhoneNumber     `xml:"MobNb,omitempty"`
-	FaxNb    common.PhoneNumber     `xml:"FaxNb,omitempty"`
-	EmailAdr common.Max2048Text     `xml:"EmailAdr,omitempty"`
-	Othr     common.Max35Text       `xml:"Othr,omitempty"`
-}
-
-// PaymentTypeInformation19 type definition
-type PaymentTypeInformation19 struct {
-	InstrPrty common.Priority2Code    `xml:"InstrPrty,omitempty"`
-	SvcLvl    *ServiceLevel8Choice    `xml:"SvcLvl,omitempty"`
-	LclInstrm *LocalInstrument2Choice `xml:"LclInstrm,omitempty"`
-	CtgyPurp  *CategoryPurpose1Choice `xml:"CtgyPurp,omitempty"`
-}
-
-// AmountType3Choice type definition
-type AmountType3Choice struct {
-	InstdAmt *ActiveOrHistoricCurrencyAndAmount `xml:"InstdAmt,omitempty"`
-	EqvtAmt  *EquivalentAmount2                 `xml:"EqvtAmt,omitempty"`
-}
-
-// AccountSchemeName1Choice type definition
-type AccountSchemeName1Choice struct {
-	Cd    common.ExternalAccountIdentification1Code `xml:"Cd,omitempty"`
-	Prtry common.Max35Text                          `xml:"Prtry,omitempty"`
-}
-
-// ReferredDocumentType1Choice type definition
-type ReferredDocumentType1Choice struct {
-	Cd    common.DocumentType5Code `xml:"Cd,omitempty"`
+// CreditorReferenceType1Choice type definition
+type CreditorReferenceType1Choice struct {
+	Cd    common.DocumentType3Code `xml:"Cd,omitempty"`
 	Prtry common.Max35Text         `xml:"Prtry,omitempty"`
 }
 
-// LocalInstrument2Choice type definition
-type LocalInstrument2Choice struct {
-	Cd    common.ExternalLocalInstrument1Code `xml:"Cd,omitempty"`
-	Prtry common.Max35Text                    `xml:"Prtry,omitempty"`
-}
-
-// CashAccountType2 type definition
-type CashAccountType2 struct {
-	Cd    common.CashAccountType4Code `xml:"Cd,omitempty"`
-	Prtry common.Max35Text            `xml:"Prtry,omitempty"`
-}
-
-// OrganisationIdentification4 type definition
-type OrganisationIdentification4 struct {
-	BICOrBEI common.AnyBICIdentifier              `xml:"BICOrBEI,omitempty"`
-	Othr     []GenericOrganisationIdentification1 `xml:"Othr,omitempty"`
-}
-
-// ServiceLevel8Choice type definition
-type ServiceLevel8Choice struct {
-	Cd    common.ExternalServiceLevel1Code `xml:"Cd,omitempty"`
-	Prtry common.Max35Text                 `xml:"Prtry,omitempty"`
-}
-
-// Cheque6 type definition
-type Cheque6 struct {
-	ChqTp       common.ChequeType2Code       `xml:"ChqTp,omitempty"`
-	ChqNb       common.Max35Text             `xml:"ChqNb,omitempty"`
-	ChqFr       *NameAndAddress10            `xml:"ChqFr,omitempty"`
-	DlvryMtd    *ChequeDeliveryMethod1Choice `xml:"DlvryMtd,omitempty"`
-	DlvrTo      *NameAndAddress10            `xml:"DlvrTo,omitempty"`
-	InstrPrty   common.Priority2Code         `xml:"InstrPrty,omitempty"`
-	ChqMtrtyDt  common.ISODate               `xml:"ChqMtrtyDt,omitempty"`
-	FrmsCd      common.Max35Text             `xml:"FrmsCd,omitempty"`
-	MemoFld     []common.Max35Text           `xml:"MemoFld,omitempty"`
-	RgnlClrZone common.Max35Text             `xml:"RgnlClrZone,omitempty"`
-	PrtLctn     common.Max35Text             `xml:"PrtLctn,omitempty"`
-}
-
-// NameAndAddress10 type definition
-type NameAndAddress10 struct {
-	Nm  common.Max140Text `xml:"Nm,omitempty"`
-	Adr *PostalAddress6   `xml:"Adr,omitempty"`
-}
-
-// TaxParty1 type definition
-type TaxParty1 struct {
-	TaxId  common.Max35Text `xml:"TaxId,omitempty"`
-	RegnId common.Max35Text `xml:"RegnId,omitempty"`
-	TaxTp  common.Max35Text `xml:"TaxTp,omitempty"`
-}
-
-// TaxParty2 type definition
-type TaxParty2 struct {
-	TaxId   common.Max35Text   `xml:"TaxId,omitempty"`
-	RegnId  common.Max35Text   `xml:"RegnId,omitempty"`
-	TaxTp   common.Max35Text   `xml:"TaxTp,omitempty"`
-	Authstn *TaxAuthorisation1 `xml:"Authstn,omitempty"`
-}
-
-// StructuredRemittanceInformation7 type definition
-type StructuredRemittanceInformation7 struct {
-	RfrdDocInf  []ReferredDocumentInformation3 `xml:"RfrdDocInf,omitempty"`
-	RfrdDocAmt  *RemittanceAmount1             `xml:"RfrdDocAmt,omitempty"`
-	CdtrRefInf  *CreditorReferenceInformation2 `xml:"CdtrRefInf,omitempty"`
-	Invcr       *PartyIdentification32         `xml:"Invcr,omitempty"`
-	Invcee      *PartyIdentification32         `xml:"Invcee,omitempty"`
-	AddtlRmtInf []common.Max140Text            `xml:"AddtlRmtInf,omitempty"`
+// StructuredRegulatoryReporting3 type definition
+type StructuredRegulatoryReporting3 struct {
+	Tp   common.Max35Text                   `xml:"Tp,omitempty"`
+	Dt   common.ISODate                     `xml:"Dt,omitempty"`
+	Ctry common.CountryCode                 `xml:"Ctry,omitempty"`
+	Cd   common.Max10Text                   `xml:"Cd,omitempty"`
+	Amt  *ActiveOrHistoricCurrencyAndAmount `xml:"Amt,omitempty"`
+	Inf  []common.Max35Text                 `xml:"Inf,omitempty"`
 }
 
 // GenericAccountIdentification1 type definition
@@ -479,42 +512,9 @@ type GenericAccountIdentification1 struct {
 	Issr    common.Max35Text          `xml:"Issr,omitempty"`
 }
 
-// TaxAmount1 type definition
-type TaxAmount1 struct {
-	Rate         xsdt.Decimal                       `xml:"Rate,omitempty"`
-	TaxblBaseAmt *ActiveOrHistoricCurrencyAndAmount `xml:"TaxblBaseAmt,omitempty"`
-	TtlAmt       *ActiveOrHistoricCurrencyAndAmount `xml:"TtlAmt,omitempty"`
-	Dtls         []TaxRecordDetails1                `xml:"Dtls,omitempty"`
-}
-
-// ReferredDocumentInformation3 type definition
-type ReferredDocumentInformation3 struct {
-	Tp     *ReferredDocumentType2 `xml:"Tp,omitempty"`
-	Nb     common.Max35Text       `xml:"Nb,omitempty"`
-	RltdDt common.ISODate         `xml:"RltdDt,omitempty"`
-}
-
-// ClearingSystemIdentification2Choice type definition
-type ClearingSystemIdentification2Choice struct {
-	Cd    common.ExternalClearingSystemIdentification1Code `xml:"Cd,omitempty"`
-	Prtry common.Max35Text                                 `xml:"Prtry,omitempty"`
-}
-
-// ActiveOrHistoricCurrencyAndAmount type definition
-type ActiveOrHistoricCurrencyAndAmount struct {
-	Ccy   common.ActiveOrHistoricCurrencyCode `xml:"Ccy,attr,omitempty"`
-	Value xsdt.Decimal                        `xml:",chardata"`
-}
-
-// RegulatoryAuthority2 type definition
-type RegulatoryAuthority2 struct {
-	Nm   common.Max140Text  `xml:"Nm,omitempty"`
-	Ctry common.CountryCode `xml:"Ctry,omitempty"`
-}
-
-// TaxPeriod1 type definition
-type TaxPeriod1 struct {
-	Yr     common.ISODate              `xml:"Yr,omitempty"`
-	Tp     common.TaxRecordPeriod1Code `xml:"Tp,omitempty"`
-	FrToDt *DatePeriodDetails          `xml:"FrToDt,omitempty"`
+// TaxParty1 type definition
+type TaxParty1 struct {
+	TaxId  common.Max35Text `xml:"TaxId,omitempty"`
+	RegnId common.Max35Text `xml:"RegnId,omitempty"`
+	TaxTp  common.Max35Text `xml:"TaxTp,omitempty"`
 }

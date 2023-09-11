@@ -14,9 +14,11 @@ const (
 {{- range $tree.Paths}}
   {{- $lastNode := .LastItem }}
   {{- if ne $lastNode.Name "_self" }}
-    Path_{{ .Identifier }} = "{{.Value}}"
   {{- if $lastNode.IsArray }}
-  Path_{{ .Identifier }}_Item = "{{.Value}}/Item"
+      Path_{{ .Identifier }}_Item = "{{.Value}}"
+      Path_{{ .Identifier }} = "{{ trimSuffix .Value "[]" }}" // ARRAY
+  {{- else }}
+      Path_{{ .Identifier }} = "{{.Value}}"
   {{- end }}
   {{- end }}
 {{- end }}
