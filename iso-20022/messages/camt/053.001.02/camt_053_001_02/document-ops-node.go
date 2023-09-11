@@ -1422,8 +1422,6 @@ func clearNode(docPath string, dest interface{}, options *SetOpOptions) error {
 		*typedDest = nil
 	case **AccountStatement2:
 		*typedDest = nil
-	case *AccountStatement2:
-		typedDest = nil
 	case **AmountAndCurrencyExchangeDetails4:
 		*typedDest = nil
 	case **CashBalance3:
@@ -1661,9 +1659,7 @@ func derefNode(docPath string, val interface{}) (interface{}, error) {
 		return *tv, nil
 	case **AccountInterest2:
 		return *tv, nil
-	case *[]AccountStatement2:
-		return *tv, nil
-	case *AccountStatement2:
+	case **AccountStatement2:
 		return *tv, nil
 	case **AmountAndCurrencyExchangeDetails4:
 		return *tv, nil

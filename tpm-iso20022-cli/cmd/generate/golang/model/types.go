@@ -190,9 +190,11 @@ func (ga GoAttr) XMLTags() string {
 		sb.WriteString(",attr")
 	}
 
-	// In any case I put the omitempty
+	// In any case I put the omitempty ... but not if it is chardata
 	// if ga.Optional {
-	sb.WriteString(",omitempty")
+	if !ga.Chardata {
+		sb.WriteString(",omitempty")
+	}
 	// }
 
 	if ga.Chardata {

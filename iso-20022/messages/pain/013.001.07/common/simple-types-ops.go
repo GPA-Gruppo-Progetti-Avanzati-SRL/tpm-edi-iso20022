@@ -10,36 +10,37 @@ import (
 )
 
 /*
- * BICFIDec2014Identifier Ops
+ * ExternalFinancialInstitutionIdentification1Code Ops
  */
 
 const (
-	BICFIDec2014IdentifierZero   = ""
-	BICFIDec2014IdentifierSample = "6II3ZGRZ"
+	ExternalFinancialInstitutionIdentification1CodeZero      = ""
+	ExternalFinancialInstitutionIdentification1CodeSample    = "oJ"
+	ExternalFinancialInstitutionIdentification1CodeLength    = 0
+	ExternalFinancialInstitutionIdentification1CodeMinLength = 1
+	ExternalFinancialInstitutionIdentification1CodeMaxLength = 4
 )
 
-var BICFIDec2014IdentifierPatternRestriction = regexp.MustCompile(`[A-Z0-9]{4,4}[A-Z]{2,2}[A-Z0-9]{2,2}([A-Z0-9]{3,3}){0,1}`)
-
-// IsValid checks if BICFIDec2014Identifier of type String is valid
-func (t BICFIDec2014Identifier) IsValid(optional bool) bool {
+// IsValid checks if ExternalFinancialInstitutionIdentification1Code of type String is valid
+func (t ExternalFinancialInstitutionIdentification1Code) IsValid(optional bool) bool {
 
 	valid := xsdt.String(t).IsValid(optional)
 
-	if optional && t == BICFIDec2014IdentifierZero {
+	if optional && t == ExternalFinancialInstitutionIdentification1CodeZero {
 		return valid
 	}
-	valid = valid && isPatternRestrictionValid(t.String(), BICFIDec2014IdentifierPatternRestriction)
+	valid = valid && isLengthRestrictionValid(t.String(), ExternalFinancialInstitutionIdentification1CodeLength, ExternalFinancialInstitutionIdentification1CodeMinLength, ExternalFinancialInstitutionIdentification1CodeMaxLength)
 
 	return valid
 }
 
 // String method for easy conversion
-func (t BICFIDec2014Identifier) String() string {
+func (t ExternalFinancialInstitutionIdentification1Code) String() string {
 	return string(t)
 }
 
-// ToBICFIDec2014Identifier method for easy conversion with application of restrictions
-func ToBICFIDec2014Identifier(i interface{}) (BICFIDec2014Identifier, error) {
+// ToExternalFinancialInstitutionIdentification1Code method for easy conversion with application of restrictions
+func ToExternalFinancialInstitutionIdentification1Code(i interface{}) (ExternalFinancialInstitutionIdentification1Code, error) {
 
 	s := ""
 	switch ti := i.(type) {
@@ -50,16 +51,16 @@ func ToBICFIDec2014Identifier(i interface{}) (BICFIDec2014Identifier, error) {
 	default:
 		return "", fmt.Errorf("")
 	}
-	if !isPatternRestrictionValid(s, BICFIDec2014IdentifierPatternRestriction) {
-		return "", fmt.Errorf("cannot satisfy pattern restriction for %s of type BICFIDec2014Identifier", s)
+	if !isLengthRestrictionValid(s, ExternalFinancialInstitutionIdentification1CodeLength, ExternalFinancialInstitutionIdentification1CodeMinLength, ExternalFinancialInstitutionIdentification1CodeMaxLength) {
+		return "", fmt.Errorf("cannot satisfy length restriction for %s of type ExternalFinancialInstitutionIdentification1Code", s)
 	}
 
-	return BICFIDec2014Identifier(s), nil
+	return ExternalFinancialInstitutionIdentification1Code(s), nil
 }
 
-// MustToBICFIDec2014Identifier method for easy conversion with application of restrictions. Panics on error.
-func MustToBICFIDec2014Identifier(s interface{}) BICFIDec2014Identifier {
-	v, err := ToBICFIDec2014Identifier(s)
+// MustToExternalFinancialInstitutionIdentification1Code method for easy conversion with application of restrictions. Panics on error.
+func MustToExternalFinancialInstitutionIdentification1Code(s interface{}) ExternalFinancialInstitutionIdentification1Code {
+	v, err := ToExternalFinancialInstitutionIdentification1Code(s)
 	if err != nil {
 		panic(err)
 	}
@@ -68,90 +69,40 @@ func MustToBICFIDec2014Identifier(s interface{}) BICFIDec2014Identifier {
 }
 
 /*
- * ISODate Ops
+ * Instruction3Code Ops
  */
 
 const (
-	ISODateSample = "Value"
-	ISODateZero   = ""
+	Instruction3CodeZero   = ""
+	Instruction3CodeSample = "PHOB"
+	Instruction3CodeCHQB   = "CHQB"
+	Instruction3CodeHOLD   = "HOLD"
+	Instruction3CodePHOB   = "PHOB"
+	Instruction3CodeTELB   = "TELB"
 )
 
-// IsValid checks if ISODate of type Date is valid
-func (t ISODate) IsValid(optional bool) bool {
+var Instruction3CodeEnumRestriction = []string{Instruction3CodeCHQB, Instruction3CodeHOLD, Instruction3CodePHOB, Instruction3CodeTELB}
 
-	valid := xsdt.Date(t).IsValid(optional)
-	if optional && t == ISODateZero {
-		return valid
-	}
-	return valid
-}
-
-// String method for easy conversion
-func (t ISODate) String() string {
-	return string(t)
-}
-
-// ToISODate method for easy conversion from time.Time
-func ToISODate(tm interface{}) (ISODate, error) {
-
-	switch typedTm := tm.(type) {
-	case time.Time:
-		return ISODate(typedTm.Format("2006-01-02")), nil
-	case string:
-		return ISODate(typedTm), nil
-	case ISODate:
-		return typedTm, nil
-	}
-
-	return "", fmt.Errorf("cannot convert %v to ISODate", tm)
-}
-
-func MustToISODate(tm interface{}) ISODate {
-	d, err := ToISODate(tm)
-	if err != nil {
-		panic(err)
-	}
-
-	return d
-}
-
-// ISODateExample method for generation of valid sample data
-func ISODateExample() ISODate {
-	return ISODate(time.Now().Format("2006-01-02"))
-}
-
-/*
- * Max10Text Ops
- */
-
-const (
-	Max10TextZero      = ""
-	Max10TextSample    = "oJnNP"
-	Max10TextLength    = 0
-	Max10TextMinLength = 1
-	Max10TextMaxLength = 10
-)
-
-// IsValid checks if Max10Text of type String is valid
-func (t Max10Text) IsValid(optional bool) bool {
+// IsValid checks if Instruction3Code of type String is valid
+func (t Instruction3Code) IsValid(optional bool) bool {
 
 	valid := xsdt.String(t).IsValid(optional)
 
-	if optional && t == Max10TextZero {
+	if optional && t == Instruction3CodeZero {
 		return valid
 	}
-	valid = valid && isLengthRestrictionValid(t.String(), Max10TextLength, Max10TextMinLength, Max10TextMaxLength)
+	valid = valid && isEnumRestrictionValid(t.String(), Instruction3CodeEnumRestriction)
 
 	return valid
 }
 
 // String method for easy conversion
-func (t Max10Text) String() string {
+func (t Instruction3Code) String() string {
 	return string(t)
 }
 
-// ToMax10Text method for easy conversion with application of restrictions
-func ToMax10Text(i interface{}) (Max10Text, error) {
+// ToInstruction3Code method for easy conversion with application of restrictions
+func ToInstruction3Code(i interface{}) (Instruction3Code, error) {
 
 	s := ""
 	switch ti := i.(type) {
@@ -162,16 +113,16 @@ func ToMax10Text(i interface{}) (Max10Text, error) {
 	default:
 		return "", fmt.Errorf("")
 	}
-	if !isLengthRestrictionValid(s, Max10TextLength, Max10TextMinLength, Max10TextMaxLength) {
-		return "", fmt.Errorf("cannot satisfy length restriction for %s of type Max10Text", s)
+	if !isEnumRestrictionValid(s, Instruction3CodeEnumRestriction) {
+		return "", fmt.Errorf("cannot satisfy enum restriction for %s of type Instruction3Code", s)
 	}
 
-	return Max10Text(s), nil
+	return Instruction3Code(s), nil
 }
 
-// MustToMax10Text method for easy conversion with application of restrictions. Panics on error.
-func MustToMax10Text(s interface{}) Max10Text {
-	v, err := ToMax10Text(s)
+// MustToInstruction3Code method for easy conversion with application of restrictions. Panics on error.
+func MustToInstruction3Code(s interface{}) Instruction3Code {
+	v, err := ToInstruction3Code(s)
 	if err != nil {
 		panic(err)
 	}
@@ -180,37 +131,39 @@ func MustToMax10Text(s interface{}) Max10Text {
 }
 
 /*
- * ExternalDocumentLineType1Code Ops
+ * RegulatoryReportingType1Code Ops
  */
 
 const (
-	ExternalDocumentLineType1CodeZero      = ""
-	ExternalDocumentLineType1CodeSample    = "Gs"
-	ExternalDocumentLineType1CodeLength    = 0
-	ExternalDocumentLineType1CodeMinLength = 1
-	ExternalDocumentLineType1CodeMaxLength = 4
+	RegulatoryReportingType1CodeZero   = ""
+	RegulatoryReportingType1CodeSample = "DEBT"
+	RegulatoryReportingType1CodeCRED   = "CRED"
+	RegulatoryReportingType1CodeDEBT   = "DEBT"
+	RegulatoryReportingType1CodeBOTH   = "BOTH"
 )
 
-// IsValid checks if ExternalDocumentLineType1Code of type String is valid
-func (t ExternalDocumentLineType1Code) IsValid(optional bool) bool {
+var RegulatoryReportingType1CodeEnumRestriction = []string{RegulatoryReportingType1CodeCRED, RegulatoryReportingType1CodeDEBT, RegulatoryReportingType1CodeBOTH}
+
+// IsValid checks if RegulatoryReportingType1Code of type String is valid
+func (t RegulatoryReportingType1Code) IsValid(optional bool) bool {
 
 	valid := xsdt.String(t).IsValid(optional)
 
-	if optional && t == ExternalDocumentLineType1CodeZero {
+	if optional && t == RegulatoryReportingType1CodeZero {
 		return valid
 	}
-	valid = valid && isLengthRestrictionValid(t.String(), ExternalDocumentLineType1CodeLength, ExternalDocumentLineType1CodeMinLength, ExternalDocumentLineType1CodeMaxLength)
+	valid = valid && isEnumRestrictionValid(t.String(), RegulatoryReportingType1CodeEnumRestriction)
 
 	return valid
 }
 
 // String method for easy conversion
-func (t ExternalDocumentLineType1Code) String() string {
+func (t RegulatoryReportingType1Code) String() string {
 	return string(t)
 }
 
-// ToExternalDocumentLineType1Code method for easy conversion with application of restrictions
-func ToExternalDocumentLineType1Code(i interface{}) (ExternalDocumentLineType1Code, error) {
+// ToRegulatoryReportingType1Code method for easy conversion with application of restrictions
+func ToRegulatoryReportingType1Code(i interface{}) (RegulatoryReportingType1Code, error) {
 
 	s := ""
 	switch ti := i.(type) {
@@ -221,16 +174,16 @@ func ToExternalDocumentLineType1Code(i interface{}) (ExternalDocumentLineType1Co
 	default:
 		return "", fmt.Errorf("")
 	}
-	if !isLengthRestrictionValid(s, ExternalDocumentLineType1CodeLength, ExternalDocumentLineType1CodeMinLength, ExternalDocumentLineType1CodeMaxLength) {
-		return "", fmt.Errorf("cannot satisfy length restriction for %s of type ExternalDocumentLineType1Code", s)
+	if !isEnumRestrictionValid(s, RegulatoryReportingType1CodeEnumRestriction) {
+		return "", fmt.Errorf("cannot satisfy enum restriction for %s of type RegulatoryReportingType1Code", s)
 	}
 
-	return ExternalDocumentLineType1Code(s), nil
+	return RegulatoryReportingType1Code(s), nil
 }
 
-// MustToExternalDocumentLineType1Code method for easy conversion with application of restrictions. Panics on error.
-func MustToExternalDocumentLineType1Code(s interface{}) ExternalDocumentLineType1Code {
-	v, err := ToExternalDocumentLineType1Code(s)
+// MustToRegulatoryReportingType1Code method for easy conversion with application of restrictions. Panics on error.
+func MustToRegulatoryReportingType1Code(s interface{}) RegulatoryReportingType1Code {
+	v, err := ToRegulatoryReportingType1Code(s)
 	if err != nil {
 		panic(err)
 	}
@@ -239,37 +192,37 @@ func MustToExternalDocumentLineType1Code(s interface{}) ExternalDocumentLineType
 }
 
 /*
- * ExternalGarnishmentType1Code Ops
+ * ExternalDocumentFormat1Code Ops
  */
 
 const (
-	ExternalGarnishmentType1CodeZero      = ""
-	ExternalGarnishmentType1CodeSample    = "iu"
-	ExternalGarnishmentType1CodeLength    = 0
-	ExternalGarnishmentType1CodeMinLength = 1
-	ExternalGarnishmentType1CodeMaxLength = 4
+	ExternalDocumentFormat1CodeZero      = ""
+	ExternalDocumentFormat1CodeSample    = "nN"
+	ExternalDocumentFormat1CodeLength    = 0
+	ExternalDocumentFormat1CodeMinLength = 1
+	ExternalDocumentFormat1CodeMaxLength = 4
 )
 
-// IsValid checks if ExternalGarnishmentType1Code of type String is valid
-func (t ExternalGarnishmentType1Code) IsValid(optional bool) bool {
+// IsValid checks if ExternalDocumentFormat1Code of type String is valid
+func (t ExternalDocumentFormat1Code) IsValid(optional bool) bool {
 
 	valid := xsdt.String(t).IsValid(optional)
 
-	if optional && t == ExternalGarnishmentType1CodeZero {
+	if optional && t == ExternalDocumentFormat1CodeZero {
 		return valid
 	}
-	valid = valid && isLengthRestrictionValid(t.String(), ExternalGarnishmentType1CodeLength, ExternalGarnishmentType1CodeMinLength, ExternalGarnishmentType1CodeMaxLength)
+	valid = valid && isLengthRestrictionValid(t.String(), ExternalDocumentFormat1CodeLength, ExternalDocumentFormat1CodeMinLength, ExternalDocumentFormat1CodeMaxLength)
 
 	return valid
 }
 
 // String method for easy conversion
-func (t ExternalGarnishmentType1Code) String() string {
+func (t ExternalDocumentFormat1Code) String() string {
 	return string(t)
 }
 
-// ToExternalGarnishmentType1Code method for easy conversion with application of restrictions
-func ToExternalGarnishmentType1Code(i interface{}) (ExternalGarnishmentType1Code, error) {
+// ToExternalDocumentFormat1Code method for easy conversion with application of restrictions
+func ToExternalDocumentFormat1Code(i interface{}) (ExternalDocumentFormat1Code, error) {
 
 	s := ""
 	switch ti := i.(type) {
@@ -280,16 +233,488 @@ func ToExternalGarnishmentType1Code(i interface{}) (ExternalGarnishmentType1Code
 	default:
 		return "", fmt.Errorf("")
 	}
-	if !isLengthRestrictionValid(s, ExternalGarnishmentType1CodeLength, ExternalGarnishmentType1CodeMinLength, ExternalGarnishmentType1CodeMaxLength) {
-		return "", fmt.Errorf("cannot satisfy length restriction for %s of type ExternalGarnishmentType1Code", s)
+	if !isLengthRestrictionValid(s, ExternalDocumentFormat1CodeLength, ExternalDocumentFormat1CodeMinLength, ExternalDocumentFormat1CodeMaxLength) {
+		return "", fmt.Errorf("cannot satisfy length restriction for %s of type ExternalDocumentFormat1Code", s)
 	}
 
-	return ExternalGarnishmentType1Code(s), nil
+	return ExternalDocumentFormat1Code(s), nil
 }
 
-// MustToExternalGarnishmentType1Code method for easy conversion with application of restrictions. Panics on error.
-func MustToExternalGarnishmentType1Code(s interface{}) ExternalGarnishmentType1Code {
-	v, err := ToExternalGarnishmentType1Code(s)
+// MustToExternalDocumentFormat1Code method for easy conversion with application of restrictions. Panics on error.
+func MustToExternalDocumentFormat1Code(s interface{}) ExternalDocumentFormat1Code {
+	v, err := ToExternalDocumentFormat1Code(s)
+	if err != nil {
+		panic(err)
+	}
+
+	return v
+}
+
+/*
+ * Max10MbBinary Ops
+ */
+
+const (
+	Max10MbBinarySample    = "Value"
+	Max10MbBinaryZero      = ""
+	Max10MbBinaryLength    = 0
+	Max10MbBinaryMinLength = 1
+	Max10MbBinaryMaxLength = 10485760
+)
+
+// IsValid checks if Max10MbBinary of type Base64Binary is valid
+func (t Max10MbBinary) IsValid(optional bool) bool {
+
+	valid := xsdt.Base64Binary(t).IsValid(optional)
+	if 10485760 != 0 {
+		valid = valid && len(t) < 10485760
+	}
+
+	return valid
+}
+
+// String method for easy conversion
+func (t Max10MbBinary) String() string {
+	return string(t)
+}
+
+// ToMax10MbBinary method for easy conversion with application of restrictions
+func ToMax10MbBinary(i interface{}) (Max10MbBinary, error) {
+
+	s := ""
+	switch ti := i.(type) {
+	case fmt.Stringer:
+		s = ti.String()
+	case string:
+		s = ti
+	default:
+		return "", fmt.Errorf("")
+	}
+	if !isLengthRestrictionValid(s, Max10MbBinaryLength, Max10MbBinaryMinLength, Max10MbBinaryMaxLength) {
+		return "", fmt.Errorf("cannot satisfy length restriction for %s of type Max10MbBinary", s)
+	}
+
+	return Max10MbBinary(s), nil
+}
+
+// MustToMax10MbBinary method for easy conversion with application of restrictions. Panics on error.
+func MustToMax10MbBinary(s interface{}) Max10MbBinary {
+	v, err := ToMax10MbBinary(s)
+	if err != nil {
+		panic(err)
+	}
+
+	return v
+}
+
+// Max10MbBinaryExample method for generation of valid sample data
+func Max10MbBinaryExample() Max10MbBinary {
+	return Max10MbBinary(generateB64SampleData())
+}
+
+/*
+ * ExternalClearingSystemIdentification1Code Ops
+ */
+
+const (
+	ExternalClearingSystemIdentification1CodeZero      = ""
+	ExternalClearingSystemIdentification1CodeSample    = "PGs"
+	ExternalClearingSystemIdentification1CodeLength    = 0
+	ExternalClearingSystemIdentification1CodeMinLength = 1
+	ExternalClearingSystemIdentification1CodeMaxLength = 5
+)
+
+// IsValid checks if ExternalClearingSystemIdentification1Code of type String is valid
+func (t ExternalClearingSystemIdentification1Code) IsValid(optional bool) bool {
+
+	valid := xsdt.String(t).IsValid(optional)
+
+	if optional && t == ExternalClearingSystemIdentification1CodeZero {
+		return valid
+	}
+	valid = valid && isLengthRestrictionValid(t.String(), ExternalClearingSystemIdentification1CodeLength, ExternalClearingSystemIdentification1CodeMinLength, ExternalClearingSystemIdentification1CodeMaxLength)
+
+	return valid
+}
+
+// String method for easy conversion
+func (t ExternalClearingSystemIdentification1Code) String() string {
+	return string(t)
+}
+
+// ToExternalClearingSystemIdentification1Code method for easy conversion with application of restrictions
+func ToExternalClearingSystemIdentification1Code(i interface{}) (ExternalClearingSystemIdentification1Code, error) {
+
+	s := ""
+	switch ti := i.(type) {
+	case fmt.Stringer:
+		s = ti.String()
+	case string:
+		s = ti
+	default:
+		return "", fmt.Errorf("")
+	}
+	if !isLengthRestrictionValid(s, ExternalClearingSystemIdentification1CodeLength, ExternalClearingSystemIdentification1CodeMinLength, ExternalClearingSystemIdentification1CodeMaxLength) {
+		return "", fmt.Errorf("cannot satisfy length restriction for %s of type ExternalClearingSystemIdentification1Code", s)
+	}
+
+	return ExternalClearingSystemIdentification1Code(s), nil
+}
+
+// MustToExternalClearingSystemIdentification1Code method for easy conversion with application of restrictions. Panics on error.
+func MustToExternalClearingSystemIdentification1Code(s interface{}) ExternalClearingSystemIdentification1Code {
+	v, err := ToExternalClearingSystemIdentification1Code(s)
+	if err != nil {
+		panic(err)
+	}
+
+	return v
+}
+
+/*
+ * PhoneNumber Ops
+ */
+
+const (
+	PhoneNumberZero   = ""
+	PhoneNumberSample = "+787-(66806"
+)
+
+var PhoneNumberPatternRestriction = regexp.MustCompile(`\+[0-9]{1,3}-[0-9()+\-]{1,30}`)
+
+// IsValid checks if PhoneNumber of type String is valid
+func (t PhoneNumber) IsValid(optional bool) bool {
+
+	valid := xsdt.String(t).IsValid(optional)
+
+	if optional && t == PhoneNumberZero {
+		return valid
+	}
+	valid = valid && isPatternRestrictionValid(t.String(), PhoneNumberPatternRestriction)
+
+	return valid
+}
+
+// String method for easy conversion
+func (t PhoneNumber) String() string {
+	return string(t)
+}
+
+// ToPhoneNumber method for easy conversion with application of restrictions
+func ToPhoneNumber(i interface{}) (PhoneNumber, error) {
+
+	s := ""
+	switch ti := i.(type) {
+	case fmt.Stringer:
+		s = ti.String()
+	case string:
+		s = ti
+	default:
+		return "", fmt.Errorf("")
+	}
+	if !isPatternRestrictionValid(s, PhoneNumberPatternRestriction) {
+		return "", fmt.Errorf("cannot satisfy pattern restriction for %s of type PhoneNumber", s)
+	}
+
+	return PhoneNumber(s), nil
+}
+
+// MustToPhoneNumber method for easy conversion with application of restrictions. Panics on error.
+func MustToPhoneNumber(s interface{}) PhoneNumber {
+	v, err := ToPhoneNumber(s)
+	if err != nil {
+		panic(err)
+	}
+
+	return v
+}
+
+/*
+ * Max2048Text Ops
+ */
+
+const (
+	Max2048TextZero      = ""
+	Max2048TextSample    = "iuzytMOJPatwtPilfsfykSBGplhxtxVSGpqaJaBRgAvzLXqzRrrUIYvaIujDpHYjxeUBrVfdwUzWHRihFDPRHBMuEWmaNvhHLITWJcJKzJsRPeJbpTqWPUlWAcidRlufmYWddEktBDrWMYZTPdmDAVCuvQutLDKFBGRxnyDNYuRKWsmZnOYgSLPSsuMMmvYmaFEjLgSvndTeranxGMNCcCdlEBYqxqrgAieJuFVZUsgPmweLRmsdTIwtLUDqoBSNtPRViLXLCrSAZCjxTCaZnfHRhEbbvlLkCbvOlRrOWJFNwNQBqyozKVGeninyrTgqubNiIzWcEZsdyUJTDAODnRKcTqZThaTJmRVAClOEaCEmEUmEtNTDVBbvMBtQBeDBVyDFfPWGaZQntPiyJbzjrRNLRzGpzDszPvweGxRQcoxpAQxuFkaowCKoRccTyTJHeKKokJNwUaqKCBRxMSdypnuVQlXTxlLUfRUssUCbZClckQhhyMmVTDwokzVJUlvROmQBJTVsrIgXXlvECpbDIWegrUuUYynIaqJjgVXQtZptcLZIVmypNpLbbaxHYDmKrYnEbqbvWLjZZAHQHWIGRYPwqfeXSWmRncQZpTAzceEsIpdYbrhfkVRdPhRXJzEKTBNCvokhNhSeFRvuKeklvsHwabufMjYxuvCIeoMjxivfYHKXcwedxkRvEookKzpacqgBiXejXjTJPhMQsmGzinFnyUVhVOydnINYczGVyZhBRwWAXjuufUoPJlNOFUvANpjrlwiuIbjJbgkIxMkImqLfMdmksNxvjgyEJAjrjcQDUlVTuFKDLjgBjrpEBlRzIZVSUAgxlZPBVcodWJbYmpBEprbxsRnSFqRIjOBrNaxVzTtXlnbdWOKzddfZvtzFRwXkWBBNMmMfCraUahSxpTkppSxjPLhPnxeSCjulnkeSRvUtXaQHrOqxrwbCXRiWGXOyolORPasKWOdANVLTUjsQCqRuNsAzgVRDgWTxeohgOVmZWEReHPcpuWoyejND"
+	Max2048TextLength    = 0
+	Max2048TextMinLength = 1
+	Max2048TextMaxLength = 2048
+)
+
+// IsValid checks if Max2048Text of type String is valid
+func (t Max2048Text) IsValid(optional bool) bool {
+
+	valid := xsdt.String(t).IsValid(optional)
+
+	if optional && t == Max2048TextZero {
+		return valid
+	}
+	valid = valid && isLengthRestrictionValid(t.String(), Max2048TextLength, Max2048TextMinLength, Max2048TextMaxLength)
+
+	return valid
+}
+
+// String method for easy conversion
+func (t Max2048Text) String() string {
+	return string(t)
+}
+
+// ToMax2048Text method for easy conversion with application of restrictions
+func ToMax2048Text(i interface{}) (Max2048Text, error) {
+
+	s := ""
+	switch ti := i.(type) {
+	case fmt.Stringer:
+		s = ti.String()
+	case string:
+		s = ti
+	default:
+		return "", fmt.Errorf("")
+	}
+	if !isLengthRestrictionValid(s, Max2048TextLength, Max2048TextMinLength, Max2048TextMaxLength) {
+		return "", fmt.Errorf("cannot satisfy length restriction for %s of type Max2048Text", s)
+	}
+
+	return Max2048Text(s), nil
+}
+
+// MustToMax2048Text method for easy conversion with application of restrictions. Panics on error.
+func MustToMax2048Text(s interface{}) Max2048Text {
+	v, err := ToMax2048Text(s)
+	if err != nil {
+		panic(err)
+	}
+
+	return v
+}
+
+/*
+ * Max4Text Ops
+ */
+
+const (
+	Max4TextZero      = ""
+	Max4TextSample    = "Nt"
+	Max4TextLength    = 0
+	Max4TextMinLength = 1
+	Max4TextMaxLength = 4
+)
+
+// IsValid checks if Max4Text of type String is valid
+func (t Max4Text) IsValid(optional bool) bool {
+
+	valid := xsdt.String(t).IsValid(optional)
+
+	if optional && t == Max4TextZero {
+		return valid
+	}
+	valid = valid && isLengthRestrictionValid(t.String(), Max4TextLength, Max4TextMinLength, Max4TextMaxLength)
+
+	return valid
+}
+
+// String method for easy conversion
+func (t Max4Text) String() string {
+	return string(t)
+}
+
+// ToMax4Text method for easy conversion with application of restrictions
+func ToMax4Text(i interface{}) (Max4Text, error) {
+
+	s := ""
+	switch ti := i.(type) {
+	case fmt.Stringer:
+		s = ti.String()
+	case string:
+		s = ti
+	default:
+		return "", fmt.Errorf("")
+	}
+	if !isLengthRestrictionValid(s, Max4TextLength, Max4TextMinLength, Max4TextMaxLength) {
+		return "", fmt.Errorf("cannot satisfy length restriction for %s of type Max4Text", s)
+	}
+
+	return Max4Text(s), nil
+}
+
+// MustToMax4Text method for easy conversion with application of restrictions. Panics on error.
+func MustToMax4Text(s interface{}) Max4Text {
+	v, err := ToMax4Text(s)
+	if err != nil {
+		panic(err)
+	}
+
+	return v
+}
+
+/*
+ * ActiveCurrencyCode Ops
+ */
+
+const (
+	ActiveCurrencyCodeZero   = ""
+	ActiveCurrencyCodeSample = "XGL"
+)
+
+var ActiveCurrencyCodePatternRestriction = regexp.MustCompile(`[A-Z]{3,3}`)
+
+// IsValid checks if ActiveCurrencyCode of type String is valid
+func (t ActiveCurrencyCode) IsValid(optional bool) bool {
+
+	valid := xsdt.String(t).IsValid(optional)
+
+	if optional && t == ActiveCurrencyCodeZero {
+		return valid
+	}
+	valid = valid && isPatternRestrictionValid(t.String(), ActiveCurrencyCodePatternRestriction)
+
+	return valid
+}
+
+// String method for easy conversion
+func (t ActiveCurrencyCode) String() string {
+	return string(t)
+}
+
+// ToActiveCurrencyCode method for easy conversion with application of restrictions
+func ToActiveCurrencyCode(i interface{}) (ActiveCurrencyCode, error) {
+
+	s := ""
+	switch ti := i.(type) {
+	case fmt.Stringer:
+		s = ti.String()
+	case string:
+		s = ti
+	default:
+		return "", fmt.Errorf("")
+	}
+	if !isPatternRestrictionValid(s, ActiveCurrencyCodePatternRestriction) {
+		return "", fmt.Errorf("cannot satisfy pattern restriction for %s of type ActiveCurrencyCode", s)
+	}
+
+	return ActiveCurrencyCode(s), nil
+}
+
+// MustToActiveCurrencyCode method for easy conversion with application of restrictions. Panics on error.
+func MustToActiveCurrencyCode(s interface{}) ActiveCurrencyCode {
+	v, err := ToActiveCurrencyCode(s)
+	if err != nil {
+		panic(err)
+	}
+
+	return v
+}
+
+/*
+ * LEIIdentifier Ops
+ */
+
+const (
+	LEIIdentifierZero   = ""
+	LEIIdentifierSample = "D2C9I7801HZ9I8QE8W22"
+)
+
+var LEIIdentifierPatternRestriction = regexp.MustCompile(`[A-Z0-9]{18,18}[0-9]{2,2}`)
+
+// IsValid checks if LEIIdentifier of type String is valid
+func (t LEIIdentifier) IsValid(optional bool) bool {
+
+	valid := xsdt.String(t).IsValid(optional)
+
+	if optional && t == LEIIdentifierZero {
+		return valid
+	}
+	valid = valid && isPatternRestrictionValid(t.String(), LEIIdentifierPatternRestriction)
+
+	return valid
+}
+
+// String method for easy conversion
+func (t LEIIdentifier) String() string {
+	return string(t)
+}
+
+// ToLEIIdentifier method for easy conversion with application of restrictions
+func ToLEIIdentifier(i interface{}) (LEIIdentifier, error) {
+
+	s := ""
+	switch ti := i.(type) {
+	case fmt.Stringer:
+		s = ti.String()
+	case string:
+		s = ti
+	default:
+		return "", fmt.Errorf("")
+	}
+	if !isPatternRestrictionValid(s, LEIIdentifierPatternRestriction) {
+		return "", fmt.Errorf("cannot satisfy pattern restriction for %s of type LEIIdentifier", s)
+	}
+
+	return LEIIdentifier(s), nil
+}
+
+// MustToLEIIdentifier method for easy conversion with application of restrictions. Panics on error.
+func MustToLEIIdentifier(s interface{}) LEIIdentifier {
+	v, err := ToLEIIdentifier(s)
+	if err != nil {
+		panic(err)
+	}
+
+	return v
+}
+
+/*
+ * Max350Text Ops
+ */
+
+const (
+	Max350TextZero      = ""
+	Max350TextSample    = "fSJWCidgAfEcoSKFvxTVCZoKMHuKFgkhaujRMxfcNGDjkbfeENRdnZuYVnOFfaKgXcxfcXVutzuIkhdUMOniOqWYIJMqLchMkCJZHSenoYIFnHZyTzEfMSdhUvtMBlfUoZYLEdqkoZCuTuRpLKzzuuFjTKIOTjSnLTFioYayJwBotOD"
+	Max350TextLength    = 0
+	Max350TextMinLength = 1
+	Max350TextMaxLength = 350
+)
+
+// IsValid checks if Max350Text of type String is valid
+func (t Max350Text) IsValid(optional bool) bool {
+
+	valid := xsdt.String(t).IsValid(optional)
+
+	if optional && t == Max350TextZero {
+		return valid
+	}
+	valid = valid && isLengthRestrictionValid(t.String(), Max350TextLength, Max350TextMinLength, Max350TextMaxLength)
+
+	return valid
+}
+
+// String method for easy conversion
+func (t Max350Text) String() string {
+	return string(t)
+}
+
+// ToMax350Text method for easy conversion with application of restrictions
+func ToMax350Text(i interface{}) (Max350Text, error) {
+
+	s := ""
+	switch ti := i.(type) {
+	case fmt.Stringer:
+		s = ti.String()
+	case string:
+		s = ti
+	default:
+		return "", fmt.Errorf("")
+	}
+	if !isLengthRestrictionValid(s, Max350TextLength, Max350TextMinLength, Max350TextMaxLength) {
+		return "", fmt.Errorf("cannot satisfy length restriction for %s of type Max350Text", s)
+	}
+
+	return Max350Text(s), nil
+}
+
+// MustToMax350Text method for easy conversion with application of restrictions. Panics on error.
+func MustToMax350Text(s interface{}) Max350Text {
+	v, err := ToMax350Text(s)
 	if err != nil {
 		panic(err)
 	}
@@ -361,36 +786,36 @@ func MustToNamePrefix2Code(s interface{}) NamePrefix2Code {
 }
 
 /*
- * ActiveOrHistoricCurrencyCode Ops
+ * AnyBICDec2014Identifier Ops
  */
 
 const (
-	ActiveOrHistoricCurrencyCodeZero   = ""
-	ActiveOrHistoricCurrencyCodeSample = "VID"
+	AnyBICDec2014IdentifierZero   = ""
+	AnyBICDec2014IdentifierSample = "5DR7OQ7JME4"
 )
 
-var ActiveOrHistoricCurrencyCodePatternRestriction = regexp.MustCompile(`[A-Z]{3,3}`)
+var AnyBICDec2014IdentifierPatternRestriction = regexp.MustCompile(`[A-Z0-9]{4,4}[A-Z]{2,2}[A-Z0-9]{2,2}([A-Z0-9]{3,3}){0,1}`)
 
-// IsValid checks if ActiveOrHistoricCurrencyCode of type String is valid
-func (t ActiveOrHistoricCurrencyCode) IsValid(optional bool) bool {
+// IsValid checks if AnyBICDec2014Identifier of type String is valid
+func (t AnyBICDec2014Identifier) IsValid(optional bool) bool {
 
 	valid := xsdt.String(t).IsValid(optional)
 
-	if optional && t == ActiveOrHistoricCurrencyCodeZero {
+	if optional && t == AnyBICDec2014IdentifierZero {
 		return valid
 	}
-	valid = valid && isPatternRestrictionValid(t.String(), ActiveOrHistoricCurrencyCodePatternRestriction)
+	valid = valid && isPatternRestrictionValid(t.String(), AnyBICDec2014IdentifierPatternRestriction)
 
 	return valid
 }
 
 // String method for easy conversion
-func (t ActiveOrHistoricCurrencyCode) String() string {
+func (t AnyBICDec2014Identifier) String() string {
 	return string(t)
 }
 
-// ToActiveOrHistoricCurrencyCode method for easy conversion with application of restrictions
-func ToActiveOrHistoricCurrencyCode(i interface{}) (ActiveOrHistoricCurrencyCode, error) {
+// ToAnyBICDec2014Identifier method for easy conversion with application of restrictions
+func ToAnyBICDec2014Identifier(i interface{}) (AnyBICDec2014Identifier, error) {
 
 	s := ""
 	switch ti := i.(type) {
@@ -401,16 +826,16 @@ func ToActiveOrHistoricCurrencyCode(i interface{}) (ActiveOrHistoricCurrencyCode
 	default:
 		return "", fmt.Errorf("")
 	}
-	if !isPatternRestrictionValid(s, ActiveOrHistoricCurrencyCodePatternRestriction) {
-		return "", fmt.Errorf("cannot satisfy pattern restriction for %s of type ActiveOrHistoricCurrencyCode", s)
+	if !isPatternRestrictionValid(s, AnyBICDec2014IdentifierPatternRestriction) {
+		return "", fmt.Errorf("cannot satisfy pattern restriction for %s of type AnyBICDec2014Identifier", s)
 	}
 
-	return ActiveOrHistoricCurrencyCode(s), nil
+	return AnyBICDec2014Identifier(s), nil
 }
 
-// MustToActiveOrHistoricCurrencyCode method for easy conversion with application of restrictions. Panics on error.
-func MustToActiveOrHistoricCurrencyCode(s interface{}) ActiveOrHistoricCurrencyCode {
-	v, err := ToActiveOrHistoricCurrencyCode(s)
+// MustToAnyBICDec2014Identifier method for easy conversion with application of restrictions. Panics on error.
+func MustToAnyBICDec2014Identifier(s interface{}) AnyBICDec2014Identifier {
+	v, err := ToAnyBICDec2014Identifier(s)
 	if err != nil {
 		panic(err)
 	}
@@ -419,36 +844,37 @@ func MustToActiveOrHistoricCurrencyCode(s interface{}) ActiveOrHistoricCurrencyC
 }
 
 /*
- * LEIIdentifier Ops
+ * ExternalPurpose1Code Ops
  */
 
 const (
-	LEIIdentifierZero   = ""
-	LEIIdentifierSample = "ECRUDS5TLHR3HH36XY87"
+	ExternalPurpose1CodeZero      = ""
+	ExternalPurpose1CodeSample    = "VV"
+	ExternalPurpose1CodeLength    = 0
+	ExternalPurpose1CodeMinLength = 1
+	ExternalPurpose1CodeMaxLength = 4
 )
 
-var LEIIdentifierPatternRestriction = regexp.MustCompile(`[A-Z0-9]{18,18}[0-9]{2,2}`)
-
-// IsValid checks if LEIIdentifier of type String is valid
-func (t LEIIdentifier) IsValid(optional bool) bool {
+// IsValid checks if ExternalPurpose1Code of type String is valid
+func (t ExternalPurpose1Code) IsValid(optional bool) bool {
 
 	valid := xsdt.String(t).IsValid(optional)
 
-	if optional && t == LEIIdentifierZero {
+	if optional && t == ExternalPurpose1CodeZero {
 		return valid
 	}
-	valid = valid && isPatternRestrictionValid(t.String(), LEIIdentifierPatternRestriction)
+	valid = valid && isLengthRestrictionValid(t.String(), ExternalPurpose1CodeLength, ExternalPurpose1CodeMinLength, ExternalPurpose1CodeMaxLength)
 
 	return valid
 }
 
 // String method for easy conversion
-func (t LEIIdentifier) String() string {
+func (t ExternalPurpose1Code) String() string {
 	return string(t)
 }
 
-// ToLEIIdentifier method for easy conversion with application of restrictions
-func ToLEIIdentifier(i interface{}) (LEIIdentifier, error) {
+// ToExternalPurpose1Code method for easy conversion with application of restrictions
+func ToExternalPurpose1Code(i interface{}) (ExternalPurpose1Code, error) {
 
 	s := ""
 	switch ti := i.(type) {
@@ -459,16 +885,74 @@ func ToLEIIdentifier(i interface{}) (LEIIdentifier, error) {
 	default:
 		return "", fmt.Errorf("")
 	}
-	if !isPatternRestrictionValid(s, LEIIdentifierPatternRestriction) {
-		return "", fmt.Errorf("cannot satisfy pattern restriction for %s of type LEIIdentifier", s)
+	if !isLengthRestrictionValid(s, ExternalPurpose1CodeLength, ExternalPurpose1CodeMinLength, ExternalPurpose1CodeMaxLength) {
+		return "", fmt.Errorf("cannot satisfy length restriction for %s of type ExternalPurpose1Code", s)
 	}
 
-	return LEIIdentifier(s), nil
+	return ExternalPurpose1Code(s), nil
 }
 
-// MustToLEIIdentifier method for easy conversion with application of restrictions. Panics on error.
-func MustToLEIIdentifier(s interface{}) LEIIdentifier {
-	v, err := ToLEIIdentifier(s)
+// MustToExternalPurpose1Code method for easy conversion with application of restrictions. Panics on error.
+func MustToExternalPurpose1Code(s interface{}) ExternalPurpose1Code {
+	v, err := ToExternalPurpose1Code(s)
+	if err != nil {
+		panic(err)
+	}
+
+	return v
+}
+
+/*
+ * IBAN2007Identifier Ops
+ */
+
+const (
+	IBAN2007IdentifierZero   = ""
+	IBAN2007IdentifierSample = "CL78bRX"
+)
+
+var IBAN2007IdentifierPatternRestriction = regexp.MustCompile(`[A-Z]{2,2}[0-9]{2,2}[a-zA-Z0-9]{1,30}`)
+
+// IsValid checks if IBAN2007Identifier of type String is valid
+func (t IBAN2007Identifier) IsValid(optional bool) bool {
+
+	valid := xsdt.String(t).IsValid(optional)
+
+	if optional && t == IBAN2007IdentifierZero {
+		return valid
+	}
+	valid = valid && isPatternRestrictionValid(t.String(), IBAN2007IdentifierPatternRestriction)
+
+	return valid
+}
+
+// String method for easy conversion
+func (t IBAN2007Identifier) String() string {
+	return string(t)
+}
+
+// ToIBAN2007Identifier method for easy conversion with application of restrictions
+func ToIBAN2007Identifier(i interface{}) (IBAN2007Identifier, error) {
+
+	s := ""
+	switch ti := i.(type) {
+	case fmt.Stringer:
+		s = ti.String()
+	case string:
+		s = ti
+	default:
+		return "", fmt.Errorf("")
+	}
+	if !isPatternRestrictionValid(s, IBAN2007IdentifierPatternRestriction) {
+		return "", fmt.Errorf("cannot satisfy pattern restriction for %s of type IBAN2007Identifier", s)
+	}
+
+	return IBAN2007Identifier(s), nil
+}
+
+// MustToIBAN2007Identifier method for easy conversion with application of restrictions. Panics on error.
+func MustToIBAN2007Identifier(s interface{}) IBAN2007Identifier {
+	v, err := ToIBAN2007Identifier(s)
 	if err != nil {
 		panic(err)
 	}
@@ -547,70 +1031,12 @@ func MustToChequeDelivery1Code(s interface{}) ChequeDelivery1Code {
 }
 
 /*
- * Max15NumericText Ops
- */
-
-const (
-	Max15NumericTextZero   = ""
-	Max15NumericTextSample = "50818539"
-)
-
-var Max15NumericTextPatternRestriction = regexp.MustCompile(`[0-9]{1,15}`)
-
-// IsValid checks if Max15NumericText of type String is valid
-func (t Max15NumericText) IsValid(optional bool) bool {
-
-	valid := xsdt.String(t).IsValid(optional)
-
-	if optional && t == Max15NumericTextZero {
-		return valid
-	}
-	valid = valid && isPatternRestrictionValid(t.String(), Max15NumericTextPatternRestriction)
-
-	return valid
-}
-
-// String method for easy conversion
-func (t Max15NumericText) String() string {
-	return string(t)
-}
-
-// ToMax15NumericText method for easy conversion with application of restrictions
-func ToMax15NumericText(i interface{}) (Max15NumericText, error) {
-
-	s := ""
-	switch ti := i.(type) {
-	case fmt.Stringer:
-		s = ti.String()
-	case string:
-		s = ti
-	default:
-		return "", fmt.Errorf("")
-	}
-	if !isPatternRestrictionValid(s, Max15NumericTextPatternRestriction) {
-		return "", fmt.Errorf("cannot satisfy pattern restriction for %s of type Max15NumericText", s)
-	}
-
-	return Max15NumericText(s), nil
-}
-
-// MustToMax15NumericText method for easy conversion with application of restrictions. Panics on error.
-func MustToMax15NumericText(s interface{}) Max15NumericText {
-	v, err := ToMax15NumericText(s)
-	if err != nil {
-		panic(err)
-	}
-
-	return v
-}
-
-/*
  * ExternalDocumentType1Code Ops
  */
 
 const (
 	ExternalDocumentType1CodeZero      = ""
-	ExternalDocumentType1CodeSample    = "zy"
+	ExternalDocumentType1CodeSample    = "VI"
 	ExternalDocumentType1CodeLength    = 0
 	ExternalDocumentType1CodeMinLength = 1
 	ExternalDocumentType1CodeMaxLength = 4
@@ -664,37 +1090,37 @@ func MustToExternalDocumentType1Code(s interface{}) ExternalDocumentType1Code {
 }
 
 /*
- * ExternalFinancialInstitutionIdentification1Code Ops
+ * Max35Text Ops
  */
 
 const (
-	ExternalFinancialInstitutionIdentification1CodeZero      = ""
-	ExternalFinancialInstitutionIdentification1CodeSample    = "tM"
-	ExternalFinancialInstitutionIdentification1CodeLength    = 0
-	ExternalFinancialInstitutionIdentification1CodeMinLength = 1
-	ExternalFinancialInstitutionIdentification1CodeMaxLength = 4
+	Max35TextZero      = ""
+	Max35TextSample    = "rFCqrhOGVehnNZfARf"
+	Max35TextLength    = 0
+	Max35TextMinLength = 1
+	Max35TextMaxLength = 35
 )
 
-// IsValid checks if ExternalFinancialInstitutionIdentification1Code of type String is valid
-func (t ExternalFinancialInstitutionIdentification1Code) IsValid(optional bool) bool {
+// IsValid checks if Max35Text of type String is valid
+func (t Max35Text) IsValid(optional bool) bool {
 
 	valid := xsdt.String(t).IsValid(optional)
 
-	if optional && t == ExternalFinancialInstitutionIdentification1CodeZero {
+	if optional && t == Max35TextZero {
 		return valid
 	}
-	valid = valid && isLengthRestrictionValid(t.String(), ExternalFinancialInstitutionIdentification1CodeLength, ExternalFinancialInstitutionIdentification1CodeMinLength, ExternalFinancialInstitutionIdentification1CodeMaxLength)
+	valid = valid && isLengthRestrictionValid(t.String(), Max35TextLength, Max35TextMinLength, Max35TextMaxLength)
 
 	return valid
 }
 
 // String method for easy conversion
-func (t ExternalFinancialInstitutionIdentification1Code) String() string {
+func (t Max35Text) String() string {
 	return string(t)
 }
 
-// ToExternalFinancialInstitutionIdentification1Code method for easy conversion with application of restrictions
-func ToExternalFinancialInstitutionIdentification1Code(i interface{}) (ExternalFinancialInstitutionIdentification1Code, error) {
+// ToMax35Text method for easy conversion with application of restrictions
+func ToMax35Text(i interface{}) (Max35Text, error) {
 
 	s := ""
 	switch ti := i.(type) {
@@ -705,16 +1131,16 @@ func ToExternalFinancialInstitutionIdentification1Code(i interface{}) (ExternalF
 	default:
 		return "", fmt.Errorf("")
 	}
-	if !isLengthRestrictionValid(s, ExternalFinancialInstitutionIdentification1CodeLength, ExternalFinancialInstitutionIdentification1CodeMinLength, ExternalFinancialInstitutionIdentification1CodeMaxLength) {
-		return "", fmt.Errorf("cannot satisfy length restriction for %s of type ExternalFinancialInstitutionIdentification1Code", s)
+	if !isLengthRestrictionValid(s, Max35TextLength, Max35TextMinLength, Max35TextMaxLength) {
+		return "", fmt.Errorf("cannot satisfy length restriction for %s of type Max35Text", s)
 	}
 
-	return ExternalFinancialInstitutionIdentification1Code(s), nil
+	return Max35Text(s), nil
 }
 
-// MustToExternalFinancialInstitutionIdentification1Code method for easy conversion with application of restrictions. Panics on error.
-func MustToExternalFinancialInstitutionIdentification1Code(s interface{}) ExternalFinancialInstitutionIdentification1Code {
-	v, err := ToExternalFinancialInstitutionIdentification1Code(s)
+// MustToMax35Text method for easy conversion with application of restrictions. Panics on error.
+func MustToMax35Text(s interface{}) Max35Text {
+	v, err := ToMax35Text(s)
 	if err != nil {
 		panic(err)
 	}
@@ -723,41 +1149,41 @@ func MustToExternalFinancialInstitutionIdentification1Code(s interface{}) Extern
 }
 
 /*
- * ChequeType2Code Ops
+ * PreferredContactMethod1Code Ops
  */
 
 const (
-	ChequeType2CodeZero   = ""
-	ChequeType2CodeSample = "BCHQ"
-	ChequeType2CodeCCHQ   = "CCHQ"
-	ChequeType2CodeCCCH   = "CCCH"
-	ChequeType2CodeBCHQ   = "BCHQ"
-	ChequeType2CodeDRFT   = "DRFT"
-	ChequeType2CodeELDR   = "ELDR"
+	PreferredContactMethod1CodeZero   = ""
+	PreferredContactMethod1CodeSample = "PHON"
+	PreferredContactMethod1CodeLETT   = "LETT"
+	PreferredContactMethod1CodeMAIL   = "MAIL"
+	PreferredContactMethod1CodePHON   = "PHON"
+	PreferredContactMethod1CodeFAXX   = "FAXX"
+	PreferredContactMethod1CodeCELL   = "CELL"
 )
 
-var ChequeType2CodeEnumRestriction = []string{ChequeType2CodeCCHQ, ChequeType2CodeCCCH, ChequeType2CodeBCHQ, ChequeType2CodeDRFT, ChequeType2CodeELDR}
+var PreferredContactMethod1CodeEnumRestriction = []string{PreferredContactMethod1CodeLETT, PreferredContactMethod1CodeMAIL, PreferredContactMethod1CodePHON, PreferredContactMethod1CodeFAXX, PreferredContactMethod1CodeCELL}
 
-// IsValid checks if ChequeType2Code of type String is valid
-func (t ChequeType2Code) IsValid(optional bool) bool {
+// IsValid checks if PreferredContactMethod1Code of type String is valid
+func (t PreferredContactMethod1Code) IsValid(optional bool) bool {
 
 	valid := xsdt.String(t).IsValid(optional)
 
-	if optional && t == ChequeType2CodeZero {
+	if optional && t == PreferredContactMethod1CodeZero {
 		return valid
 	}
-	valid = valid && isEnumRestrictionValid(t.String(), ChequeType2CodeEnumRestriction)
+	valid = valid && isEnumRestrictionValid(t.String(), PreferredContactMethod1CodeEnumRestriction)
 
 	return valid
 }
 
 // String method for easy conversion
-func (t ChequeType2Code) String() string {
+func (t PreferredContactMethod1Code) String() string {
 	return string(t)
 }
 
-// ToChequeType2Code method for easy conversion with application of restrictions
-func ToChequeType2Code(i interface{}) (ChequeType2Code, error) {
+// ToPreferredContactMethod1Code method for easy conversion with application of restrictions
+func ToPreferredContactMethod1Code(i interface{}) (PreferredContactMethod1Code, error) {
 
 	s := ""
 	switch ti := i.(type) {
@@ -768,16 +1194,16 @@ func ToChequeType2Code(i interface{}) (ChequeType2Code, error) {
 	default:
 		return "", fmt.Errorf("")
 	}
-	if !isEnumRestrictionValid(s, ChequeType2CodeEnumRestriction) {
-		return "", fmt.Errorf("cannot satisfy enum restriction for %s of type ChequeType2Code", s)
+	if !isEnumRestrictionValid(s, PreferredContactMethod1CodeEnumRestriction) {
+		return "", fmt.Errorf("cannot satisfy enum restriction for %s of type PreferredContactMethod1Code", s)
 	}
 
-	return ChequeType2Code(s), nil
+	return PreferredContactMethod1Code(s), nil
 }
 
-// MustToChequeType2Code method for easy conversion with application of restrictions. Panics on error.
-func MustToChequeType2Code(s interface{}) ChequeType2Code {
-	v, err := ToChequeType2Code(s)
+// MustToPreferredContactMethod1Code method for easy conversion with application of restrictions. Panics on error.
+func MustToPreferredContactMethod1Code(s interface{}) PreferredContactMethod1Code {
+	v, err := ToPreferredContactMethod1Code(s)
 	if err != nil {
 		panic(err)
 	}
@@ -786,104 +1212,37 @@ func MustToChequeType2Code(s interface{}) ChequeType2Code {
 }
 
 /*
- * Max10MbBinary Ops
+ * Max10Text Ops
  */
 
 const (
-	Max10MbBinarySample    = "Value"
-	Max10MbBinaryZero      = ""
-	Max10MbBinaryLength    = 0
-	Max10MbBinaryMinLength = 1
-	Max10MbBinaryMaxLength = 10485760
+	Max10TextZero      = ""
+	Max10TextSample    = "sBVGB"
+	Max10TextLength    = 0
+	Max10TextMinLength = 1
+	Max10TextMaxLength = 10
 )
 
-// IsValid checks if Max10MbBinary of type Base64Binary is valid
-func (t Max10MbBinary) IsValid(optional bool) bool {
-
-	valid := xsdt.Base64Binary(t).IsValid(optional)
-	if 10485760 != 0 {
-		valid = valid && len(t) < 10485760
-	}
-
-	return valid
-}
-
-// String method for easy conversion
-func (t Max10MbBinary) String() string {
-	return string(t)
-}
-
-// ToMax10MbBinary method for easy conversion with application of restrictions
-func ToMax10MbBinary(i interface{}) (Max10MbBinary, error) {
-
-	s := ""
-	switch ti := i.(type) {
-	case fmt.Stringer:
-		s = ti.String()
-	case string:
-		s = ti
-	default:
-		return "", fmt.Errorf("")
-	}
-	if !isLengthRestrictionValid(s, Max10MbBinaryLength, Max10MbBinaryMinLength, Max10MbBinaryMaxLength) {
-		return "", fmt.Errorf("cannot satisfy length restriction for %s of type Max10MbBinary", s)
-	}
-
-	return Max10MbBinary(s), nil
-}
-
-// MustToMax10MbBinary method for easy conversion with application of restrictions. Panics on error.
-func MustToMax10MbBinary(s interface{}) Max10MbBinary {
-	v, err := ToMax10MbBinary(s)
-	if err != nil {
-		panic(err)
-	}
-
-	return v
-}
-
-// Max10MbBinaryExample method for generation of valid sample data
-func Max10MbBinaryExample() Max10MbBinary {
-	return Max10MbBinary(generateB64SampleData())
-}
-
-/*
- * AddressType2Code Ops
- */
-
-const (
-	AddressType2CodeZero   = ""
-	AddressType2CodeSample = "BIZZ"
-	AddressType2CodeADDR   = "ADDR"
-	AddressType2CodePBOX   = "PBOX"
-	AddressType2CodeHOME   = "HOME"
-	AddressType2CodeBIZZ   = "BIZZ"
-	AddressType2CodeMLTO   = "MLTO"
-	AddressType2CodeDLVY   = "DLVY"
-)
-
-var AddressType2CodeEnumRestriction = []string{AddressType2CodeADDR, AddressType2CodePBOX, AddressType2CodeHOME, AddressType2CodeBIZZ, AddressType2CodeMLTO, AddressType2CodeDLVY}
-
-// IsValid checks if AddressType2Code of type String is valid
-func (t AddressType2Code) IsValid(optional bool) bool {
+// IsValid checks if Max10Text of type String is valid
+func (t Max10Text) IsValid(optional bool) bool {
 
 	valid := xsdt.String(t).IsValid(optional)
 
-	if optional && t == AddressType2CodeZero {
+	if optional && t == Max10TextZero {
 		return valid
 	}
-	valid = valid && isEnumRestrictionValid(t.String(), AddressType2CodeEnumRestriction)
+	valid = valid && isLengthRestrictionValid(t.String(), Max10TextLength, Max10TextMinLength, Max10TextMaxLength)
 
 	return valid
 }
 
 // String method for easy conversion
-func (t AddressType2Code) String() string {
+func (t Max10Text) String() string {
 	return string(t)
 }
 
-// ToAddressType2Code method for easy conversion with application of restrictions
-func ToAddressType2Code(i interface{}) (AddressType2Code, error) {
+// ToMax10Text method for easy conversion with application of restrictions
+func ToMax10Text(i interface{}) (Max10Text, error) {
 
 	s := ""
 	switch ti := i.(type) {
@@ -894,16 +1253,16 @@ func ToAddressType2Code(i interface{}) (AddressType2Code, error) {
 	default:
 		return "", fmt.Errorf("")
 	}
-	if !isEnumRestrictionValid(s, AddressType2CodeEnumRestriction) {
-		return "", fmt.Errorf("cannot satisfy enum restriction for %s of type AddressType2Code", s)
+	if !isLengthRestrictionValid(s, Max10TextLength, Max10TextMinLength, Max10TextMaxLength) {
+		return "", fmt.Errorf("cannot satisfy length restriction for %s of type Max10Text", s)
 	}
 
-	return AddressType2Code(s), nil
+	return Max10Text(s), nil
 }
 
-// MustToAddressType2Code method for easy conversion with application of restrictions. Panics on error.
-func MustToAddressType2Code(s interface{}) AddressType2Code {
-	v, err := ToAddressType2Code(s)
+// MustToMax10Text method for easy conversion with application of restrictions. Panics on error.
+func MustToMax10Text(s interface{}) Max10Text {
+	v, err := ToMax10Text(s)
 	if err != nil {
 		panic(err)
 	}
@@ -912,37 +1271,36 @@ func MustToAddressType2Code(s interface{}) AddressType2Code {
 }
 
 /*
- * Max16Text Ops
+ * Max15NumericText Ops
  */
 
 const (
-	Max16TextZero      = ""
-	Max16TextSample    = "OJPatwtP"
-	Max16TextLength    = 0
-	Max16TextMinLength = 1
-	Max16TextMaxLength = 16
+	Max15NumericTextZero   = ""
+	Max15NumericTextSample = "18"
 )
 
-// IsValid checks if Max16Text of type String is valid
-func (t Max16Text) IsValid(optional bool) bool {
+var Max15NumericTextPatternRestriction = regexp.MustCompile(`[0-9]{1,15}`)
+
+// IsValid checks if Max15NumericText of type String is valid
+func (t Max15NumericText) IsValid(optional bool) bool {
 
 	valid := xsdt.String(t).IsValid(optional)
 
-	if optional && t == Max16TextZero {
+	if optional && t == Max15NumericTextZero {
 		return valid
 	}
-	valid = valid && isLengthRestrictionValid(t.String(), Max16TextLength, Max16TextMinLength, Max16TextMaxLength)
+	valid = valid && isPatternRestrictionValid(t.String(), Max15NumericTextPatternRestriction)
 
 	return valid
 }
 
 // String method for easy conversion
-func (t Max16Text) String() string {
+func (t Max15NumericText) String() string {
 	return string(t)
 }
 
-// ToMax16Text method for easy conversion with application of restrictions
-func ToMax16Text(i interface{}) (Max16Text, error) {
+// ToMax15NumericText method for easy conversion with application of restrictions
+func ToMax15NumericText(i interface{}) (Max15NumericText, error) {
 
 	s := ""
 	switch ti := i.(type) {
@@ -953,16 +1311,16 @@ func ToMax16Text(i interface{}) (Max16Text, error) {
 	default:
 		return "", fmt.Errorf("")
 	}
-	if !isLengthRestrictionValid(s, Max16TextLength, Max16TextMinLength, Max16TextMaxLength) {
-		return "", fmt.Errorf("cannot satisfy length restriction for %s of type Max16Text", s)
+	if !isPatternRestrictionValid(s, Max15NumericTextPatternRestriction) {
+		return "", fmt.Errorf("cannot satisfy pattern restriction for %s of type Max15NumericText", s)
 	}
 
-	return Max16Text(s), nil
+	return Max15NumericText(s), nil
 }
 
-// MustToMax16Text method for easy conversion with application of restrictions. Panics on error.
-func MustToMax16Text(s interface{}) Max16Text {
-	v, err := ToMax16Text(s)
+// MustToMax15NumericText method for easy conversion with application of restrictions. Panics on error.
+func MustToMax15NumericText(s interface{}) Max15NumericText {
+	v, err := ToMax15NumericText(s)
 	if err != nil {
 		panic(err)
 	}
@@ -971,38 +1329,36 @@ func MustToMax16Text(s interface{}) Max16Text {
 }
 
 /*
- * PaymentMethod7Code Ops
+ * BICFIDec2014Identifier Ops
  */
 
 const (
-	PaymentMethod7CodeZero   = ""
-	PaymentMethod7CodeSample = "TRF"
-	PaymentMethod7CodeCHK    = "CHK"
-	PaymentMethod7CodeTRF    = "TRF"
+	BICFIDec2014IdentifierZero   = ""
+	BICFIDec2014IdentifierSample = "IIHGCURF"
 )
 
-var PaymentMethod7CodeEnumRestriction = []string{PaymentMethod7CodeCHK, PaymentMethod7CodeTRF}
+var BICFIDec2014IdentifierPatternRestriction = regexp.MustCompile(`[A-Z0-9]{4,4}[A-Z]{2,2}[A-Z0-9]{2,2}([A-Z0-9]{3,3}){0,1}`)
 
-// IsValid checks if PaymentMethod7Code of type String is valid
-func (t PaymentMethod7Code) IsValid(optional bool) bool {
+// IsValid checks if BICFIDec2014Identifier of type String is valid
+func (t BICFIDec2014Identifier) IsValid(optional bool) bool {
 
 	valid := xsdt.String(t).IsValid(optional)
 
-	if optional && t == PaymentMethod7CodeZero {
+	if optional && t == BICFIDec2014IdentifierZero {
 		return valid
 	}
-	valid = valid && isEnumRestrictionValid(t.String(), PaymentMethod7CodeEnumRestriction)
+	valid = valid && isPatternRestrictionValid(t.String(), BICFIDec2014IdentifierPatternRestriction)
 
 	return valid
 }
 
 // String method for easy conversion
-func (t PaymentMethod7Code) String() string {
+func (t BICFIDec2014Identifier) String() string {
 	return string(t)
 }
 
-// ToPaymentMethod7Code method for easy conversion with application of restrictions
-func ToPaymentMethod7Code(i interface{}) (PaymentMethod7Code, error) {
+// ToBICFIDec2014Identifier method for easy conversion with application of restrictions
+func ToBICFIDec2014Identifier(i interface{}) (BICFIDec2014Identifier, error) {
 
 	s := ""
 	switch ti := i.(type) {
@@ -1013,16 +1369,421 @@ func ToPaymentMethod7Code(i interface{}) (PaymentMethod7Code, error) {
 	default:
 		return "", fmt.Errorf("")
 	}
-	if !isEnumRestrictionValid(s, PaymentMethod7CodeEnumRestriction) {
-		return "", fmt.Errorf("cannot satisfy enum restriction for %s of type PaymentMethod7Code", s)
+	if !isPatternRestrictionValid(s, BICFIDec2014IdentifierPatternRestriction) {
+		return "", fmt.Errorf("cannot satisfy pattern restriction for %s of type BICFIDec2014Identifier", s)
 	}
 
-	return PaymentMethod7Code(s), nil
+	return BICFIDec2014Identifier(s), nil
 }
 
-// MustToPaymentMethod7Code method for easy conversion with application of restrictions. Panics on error.
-func MustToPaymentMethod7Code(s interface{}) PaymentMethod7Code {
-	v, err := ToPaymentMethod7Code(s)
+// MustToBICFIDec2014Identifier method for easy conversion with application of restrictions. Panics on error.
+func MustToBICFIDec2014Identifier(s interface{}) BICFIDec2014Identifier {
+	v, err := ToBICFIDec2014Identifier(s)
+	if err != nil {
+		panic(err)
+	}
+
+	return v
+}
+
+/*
+ * CountryCode Ops
+ */
+
+const (
+	CountryCodeZero   = ""
+	CountryCodeSample = "FG"
+)
+
+var CountryCodePatternRestriction = regexp.MustCompile(`[A-Z]{2,2}`)
+
+// IsValid checks if CountryCode of type String is valid
+func (t CountryCode) IsValid(optional bool) bool {
+
+	valid := xsdt.String(t).IsValid(optional)
+
+	if optional && t == CountryCodeZero {
+		return valid
+	}
+	valid = valid && isPatternRestrictionValid(t.String(), CountryCodePatternRestriction)
+
+	return valid
+}
+
+// String method for easy conversion
+func (t CountryCode) String() string {
+	return string(t)
+}
+
+// ToCountryCode method for easy conversion with application of restrictions
+func ToCountryCode(i interface{}) (CountryCode, error) {
+
+	s := ""
+	switch ti := i.(type) {
+	case fmt.Stringer:
+		s = ti.String()
+	case string:
+		s = ti
+	default:
+		return "", fmt.Errorf("")
+	}
+	if !isPatternRestrictionValid(s, CountryCodePatternRestriction) {
+		return "", fmt.Errorf("cannot satisfy pattern restriction for %s of type CountryCode", s)
+	}
+
+	return CountryCode(s), nil
+}
+
+// MustToCountryCode method for easy conversion with application of restrictions. Panics on error.
+func MustToCountryCode(s interface{}) CountryCode {
+	v, err := ToCountryCode(s)
+	if err != nil {
+		panic(err)
+	}
+
+	return v
+}
+
+/*
+ * ISODate Ops
+ */
+
+const (
+	ISODateSample = "Value"
+	ISODateZero   = ""
+)
+
+// IsValid checks if ISODate of type Date is valid
+func (t ISODate) IsValid(optional bool) bool {
+
+	valid := xsdt.Date(t).IsValid(optional)
+	if optional && t == ISODateZero {
+		return valid
+	}
+	return valid
+}
+
+// String method for easy conversion
+func (t ISODate) String() string {
+	return string(t)
+}
+
+// ToISODate method for easy conversion from time.Time
+func ToISODate(tm interface{}) (ISODate, error) {
+
+	switch typedTm := tm.(type) {
+	case time.Time:
+		return ISODate(typedTm.Format("2006-01-02")), nil
+	case string:
+		return ISODate(typedTm), nil
+	case ISODate:
+		return typedTm, nil
+	}
+
+	return "", fmt.Errorf("cannot convert %v to ISODate", tm)
+}
+
+func MustToISODate(tm interface{}) ISODate {
+	d, err := ToISODate(tm)
+	if err != nil {
+		panic(err)
+	}
+
+	return d
+}
+
+// ISODateExample method for generation of valid sample data
+func ISODateExample() ISODate {
+	return ISODate(time.Now().Format("2006-01-02"))
+}
+
+/*
+ * ActiveOrHistoricCurrencyCode Ops
+ */
+
+const (
+	ActiveOrHistoricCurrencyCodeZero   = ""
+	ActiveOrHistoricCurrencyCodeSample = "IQX"
+)
+
+var ActiveOrHistoricCurrencyCodePatternRestriction = regexp.MustCompile(`[A-Z]{3,3}`)
+
+// IsValid checks if ActiveOrHistoricCurrencyCode of type String is valid
+func (t ActiveOrHistoricCurrencyCode) IsValid(optional bool) bool {
+
+	valid := xsdt.String(t).IsValid(optional)
+
+	if optional && t == ActiveOrHistoricCurrencyCodeZero {
+		return valid
+	}
+	valid = valid && isPatternRestrictionValid(t.String(), ActiveOrHistoricCurrencyCodePatternRestriction)
+
+	return valid
+}
+
+// String method for easy conversion
+func (t ActiveOrHistoricCurrencyCode) String() string {
+	return string(t)
+}
+
+// ToActiveOrHistoricCurrencyCode method for easy conversion with application of restrictions
+func ToActiveOrHistoricCurrencyCode(i interface{}) (ActiveOrHistoricCurrencyCode, error) {
+
+	s := ""
+	switch ti := i.(type) {
+	case fmt.Stringer:
+		s = ti.String()
+	case string:
+		s = ti
+	default:
+		return "", fmt.Errorf("")
+	}
+	if !isPatternRestrictionValid(s, ActiveOrHistoricCurrencyCodePatternRestriction) {
+		return "", fmt.Errorf("cannot satisfy pattern restriction for %s of type ActiveOrHistoricCurrencyCode", s)
+	}
+
+	return ActiveOrHistoricCurrencyCode(s), nil
+}
+
+// MustToActiveOrHistoricCurrencyCode method for easy conversion with application of restrictions. Panics on error.
+func MustToActiveOrHistoricCurrencyCode(s interface{}) ActiveOrHistoricCurrencyCode {
+	v, err := ToActiveOrHistoricCurrencyCode(s)
+	if err != nil {
+		panic(err)
+	}
+
+	return v
+}
+
+/*
+ * ExternalProxyAccountType1Code Ops
+ */
+
+const (
+	ExternalProxyAccountType1CodeZero      = ""
+	ExternalProxyAccountType1CodeSample    = "Ra"
+	ExternalProxyAccountType1CodeLength    = 0
+	ExternalProxyAccountType1CodeMinLength = 1
+	ExternalProxyAccountType1CodeMaxLength = 4
+)
+
+// IsValid checks if ExternalProxyAccountType1Code of type String is valid
+func (t ExternalProxyAccountType1Code) IsValid(optional bool) bool {
+
+	valid := xsdt.String(t).IsValid(optional)
+
+	if optional && t == ExternalProxyAccountType1CodeZero {
+		return valid
+	}
+	valid = valid && isLengthRestrictionValid(t.String(), ExternalProxyAccountType1CodeLength, ExternalProxyAccountType1CodeMinLength, ExternalProxyAccountType1CodeMaxLength)
+
+	return valid
+}
+
+// String method for easy conversion
+func (t ExternalProxyAccountType1Code) String() string {
+	return string(t)
+}
+
+// ToExternalProxyAccountType1Code method for easy conversion with application of restrictions
+func ToExternalProxyAccountType1Code(i interface{}) (ExternalProxyAccountType1Code, error) {
+
+	s := ""
+	switch ti := i.(type) {
+	case fmt.Stringer:
+		s = ti.String()
+	case string:
+		s = ti
+	default:
+		return "", fmt.Errorf("")
+	}
+	if !isLengthRestrictionValid(s, ExternalProxyAccountType1CodeLength, ExternalProxyAccountType1CodeMinLength, ExternalProxyAccountType1CodeMaxLength) {
+		return "", fmt.Errorf("cannot satisfy length restriction for %s of type ExternalProxyAccountType1Code", s)
+	}
+
+	return ExternalProxyAccountType1Code(s), nil
+}
+
+// MustToExternalProxyAccountType1Code method for easy conversion with application of restrictions. Panics on error.
+func MustToExternalProxyAccountType1Code(s interface{}) ExternalProxyAccountType1Code {
+	v, err := ToExternalProxyAccountType1Code(s)
+	if err != nil {
+		panic(err)
+	}
+
+	return v
+}
+
+/*
+ * ExternalDocumentLineType1Code Ops
+ */
+
+const (
+	ExternalDocumentLineType1CodeZero      = ""
+	ExternalDocumentLineType1CodeSample    = "Hj"
+	ExternalDocumentLineType1CodeLength    = 0
+	ExternalDocumentLineType1CodeMinLength = 1
+	ExternalDocumentLineType1CodeMaxLength = 4
+)
+
+// IsValid checks if ExternalDocumentLineType1Code of type String is valid
+func (t ExternalDocumentLineType1Code) IsValid(optional bool) bool {
+
+	valid := xsdt.String(t).IsValid(optional)
+
+	if optional && t == ExternalDocumentLineType1CodeZero {
+		return valid
+	}
+	valid = valid && isLengthRestrictionValid(t.String(), ExternalDocumentLineType1CodeLength, ExternalDocumentLineType1CodeMinLength, ExternalDocumentLineType1CodeMaxLength)
+
+	return valid
+}
+
+// String method for easy conversion
+func (t ExternalDocumentLineType1Code) String() string {
+	return string(t)
+}
+
+// ToExternalDocumentLineType1Code method for easy conversion with application of restrictions
+func ToExternalDocumentLineType1Code(i interface{}) (ExternalDocumentLineType1Code, error) {
+
+	s := ""
+	switch ti := i.(type) {
+	case fmt.Stringer:
+		s = ti.String()
+	case string:
+		s = ti
+	default:
+		return "", fmt.Errorf("")
+	}
+	if !isLengthRestrictionValid(s, ExternalDocumentLineType1CodeLength, ExternalDocumentLineType1CodeMinLength, ExternalDocumentLineType1CodeMaxLength) {
+		return "", fmt.Errorf("cannot satisfy length restriction for %s of type ExternalDocumentLineType1Code", s)
+	}
+
+	return ExternalDocumentLineType1Code(s), nil
+}
+
+// MustToExternalDocumentLineType1Code method for easy conversion with application of restrictions. Panics on error.
+func MustToExternalDocumentLineType1Code(s interface{}) ExternalDocumentLineType1Code {
+	v, err := ToExternalDocumentLineType1Code(s)
+	if err != nil {
+		panic(err)
+	}
+
+	return v
+}
+
+/*
+ * ExternalCategoryPurpose1Code Ops
+ */
+
+const (
+	ExternalCategoryPurpose1CodeZero      = ""
+	ExternalCategoryPurpose1CodeSample    = "fF"
+	ExternalCategoryPurpose1CodeLength    = 0
+	ExternalCategoryPurpose1CodeMinLength = 1
+	ExternalCategoryPurpose1CodeMaxLength = 4
+)
+
+// IsValid checks if ExternalCategoryPurpose1Code of type String is valid
+func (t ExternalCategoryPurpose1Code) IsValid(optional bool) bool {
+
+	valid := xsdt.String(t).IsValid(optional)
+
+	if optional && t == ExternalCategoryPurpose1CodeZero {
+		return valid
+	}
+	valid = valid && isLengthRestrictionValid(t.String(), ExternalCategoryPurpose1CodeLength, ExternalCategoryPurpose1CodeMinLength, ExternalCategoryPurpose1CodeMaxLength)
+
+	return valid
+}
+
+// String method for easy conversion
+func (t ExternalCategoryPurpose1Code) String() string {
+	return string(t)
+}
+
+// ToExternalCategoryPurpose1Code method for easy conversion with application of restrictions
+func ToExternalCategoryPurpose1Code(i interface{}) (ExternalCategoryPurpose1Code, error) {
+
+	s := ""
+	switch ti := i.(type) {
+	case fmt.Stringer:
+		s = ti.String()
+	case string:
+		s = ti
+	default:
+		return "", fmt.Errorf("")
+	}
+	if !isLengthRestrictionValid(s, ExternalCategoryPurpose1CodeLength, ExternalCategoryPurpose1CodeMinLength, ExternalCategoryPurpose1CodeMaxLength) {
+		return "", fmt.Errorf("cannot satisfy length restriction for %s of type ExternalCategoryPurpose1Code", s)
+	}
+
+	return ExternalCategoryPurpose1Code(s), nil
+}
+
+// MustToExternalCategoryPurpose1Code method for easy conversion with application of restrictions. Panics on error.
+func MustToExternalCategoryPurpose1Code(s interface{}) ExternalCategoryPurpose1Code {
+	v, err := ToExternalCategoryPurpose1Code(s)
+	if err != nil {
+		panic(err)
+	}
+
+	return v
+}
+
+/*
+ * ExternalTaxAmountType1Code Ops
+ */
+
+const (
+	ExternalTaxAmountType1CodeZero      = ""
+	ExternalTaxAmountType1CodeSample    = "cQ"
+	ExternalTaxAmountType1CodeLength    = 0
+	ExternalTaxAmountType1CodeMinLength = 1
+	ExternalTaxAmountType1CodeMaxLength = 4
+)
+
+// IsValid checks if ExternalTaxAmountType1Code of type String is valid
+func (t ExternalTaxAmountType1Code) IsValid(optional bool) bool {
+
+	valid := xsdt.String(t).IsValid(optional)
+
+	if optional && t == ExternalTaxAmountType1CodeZero {
+		return valid
+	}
+	valid = valid && isLengthRestrictionValid(t.String(), ExternalTaxAmountType1CodeLength, ExternalTaxAmountType1CodeMinLength, ExternalTaxAmountType1CodeMaxLength)
+
+	return valid
+}
+
+// String method for easy conversion
+func (t ExternalTaxAmountType1Code) String() string {
+	return string(t)
+}
+
+// ToExternalTaxAmountType1Code method for easy conversion with application of restrictions
+func ToExternalTaxAmountType1Code(i interface{}) (ExternalTaxAmountType1Code, error) {
+
+	s := ""
+	switch ti := i.(type) {
+	case fmt.Stringer:
+		s = ti.String()
+	case string:
+		s = ti
+	default:
+		return "", fmt.Errorf("")
+	}
+	if !isLengthRestrictionValid(s, ExternalTaxAmountType1CodeLength, ExternalTaxAmountType1CodeMinLength, ExternalTaxAmountType1CodeMaxLength) {
+		return "", fmt.Errorf("cannot satisfy length restriction for %s of type ExternalTaxAmountType1Code", s)
+	}
+
+	return ExternalTaxAmountType1Code(s), nil
+}
+
+// MustToExternalTaxAmountType1Code method for easy conversion with application of restrictions. Panics on error.
+func MustToExternalTaxAmountType1Code(s interface{}) ExternalTaxAmountType1Code {
+	v, err := ToExternalTaxAmountType1Code(s)
 	if err != nil {
 		panic(err)
 	}
@@ -1095,37 +1856,41 @@ func MustToDocumentType3Code(s interface{}) DocumentType3Code {
 }
 
 /*
- * ExternalClearingSystemIdentification1Code Ops
+ * ChequeType2Code Ops
  */
 
 const (
-	ExternalClearingSystemIdentification1CodeZero      = ""
-	ExternalClearingSystemIdentification1CodeSample    = "ilf"
-	ExternalClearingSystemIdentification1CodeLength    = 0
-	ExternalClearingSystemIdentification1CodeMinLength = 1
-	ExternalClearingSystemIdentification1CodeMaxLength = 5
+	ChequeType2CodeZero   = ""
+	ChequeType2CodeSample = "BCHQ"
+	ChequeType2CodeCCHQ   = "CCHQ"
+	ChequeType2CodeCCCH   = "CCCH"
+	ChequeType2CodeBCHQ   = "BCHQ"
+	ChequeType2CodeDRFT   = "DRFT"
+	ChequeType2CodeELDR   = "ELDR"
 )
 
-// IsValid checks if ExternalClearingSystemIdentification1Code of type String is valid
-func (t ExternalClearingSystemIdentification1Code) IsValid(optional bool) bool {
+var ChequeType2CodeEnumRestriction = []string{ChequeType2CodeCCHQ, ChequeType2CodeCCCH, ChequeType2CodeBCHQ, ChequeType2CodeDRFT, ChequeType2CodeELDR}
+
+// IsValid checks if ChequeType2Code of type String is valid
+func (t ChequeType2Code) IsValid(optional bool) bool {
 
 	valid := xsdt.String(t).IsValid(optional)
 
-	if optional && t == ExternalClearingSystemIdentification1CodeZero {
+	if optional && t == ChequeType2CodeZero {
 		return valid
 	}
-	valid = valid && isLengthRestrictionValid(t.String(), ExternalClearingSystemIdentification1CodeLength, ExternalClearingSystemIdentification1CodeMinLength, ExternalClearingSystemIdentification1CodeMaxLength)
+	valid = valid && isEnumRestrictionValid(t.String(), ChequeType2CodeEnumRestriction)
 
 	return valid
 }
 
 // String method for easy conversion
-func (t ExternalClearingSystemIdentification1Code) String() string {
+func (t ChequeType2Code) String() string {
 	return string(t)
 }
 
-// ToExternalClearingSystemIdentification1Code method for easy conversion with application of restrictions
-func ToExternalClearingSystemIdentification1Code(i interface{}) (ExternalClearingSystemIdentification1Code, error) {
+// ToChequeType2Code method for easy conversion with application of restrictions
+func ToChequeType2Code(i interface{}) (ChequeType2Code, error) {
 
 	s := ""
 	switch ti := i.(type) {
@@ -1136,16 +1901,673 @@ func ToExternalClearingSystemIdentification1Code(i interface{}) (ExternalClearin
 	default:
 		return "", fmt.Errorf("")
 	}
-	if !isLengthRestrictionValid(s, ExternalClearingSystemIdentification1CodeLength, ExternalClearingSystemIdentification1CodeMinLength, ExternalClearingSystemIdentification1CodeMaxLength) {
-		return "", fmt.Errorf("cannot satisfy length restriction for %s of type ExternalClearingSystemIdentification1Code", s)
+	if !isEnumRestrictionValid(s, ChequeType2CodeEnumRestriction) {
+		return "", fmt.Errorf("cannot satisfy enum restriction for %s of type ChequeType2Code", s)
 	}
 
-	return ExternalClearingSystemIdentification1Code(s), nil
+	return ChequeType2Code(s), nil
 }
 
-// MustToExternalClearingSystemIdentification1Code method for easy conversion with application of restrictions. Panics on error.
-func MustToExternalClearingSystemIdentification1Code(s interface{}) ExternalClearingSystemIdentification1Code {
-	v, err := ToExternalClearingSystemIdentification1Code(s)
+// MustToChequeType2Code method for easy conversion with application of restrictions. Panics on error.
+func MustToChequeType2Code(s interface{}) ChequeType2Code {
+	v, err := ToChequeType2Code(s)
+	if err != nil {
+		panic(err)
+	}
+
+	return v
+}
+
+/*
+ * AddressType2Code Ops
+ */
+
+const (
+	AddressType2CodeZero   = ""
+	AddressType2CodeSample = "BIZZ"
+	AddressType2CodeADDR   = "ADDR"
+	AddressType2CodePBOX   = "PBOX"
+	AddressType2CodeHOME   = "HOME"
+	AddressType2CodeBIZZ   = "BIZZ"
+	AddressType2CodeMLTO   = "MLTO"
+	AddressType2CodeDLVY   = "DLVY"
+)
+
+var AddressType2CodeEnumRestriction = []string{AddressType2CodeADDR, AddressType2CodePBOX, AddressType2CodeHOME, AddressType2CodeBIZZ, AddressType2CodeMLTO, AddressType2CodeDLVY}
+
+// IsValid checks if AddressType2Code of type String is valid
+func (t AddressType2Code) IsValid(optional bool) bool {
+
+	valid := xsdt.String(t).IsValid(optional)
+
+	if optional && t == AddressType2CodeZero {
+		return valid
+	}
+	valid = valid && isEnumRestrictionValid(t.String(), AddressType2CodeEnumRestriction)
+
+	return valid
+}
+
+// String method for easy conversion
+func (t AddressType2Code) String() string {
+	return string(t)
+}
+
+// ToAddressType2Code method for easy conversion with application of restrictions
+func ToAddressType2Code(i interface{}) (AddressType2Code, error) {
+
+	s := ""
+	switch ti := i.(type) {
+	case fmt.Stringer:
+		s = ti.String()
+	case string:
+		s = ti
+	default:
+		return "", fmt.Errorf("")
+	}
+	if !isEnumRestrictionValid(s, AddressType2CodeEnumRestriction) {
+		return "", fmt.Errorf("cannot satisfy enum restriction for %s of type AddressType2Code", s)
+	}
+
+	return AddressType2Code(s), nil
+}
+
+// MustToAddressType2Code method for easy conversion with application of restrictions. Panics on error.
+func MustToAddressType2Code(s interface{}) AddressType2Code {
+	v, err := ToAddressType2Code(s)
+	if err != nil {
+		panic(err)
+	}
+
+	return v
+}
+
+/*
+ * Max128Text Ops
+ */
+
+const (
+	Max128TextZero      = ""
+	Max128TextSample    = "tXovQyXbjAyWbspgheqXXumwlaMkvqgeVNsLyylTpEsGuymNstQzxPbmXGYPZRoC"
+	Max128TextLength    = 0
+	Max128TextMinLength = 1
+	Max128TextMaxLength = 128
+)
+
+// IsValid checks if Max128Text of type String is valid
+func (t Max128Text) IsValid(optional bool) bool {
+
+	valid := xsdt.String(t).IsValid(optional)
+
+	if optional && t == Max128TextZero {
+		return valid
+	}
+	valid = valid && isLengthRestrictionValid(t.String(), Max128TextLength, Max128TextMinLength, Max128TextMaxLength)
+
+	return valid
+}
+
+// String method for easy conversion
+func (t Max128Text) String() string {
+	return string(t)
+}
+
+// ToMax128Text method for easy conversion with application of restrictions
+func ToMax128Text(i interface{}) (Max128Text, error) {
+
+	s := ""
+	switch ti := i.(type) {
+	case fmt.Stringer:
+		s = ti.String()
+	case string:
+		s = ti
+	default:
+		return "", fmt.Errorf("")
+	}
+	if !isLengthRestrictionValid(s, Max128TextLength, Max128TextMinLength, Max128TextMaxLength) {
+		return "", fmt.Errorf("cannot satisfy length restriction for %s of type Max128Text", s)
+	}
+
+	return Max128Text(s), nil
+}
+
+// MustToMax128Text method for easy conversion with application of restrictions. Panics on error.
+func MustToMax128Text(s interface{}) Max128Text {
+	v, err := ToMax128Text(s)
+	if err != nil {
+		panic(err)
+	}
+
+	return v
+}
+
+/*
+ * Max70Text Ops
+ */
+
+const (
+	Max70TextZero      = ""
+	Max70TextSample    = "cAjYwjicELciiQYDuPezahlBGYsXsQyazOW"
+	Max70TextLength    = 0
+	Max70TextMinLength = 1
+	Max70TextMaxLength = 70
+)
+
+// IsValid checks if Max70Text of type String is valid
+func (t Max70Text) IsValid(optional bool) bool {
+
+	valid := xsdt.String(t).IsValid(optional)
+
+	if optional && t == Max70TextZero {
+		return valid
+	}
+	valid = valid && isLengthRestrictionValid(t.String(), Max70TextLength, Max70TextMinLength, Max70TextMaxLength)
+
+	return valid
+}
+
+// String method for easy conversion
+func (t Max70Text) String() string {
+	return string(t)
+}
+
+// ToMax70Text method for easy conversion with application of restrictions
+func ToMax70Text(i interface{}) (Max70Text, error) {
+
+	s := ""
+	switch ti := i.(type) {
+	case fmt.Stringer:
+		s = ti.String()
+	case string:
+		s = ti
+	default:
+		return "", fmt.Errorf("")
+	}
+	if !isLengthRestrictionValid(s, Max70TextLength, Max70TextMinLength, Max70TextMaxLength) {
+		return "", fmt.Errorf("cannot satisfy length restriction for %s of type Max70Text", s)
+	}
+
+	return Max70Text(s), nil
+}
+
+// MustToMax70Text method for easy conversion with application of restrictions. Panics on error.
+func MustToMax70Text(s interface{}) Max70Text {
+	v, err := ToMax70Text(s)
+	if err != nil {
+		panic(err)
+	}
+
+	return v
+}
+
+/*
+ * ChargeBearerType1Code Ops
+ */
+
+const (
+	ChargeBearerType1CodeZero   = ""
+	ChargeBearerType1CodeSample = "SHAR"
+	ChargeBearerType1CodeDEBT   = "DEBT"
+	ChargeBearerType1CodeCRED   = "CRED"
+	ChargeBearerType1CodeSHAR   = "SHAR"
+	ChargeBearerType1CodeSLEV   = "SLEV"
+)
+
+var ChargeBearerType1CodeEnumRestriction = []string{ChargeBearerType1CodeDEBT, ChargeBearerType1CodeCRED, ChargeBearerType1CodeSHAR, ChargeBearerType1CodeSLEV}
+
+// IsValid checks if ChargeBearerType1Code of type String is valid
+func (t ChargeBearerType1Code) IsValid(optional bool) bool {
+
+	valid := xsdt.String(t).IsValid(optional)
+
+	if optional && t == ChargeBearerType1CodeZero {
+		return valid
+	}
+	valid = valid && isEnumRestrictionValid(t.String(), ChargeBearerType1CodeEnumRestriction)
+
+	return valid
+}
+
+// String method for easy conversion
+func (t ChargeBearerType1Code) String() string {
+	return string(t)
+}
+
+// ToChargeBearerType1Code method for easy conversion with application of restrictions
+func ToChargeBearerType1Code(i interface{}) (ChargeBearerType1Code, error) {
+
+	s := ""
+	switch ti := i.(type) {
+	case fmt.Stringer:
+		s = ti.String()
+	case string:
+		s = ti
+	default:
+		return "", fmt.Errorf("")
+	}
+	if !isEnumRestrictionValid(s, ChargeBearerType1CodeEnumRestriction) {
+		return "", fmt.Errorf("cannot satisfy enum restriction for %s of type ChargeBearerType1Code", s)
+	}
+
+	return ChargeBearerType1Code(s), nil
+}
+
+// MustToChargeBearerType1Code method for easy conversion with application of restrictions. Panics on error.
+func MustToChargeBearerType1Code(s interface{}) ChargeBearerType1Code {
+	v, err := ToChargeBearerType1Code(s)
+	if err != nil {
+		panic(err)
+	}
+
+	return v
+}
+
+/*
+ * ISODateTime Ops
+ */
+
+const (
+	ISODateTimeSample = "Value"
+	ISODateTimeZero   = ""
+)
+
+// IsValid checks if ISODateTime of type DateTime is valid
+func (t ISODateTime) IsValid(optional bool) bool {
+
+	valid := xsdt.DateTime(t).IsValid(optional)
+	if optional && t == ISODateTimeZero {
+		return valid
+	}
+	return valid
+}
+
+// String method for easy conversion
+func (t ISODateTime) String() string {
+	return string(t)
+}
+
+// ToISODateTime method for easy conversion from time.Time
+func ToISODateTime(tm interface{}) (ISODateTime, error) {
+
+	switch typedTm := tm.(type) {
+	case time.Time:
+		return ISODateTime(typedTm.Format(time.RFC3339)), nil
+	case string:
+		return ISODateTime(typedTm), nil
+	case ISODateTime:
+		return typedTm, nil
+	}
+
+	return "", fmt.Errorf("cannot convert %v to ISODateTime", tm)
+}
+
+func MustToISODateTime(tm interface{}) ISODateTime {
+	d, err := ToISODateTime(tm)
+	if err != nil {
+		panic(err)
+	}
+
+	return d
+}
+
+// ISODateTimeExample method for generation of valid sample data
+func ISODateTimeExample() ISODateTime {
+	return ISODateTime(time.Now().Format(time.RFC3339))
+}
+
+/*
+ * RemittanceLocationMethod2Code Ops
+ */
+
+const (
+	RemittanceLocationMethod2CodeZero   = ""
+	RemittanceLocationMethod2CodeSample = "EMAL"
+	RemittanceLocationMethod2CodeFAXI   = "FAXI"
+	RemittanceLocationMethod2CodeEDIC   = "EDIC"
+	RemittanceLocationMethod2CodeURID   = "URID"
+	RemittanceLocationMethod2CodeEMAL   = "EMAL"
+	RemittanceLocationMethod2CodePOST   = "POST"
+	RemittanceLocationMethod2CodeSMSM   = "SMSM"
+)
+
+var RemittanceLocationMethod2CodeEnumRestriction = []string{RemittanceLocationMethod2CodeFAXI, RemittanceLocationMethod2CodeEDIC, RemittanceLocationMethod2CodeURID, RemittanceLocationMethod2CodeEMAL, RemittanceLocationMethod2CodePOST, RemittanceLocationMethod2CodeSMSM}
+
+// IsValid checks if RemittanceLocationMethod2Code of type String is valid
+func (t RemittanceLocationMethod2Code) IsValid(optional bool) bool {
+
+	valid := xsdt.String(t).IsValid(optional)
+
+	if optional && t == RemittanceLocationMethod2CodeZero {
+		return valid
+	}
+	valid = valid && isEnumRestrictionValid(t.String(), RemittanceLocationMethod2CodeEnumRestriction)
+
+	return valid
+}
+
+// String method for easy conversion
+func (t RemittanceLocationMethod2Code) String() string {
+	return string(t)
+}
+
+// ToRemittanceLocationMethod2Code method for easy conversion with application of restrictions
+func ToRemittanceLocationMethod2Code(i interface{}) (RemittanceLocationMethod2Code, error) {
+
+	s := ""
+	switch ti := i.(type) {
+	case fmt.Stringer:
+		s = ti.String()
+	case string:
+		s = ti
+	default:
+		return "", fmt.Errorf("")
+	}
+	if !isEnumRestrictionValid(s, RemittanceLocationMethod2CodeEnumRestriction) {
+		return "", fmt.Errorf("cannot satisfy enum restriction for %s of type RemittanceLocationMethod2Code", s)
+	}
+
+	return RemittanceLocationMethod2Code(s), nil
+}
+
+// MustToRemittanceLocationMethod2Code method for easy conversion with application of restrictions. Panics on error.
+func MustToRemittanceLocationMethod2Code(s interface{}) RemittanceLocationMethod2Code {
+	v, err := ToRemittanceLocationMethod2Code(s)
+	if err != nil {
+		panic(err)
+	}
+
+	return v
+}
+
+/*
+ * ExternalAccountIdentification1Code Ops
+ */
+
+const (
+	ExternalAccountIdentification1CodeZero      = ""
+	ExternalAccountIdentification1CodeSample    = "cr"
+	ExternalAccountIdentification1CodeLength    = 0
+	ExternalAccountIdentification1CodeMinLength = 1
+	ExternalAccountIdentification1CodeMaxLength = 4
+)
+
+// IsValid checks if ExternalAccountIdentification1Code of type String is valid
+func (t ExternalAccountIdentification1Code) IsValid(optional bool) bool {
+
+	valid := xsdt.String(t).IsValid(optional)
+
+	if optional && t == ExternalAccountIdentification1CodeZero {
+		return valid
+	}
+	valid = valid && isLengthRestrictionValid(t.String(), ExternalAccountIdentification1CodeLength, ExternalAccountIdentification1CodeMinLength, ExternalAccountIdentification1CodeMaxLength)
+
+	return valid
+}
+
+// String method for easy conversion
+func (t ExternalAccountIdentification1Code) String() string {
+	return string(t)
+}
+
+// ToExternalAccountIdentification1Code method for easy conversion with application of restrictions
+func ToExternalAccountIdentification1Code(i interface{}) (ExternalAccountIdentification1Code, error) {
+
+	s := ""
+	switch ti := i.(type) {
+	case fmt.Stringer:
+		s = ti.String()
+	case string:
+		s = ti
+	default:
+		return "", fmt.Errorf("")
+	}
+	if !isLengthRestrictionValid(s, ExternalAccountIdentification1CodeLength, ExternalAccountIdentification1CodeMinLength, ExternalAccountIdentification1CodeMaxLength) {
+		return "", fmt.Errorf("cannot satisfy length restriction for %s of type ExternalAccountIdentification1Code", s)
+	}
+
+	return ExternalAccountIdentification1Code(s), nil
+}
+
+// MustToExternalAccountIdentification1Code method for easy conversion with application of restrictions. Panics on error.
+func MustToExternalAccountIdentification1Code(s interface{}) ExternalAccountIdentification1Code {
+	v, err := ToExternalAccountIdentification1Code(s)
+	if err != nil {
+		panic(err)
+	}
+
+	return v
+}
+
+/*
+ * ExternalPersonIdentification1Code Ops
+ */
+
+const (
+	ExternalPersonIdentification1CodeZero      = ""
+	ExternalPersonIdentification1CodeSample    = "Sb"
+	ExternalPersonIdentification1CodeLength    = 0
+	ExternalPersonIdentification1CodeMinLength = 1
+	ExternalPersonIdentification1CodeMaxLength = 4
+)
+
+// IsValid checks if ExternalPersonIdentification1Code of type String is valid
+func (t ExternalPersonIdentification1Code) IsValid(optional bool) bool {
+
+	valid := xsdt.String(t).IsValid(optional)
+
+	if optional && t == ExternalPersonIdentification1CodeZero {
+		return valid
+	}
+	valid = valid && isLengthRestrictionValid(t.String(), ExternalPersonIdentification1CodeLength, ExternalPersonIdentification1CodeMinLength, ExternalPersonIdentification1CodeMaxLength)
+
+	return valid
+}
+
+// String method for easy conversion
+func (t ExternalPersonIdentification1Code) String() string {
+	return string(t)
+}
+
+// ToExternalPersonIdentification1Code method for easy conversion with application of restrictions
+func ToExternalPersonIdentification1Code(i interface{}) (ExternalPersonIdentification1Code, error) {
+
+	s := ""
+	switch ti := i.(type) {
+	case fmt.Stringer:
+		s = ti.String()
+	case string:
+		s = ti
+	default:
+		return "", fmt.Errorf("")
+	}
+	if !isLengthRestrictionValid(s, ExternalPersonIdentification1CodeLength, ExternalPersonIdentification1CodeMinLength, ExternalPersonIdentification1CodeMaxLength) {
+		return "", fmt.Errorf("cannot satisfy length restriction for %s of type ExternalPersonIdentification1Code", s)
+	}
+
+	return ExternalPersonIdentification1Code(s), nil
+}
+
+// MustToExternalPersonIdentification1Code method for easy conversion with application of restrictions. Panics on error.
+func MustToExternalPersonIdentification1Code(s interface{}) ExternalPersonIdentification1Code {
+	v, err := ToExternalPersonIdentification1Code(s)
+	if err != nil {
+		panic(err)
+	}
+
+	return v
+}
+
+/*
+ * CreditDebitCode Ops
+ */
+
+const (
+	CreditDebitCodeZero   = ""
+	CreditDebitCodeSample = "DBIT"
+	CreditDebitCodeCRDT   = "CRDT"
+	CreditDebitCodeDBIT   = "DBIT"
+)
+
+var CreditDebitCodeEnumRestriction = []string{CreditDebitCodeCRDT, CreditDebitCodeDBIT}
+
+// IsValid checks if CreditDebitCode of type String is valid
+func (t CreditDebitCode) IsValid(optional bool) bool {
+
+	valid := xsdt.String(t).IsValid(optional)
+
+	if optional && t == CreditDebitCodeZero {
+		return valid
+	}
+	valid = valid && isEnumRestrictionValid(t.String(), CreditDebitCodeEnumRestriction)
+
+	return valid
+}
+
+// String method for easy conversion
+func (t CreditDebitCode) String() string {
+	return string(t)
+}
+
+// ToCreditDebitCode method for easy conversion with application of restrictions
+func ToCreditDebitCode(i interface{}) (CreditDebitCode, error) {
+
+	s := ""
+	switch ti := i.(type) {
+	case fmt.Stringer:
+		s = ti.String()
+	case string:
+		s = ti
+	default:
+		return "", fmt.Errorf("")
+	}
+	if !isEnumRestrictionValid(s, CreditDebitCodeEnumRestriction) {
+		return "", fmt.Errorf("cannot satisfy enum restriction for %s of type CreditDebitCode", s)
+	}
+
+	return CreditDebitCode(s), nil
+}
+
+// MustToCreditDebitCode method for easy conversion with application of restrictions. Panics on error.
+func MustToCreditDebitCode(s interface{}) CreditDebitCode {
+	v, err := ToCreditDebitCode(s)
+	if err != nil {
+		panic(err)
+	}
+
+	return v
+}
+
+/*
+ * Exact4AlphaNumericText Ops
+ */
+
+const (
+	Exact4AlphaNumericTextZero   = ""
+	Exact4AlphaNumericTextSample = "pyZO"
+)
+
+var Exact4AlphaNumericTextPatternRestriction = regexp.MustCompile(`[a-zA-Z0-9]{4}`)
+
+// IsValid checks if Exact4AlphaNumericText of type String is valid
+func (t Exact4AlphaNumericText) IsValid(optional bool) bool {
+
+	valid := xsdt.String(t).IsValid(optional)
+
+	if optional && t == Exact4AlphaNumericTextZero {
+		return valid
+	}
+	valid = valid && isPatternRestrictionValid(t.String(), Exact4AlphaNumericTextPatternRestriction)
+
+	return valid
+}
+
+// String method for easy conversion
+func (t Exact4AlphaNumericText) String() string {
+	return string(t)
+}
+
+// ToExact4AlphaNumericText method for easy conversion with application of restrictions
+func ToExact4AlphaNumericText(i interface{}) (Exact4AlphaNumericText, error) {
+
+	s := ""
+	switch ti := i.(type) {
+	case fmt.Stringer:
+		s = ti.String()
+	case string:
+		s = ti
+	default:
+		return "", fmt.Errorf("")
+	}
+	if !isPatternRestrictionValid(s, Exact4AlphaNumericTextPatternRestriction) {
+		return "", fmt.Errorf("cannot satisfy pattern restriction for %s of type Exact4AlphaNumericText", s)
+	}
+
+	return Exact4AlphaNumericText(s), nil
+}
+
+// MustToExact4AlphaNumericText method for easy conversion with application of restrictions. Panics on error.
+func MustToExact4AlphaNumericText(s interface{}) Exact4AlphaNumericText {
+	v, err := ToExact4AlphaNumericText(s)
+	if err != nil {
+		panic(err)
+	}
+
+	return v
+}
+
+/*
+ * Priority2Code Ops
+ */
+
+const (
+	Priority2CodeZero   = ""
+	Priority2CodeSample = "NORM"
+	Priority2CodeHIGH   = "HIGH"
+	Priority2CodeNORM   = "NORM"
+)
+
+var Priority2CodeEnumRestriction = []string{Priority2CodeHIGH, Priority2CodeNORM}
+
+// IsValid checks if Priority2Code of type String is valid
+func (t Priority2Code) IsValid(optional bool) bool {
+
+	valid := xsdt.String(t).IsValid(optional)
+
+	if optional && t == Priority2CodeZero {
+		return valid
+	}
+	valid = valid && isEnumRestrictionValid(t.String(), Priority2CodeEnumRestriction)
+
+	return valid
+}
+
+// String method for easy conversion
+func (t Priority2Code) String() string {
+	return string(t)
+}
+
+// ToPriority2Code method for easy conversion with application of restrictions
+func ToPriority2Code(i interface{}) (Priority2Code, error) {
+
+	s := ""
+	switch ti := i.(type) {
+	case fmt.Stringer:
+		s = ti.String()
+	case string:
+		s = ti
+	default:
+		return "", fmt.Errorf("")
+	}
+	if !isEnumRestrictionValid(s, Priority2CodeEnumRestriction) {
+		return "", fmt.Errorf("cannot satisfy enum restriction for %s of type Priority2Code", s)
+	}
+
+	return Priority2Code(s), nil
+}
+
+// MustToPriority2Code method for easy conversion with application of restrictions. Panics on error.
+func MustToPriority2Code(s interface{}) Priority2Code {
+	v, err := ToPriority2Code(s)
 	if err != nil {
 		panic(err)
 	}
@@ -1159,7 +2581,7 @@ func MustToExternalClearingSystemIdentification1Code(s interface{}) ExternalClea
 
 const (
 	ExternalServiceLevel1CodeZero      = ""
-	ExternalServiceLevel1CodeSample    = "sf"
+	ExternalServiceLevel1CodeSample    = "Au"
 	ExternalServiceLevel1CodeLength    = 0
 	ExternalServiceLevel1CodeMinLength = 1
 	ExternalServiceLevel1CodeMaxLength = 4
@@ -1213,36 +2635,37 @@ func MustToExternalServiceLevel1Code(s interface{}) ExternalServiceLevel1Code {
 }
 
 /*
- * PhoneNumber Ops
+ * Max16Text Ops
  */
 
 const (
-	PhoneNumberZero   = ""
-	PhoneNumberSample = "+6-6))--515"
+	Max16TextZero      = ""
+	Max16TextSample    = "TepBSUGe"
+	Max16TextLength    = 0
+	Max16TextMinLength = 1
+	Max16TextMaxLength = 16
 )
 
-var PhoneNumberPatternRestriction = regexp.MustCompile(`\+[0-9]{1,3}-[0-9()+\-]{1,30}`)
-
-// IsValid checks if PhoneNumber of type String is valid
-func (t PhoneNumber) IsValid(optional bool) bool {
+// IsValid checks if Max16Text of type String is valid
+func (t Max16Text) IsValid(optional bool) bool {
 
 	valid := xsdt.String(t).IsValid(optional)
 
-	if optional && t == PhoneNumberZero {
+	if optional && t == Max16TextZero {
 		return valid
 	}
-	valid = valid && isPatternRestrictionValid(t.String(), PhoneNumberPatternRestriction)
+	valid = valid && isLengthRestrictionValid(t.String(), Max16TextLength, Max16TextMinLength, Max16TextMaxLength)
 
 	return valid
 }
 
 // String method for easy conversion
-func (t PhoneNumber) String() string {
+func (t Max16Text) String() string {
 	return string(t)
 }
 
-// ToPhoneNumber method for easy conversion with application of restrictions
-func ToPhoneNumber(i interface{}) (PhoneNumber, error) {
+// ToMax16Text method for easy conversion with application of restrictions
+func ToMax16Text(i interface{}) (Max16Text, error) {
 
 	s := ""
 	switch ti := i.(type) {
@@ -1253,16 +2676,16 @@ func ToPhoneNumber(i interface{}) (PhoneNumber, error) {
 	default:
 		return "", fmt.Errorf("")
 	}
-	if !isPatternRestrictionValid(s, PhoneNumberPatternRestriction) {
-		return "", fmt.Errorf("cannot satisfy pattern restriction for %s of type PhoneNumber", s)
+	if !isLengthRestrictionValid(s, Max16TextLength, Max16TextMinLength, Max16TextMaxLength) {
+		return "", fmt.Errorf("cannot satisfy length restriction for %s of type Max16Text", s)
 	}
 
-	return PhoneNumber(s), nil
+	return Max16Text(s), nil
 }
 
-// MustToPhoneNumber method for easy conversion with application of restrictions. Panics on error.
-func MustToPhoneNumber(s interface{}) PhoneNumber {
-	v, err := ToPhoneNumber(s)
+// MustToMax16Text method for easy conversion with application of restrictions. Panics on error.
+func MustToMax16Text(s interface{}) Max16Text {
+	v, err := ToMax16Text(s)
 	if err != nil {
 		panic(err)
 	}
@@ -1271,36 +2694,37 @@ func MustToPhoneNumber(s interface{}) PhoneNumber {
 }
 
 /*
- * Exact4AlphaNumericText Ops
+ * Max140Text Ops
  */
 
 const (
-	Exact4AlphaNumericTextZero   = ""
-	Exact4AlphaNumericTextSample = "7dQg"
+	Max140TextZero      = ""
+	Max140TextSample    = "pQDYBzMBKXUbWscOLULiIiQtPiPomlXcvuojfHBHOQiGrmoSuelNipGLXawNpUCRNoVMTK"
+	Max140TextLength    = 0
+	Max140TextMinLength = 1
+	Max140TextMaxLength = 140
 )
 
-var Exact4AlphaNumericTextPatternRestriction = regexp.MustCompile(`[a-zA-Z0-9]{4}`)
-
-// IsValid checks if Exact4AlphaNumericText of type String is valid
-func (t Exact4AlphaNumericText) IsValid(optional bool) bool {
+// IsValid checks if Max140Text of type String is valid
+func (t Max140Text) IsValid(optional bool) bool {
 
 	valid := xsdt.String(t).IsValid(optional)
 
-	if optional && t == Exact4AlphaNumericTextZero {
+	if optional && t == Max140TextZero {
 		return valid
 	}
-	valid = valid && isPatternRestrictionValid(t.String(), Exact4AlphaNumericTextPatternRestriction)
+	valid = valid && isLengthRestrictionValid(t.String(), Max140TextLength, Max140TextMinLength, Max140TextMaxLength)
 
 	return valid
 }
 
 // String method for easy conversion
-func (t Exact4AlphaNumericText) String() string {
+func (t Max140Text) String() string {
 	return string(t)
 }
 
-// ToExact4AlphaNumericText method for easy conversion with application of restrictions
-func ToExact4AlphaNumericText(i interface{}) (Exact4AlphaNumericText, error) {
+// ToMax140Text method for easy conversion with application of restrictions
+func ToMax140Text(i interface{}) (Max140Text, error) {
 
 	s := ""
 	switch ti := i.(type) {
@@ -1311,16 +2735,75 @@ func ToExact4AlphaNumericText(i interface{}) (Exact4AlphaNumericText, error) {
 	default:
 		return "", fmt.Errorf("")
 	}
-	if !isPatternRestrictionValid(s, Exact4AlphaNumericTextPatternRestriction) {
-		return "", fmt.Errorf("cannot satisfy pattern restriction for %s of type Exact4AlphaNumericText", s)
+	if !isLengthRestrictionValid(s, Max140TextLength, Max140TextMinLength, Max140TextMaxLength) {
+		return "", fmt.Errorf("cannot satisfy length restriction for %s of type Max140Text", s)
 	}
 
-	return Exact4AlphaNumericText(s), nil
+	return Max140Text(s), nil
 }
 
-// MustToExact4AlphaNumericText method for easy conversion with application of restrictions. Panics on error.
-func MustToExact4AlphaNumericText(s interface{}) Exact4AlphaNumericText {
-	v, err := ToExact4AlphaNumericText(s)
+// MustToMax140Text method for easy conversion with application of restrictions. Panics on error.
+func MustToMax140Text(s interface{}) Max140Text {
+	v, err := ToMax140Text(s)
+	if err != nil {
+		panic(err)
+	}
+
+	return v
+}
+
+/*
+ * Max34Text Ops
+ */
+
+const (
+	Max34TextZero      = ""
+	Max34TextSample    = "OGgxNQPpRiWmNuFOP"
+	Max34TextLength    = 0
+	Max34TextMinLength = 1
+	Max34TextMaxLength = 34
+)
+
+// IsValid checks if Max34Text of type String is valid
+func (t Max34Text) IsValid(optional bool) bool {
+
+	valid := xsdt.String(t).IsValid(optional)
+
+	if optional && t == Max34TextZero {
+		return valid
+	}
+	valid = valid && isLengthRestrictionValid(t.String(), Max34TextLength, Max34TextMinLength, Max34TextMaxLength)
+
+	return valid
+}
+
+// String method for easy conversion
+func (t Max34Text) String() string {
+	return string(t)
+}
+
+// ToMax34Text method for easy conversion with application of restrictions
+func ToMax34Text(i interface{}) (Max34Text, error) {
+
+	s := ""
+	switch ti := i.(type) {
+	case fmt.Stringer:
+		s = ti.String()
+	case string:
+		s = ti
+	default:
+		return "", fmt.Errorf("")
+	}
+	if !isLengthRestrictionValid(s, Max34TextLength, Max34TextMinLength, Max34TextMaxLength) {
+		return "", fmt.Errorf("cannot satisfy length restriction for %s of type Max34Text", s)
+	}
+
+	return Max34Text(s), nil
+}
+
+// MustToMax34Text method for easy conversion with application of restrictions. Panics on error.
+func MustToMax34Text(s interface{}) Max34Text {
+	v, err := ToMax34Text(s)
 	if err != nil {
 		panic(err)
 	}
@@ -1405,36 +2888,36 @@ func MustToTaxRecordPeriod1Code(s interface{}) TaxRecordPeriod1Code {
 }
 
 /*
- * AnyBICDec2014Identifier Ops
+ * UUIDv4Identifier Ops
  */
 
 const (
-	AnyBICDec2014IdentifierZero   = ""
-	AnyBICDec2014IdentifierSample = "6GM0AW6S"
+	UUIDv4IdentifierZero   = ""
+	UUIDv4IdentifierSample = "ab45c2e8-e26e-45e8-a14b-a37d7afe1a67"
 )
 
-var AnyBICDec2014IdentifierPatternRestriction = regexp.MustCompile(`[A-Z0-9]{4,4}[A-Z]{2,2}[A-Z0-9]{2,2}([A-Z0-9]{3,3}){0,1}`)
+var UUIDv4IdentifierPatternRestriction = regexp.MustCompile(`[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}`)
 
-// IsValid checks if AnyBICDec2014Identifier of type String is valid
-func (t AnyBICDec2014Identifier) IsValid(optional bool) bool {
+// IsValid checks if UUIDv4Identifier of type String is valid
+func (t UUIDv4Identifier) IsValid(optional bool) bool {
 
 	valid := xsdt.String(t).IsValid(optional)
 
-	if optional && t == AnyBICDec2014IdentifierZero {
+	if optional && t == UUIDv4IdentifierZero {
 		return valid
 	}
-	valid = valid && isPatternRestrictionValid(t.String(), AnyBICDec2014IdentifierPatternRestriction)
+	valid = valid && isPatternRestrictionValid(t.String(), UUIDv4IdentifierPatternRestriction)
 
 	return valid
 }
 
 // String method for easy conversion
-func (t AnyBICDec2014Identifier) String() string {
+func (t UUIDv4Identifier) String() string {
 	return string(t)
 }
 
-// ToAnyBICDec2014Identifier method for easy conversion with application of restrictions
-func ToAnyBICDec2014Identifier(i interface{}) (AnyBICDec2014Identifier, error) {
+// ToUUIDv4Identifier method for easy conversion with application of restrictions
+func ToUUIDv4Identifier(i interface{}) (UUIDv4Identifier, error) {
 
 	s := ""
 	switch ti := i.(type) {
@@ -1445,16 +2928,16 @@ func ToAnyBICDec2014Identifier(i interface{}) (AnyBICDec2014Identifier, error) {
 	default:
 		return "", fmt.Errorf("")
 	}
-	if !isPatternRestrictionValid(s, AnyBICDec2014IdentifierPatternRestriction) {
-		return "", fmt.Errorf("cannot satisfy pattern restriction for %s of type AnyBICDec2014Identifier", s)
+	if !isPatternRestrictionValid(s, UUIDv4IdentifierPatternRestriction) {
+		return "", fmt.Errorf("cannot satisfy pattern restriction for %s of type UUIDv4Identifier", s)
 	}
 
-	return AnyBICDec2014Identifier(s), nil
+	return UUIDv4Identifier(s), nil
 }
 
-// MustToAnyBICDec2014Identifier method for easy conversion with application of restrictions. Panics on error.
-func MustToAnyBICDec2014Identifier(s interface{}) AnyBICDec2014Identifier {
-	v, err := ToAnyBICDec2014Identifier(s)
+// MustToUUIDv4Identifier method for easy conversion with application of restrictions. Panics on error.
+func MustToUUIDv4Identifier(s interface{}) UUIDv4Identifier {
+	v, err := ToUUIDv4Identifier(s)
 	if err != nil {
 		panic(err)
 	}
@@ -1463,41 +2946,37 @@ func MustToAnyBICDec2014Identifier(s interface{}) AnyBICDec2014Identifier {
 }
 
 /*
- * PreferredContactMethod1Code Ops
+ * ExternalGarnishmentType1Code Ops
  */
 
 const (
-	PreferredContactMethod1CodeZero   = ""
-	PreferredContactMethod1CodeSample = "PHON"
-	PreferredContactMethod1CodeLETT   = "LETT"
-	PreferredContactMethod1CodeMAIL   = "MAIL"
-	PreferredContactMethod1CodePHON   = "PHON"
-	PreferredContactMethod1CodeFAXX   = "FAXX"
-	PreferredContactMethod1CodeCELL   = "CELL"
+	ExternalGarnishmentType1CodeZero      = ""
+	ExternalGarnishmentType1CodeSample    = "ct"
+	ExternalGarnishmentType1CodeLength    = 0
+	ExternalGarnishmentType1CodeMinLength = 1
+	ExternalGarnishmentType1CodeMaxLength = 4
 )
 
-var PreferredContactMethod1CodeEnumRestriction = []string{PreferredContactMethod1CodeLETT, PreferredContactMethod1CodeMAIL, PreferredContactMethod1CodePHON, PreferredContactMethod1CodeFAXX, PreferredContactMethod1CodeCELL}
-
-// IsValid checks if PreferredContactMethod1Code of type String is valid
-func (t PreferredContactMethod1Code) IsValid(optional bool) bool {
+// IsValid checks if ExternalGarnishmentType1Code of type String is valid
+func (t ExternalGarnishmentType1Code) IsValid(optional bool) bool {
 
 	valid := xsdt.String(t).IsValid(optional)
 
-	if optional && t == PreferredContactMethod1CodeZero {
+	if optional && t == ExternalGarnishmentType1CodeZero {
 		return valid
 	}
-	valid = valid && isEnumRestrictionValid(t.String(), PreferredContactMethod1CodeEnumRestriction)
+	valid = valid && isLengthRestrictionValid(t.String(), ExternalGarnishmentType1CodeLength, ExternalGarnishmentType1CodeMinLength, ExternalGarnishmentType1CodeMaxLength)
 
 	return valid
 }
 
 // String method for easy conversion
-func (t PreferredContactMethod1Code) String() string {
+func (t ExternalGarnishmentType1Code) String() string {
 	return string(t)
 }
 
-// ToPreferredContactMethod1Code method for easy conversion with application of restrictions
-func ToPreferredContactMethod1Code(i interface{}) (PreferredContactMethod1Code, error) {
+// ToExternalGarnishmentType1Code method for easy conversion with application of restrictions
+func ToExternalGarnishmentType1Code(i interface{}) (ExternalGarnishmentType1Code, error) {
 
 	s := ""
 	switch ti := i.(type) {
@@ -1508,75 +2987,16 @@ func ToPreferredContactMethod1Code(i interface{}) (PreferredContactMethod1Code, 
 	default:
 		return "", fmt.Errorf("")
 	}
-	if !isEnumRestrictionValid(s, PreferredContactMethod1CodeEnumRestriction) {
-		return "", fmt.Errorf("cannot satisfy enum restriction for %s of type PreferredContactMethod1Code", s)
+	if !isLengthRestrictionValid(s, ExternalGarnishmentType1CodeLength, ExternalGarnishmentType1CodeMinLength, ExternalGarnishmentType1CodeMaxLength) {
+		return "", fmt.Errorf("cannot satisfy length restriction for %s of type ExternalGarnishmentType1Code", s)
 	}
 
-	return PreferredContactMethod1Code(s), nil
+	return ExternalGarnishmentType1Code(s), nil
 }
 
-// MustToPreferredContactMethod1Code method for easy conversion with application of restrictions. Panics on error.
-func MustToPreferredContactMethod1Code(s interface{}) PreferredContactMethod1Code {
-	v, err := ToPreferredContactMethod1Code(s)
-	if err != nil {
-		panic(err)
-	}
-
-	return v
-}
-
-/*
- * ExternalAccountIdentification1Code Ops
- */
-
-const (
-	ExternalAccountIdentification1CodeZero      = ""
-	ExternalAccountIdentification1CodeSample    = "yk"
-	ExternalAccountIdentification1CodeLength    = 0
-	ExternalAccountIdentification1CodeMinLength = 1
-	ExternalAccountIdentification1CodeMaxLength = 4
-)
-
-// IsValid checks if ExternalAccountIdentification1Code of type String is valid
-func (t ExternalAccountIdentification1Code) IsValid(optional bool) bool {
-
-	valid := xsdt.String(t).IsValid(optional)
-
-	if optional && t == ExternalAccountIdentification1CodeZero {
-		return valid
-	}
-	valid = valid && isLengthRestrictionValid(t.String(), ExternalAccountIdentification1CodeLength, ExternalAccountIdentification1CodeMinLength, ExternalAccountIdentification1CodeMaxLength)
-
-	return valid
-}
-
-// String method for easy conversion
-func (t ExternalAccountIdentification1Code) String() string {
-	return string(t)
-}
-
-// ToExternalAccountIdentification1Code method for easy conversion with application of restrictions
-func ToExternalAccountIdentification1Code(i interface{}) (ExternalAccountIdentification1Code, error) {
-
-	s := ""
-	switch ti := i.(type) {
-	case fmt.Stringer:
-		s = ti.String()
-	case string:
-		s = ti
-	default:
-		return "", fmt.Errorf("")
-	}
-	if !isLengthRestrictionValid(s, ExternalAccountIdentification1CodeLength, ExternalAccountIdentification1CodeMinLength, ExternalAccountIdentification1CodeMaxLength) {
-		return "", fmt.Errorf("cannot satisfy length restriction for %s of type ExternalAccountIdentification1Code", s)
-	}
-
-	return ExternalAccountIdentification1Code(s), nil
-}
-
-// MustToExternalAccountIdentification1Code method for easy conversion with application of restrictions. Panics on error.
-func MustToExternalAccountIdentification1Code(s interface{}) ExternalAccountIdentification1Code {
-	v, err := ToExternalAccountIdentification1Code(s)
+// MustToExternalGarnishmentType1Code method for easy conversion with application of restrictions. Panics on error.
+func MustToExternalGarnishmentType1Code(s interface{}) ExternalGarnishmentType1Code {
+	v, err := ToExternalGarnishmentType1Code(s)
 	if err != nil {
 		panic(err)
 	}
@@ -1590,7 +3010,7 @@ func MustToExternalAccountIdentification1Code(s interface{}) ExternalAccountIden
 
 const (
 	ExternalOrganisationIdentification1CodeZero      = ""
-	ExternalOrganisationIdentification1CodeSample    = "SB"
+	ExternalOrganisationIdentification1CodeSample    = "LB"
 	ExternalOrganisationIdentification1CodeLength    = 0
 	ExternalOrganisationIdentification1CodeMinLength = 1
 	ExternalOrganisationIdentification1CodeMaxLength = 4
@@ -1644,368 +3064,12 @@ func MustToExternalOrganisationIdentification1Code(s interface{}) ExternalOrgani
 }
 
 /*
- * Max128Text Ops
- */
-
-const (
-	Max128TextZero      = ""
-	Max128TextSample    = "GplhxtxVSGpqaJaBRgAvzLXqzRrrUIYvaIujDpHYjxeUBrVfdwUzWHRihFDPRHBM"
-	Max128TextLength    = 0
-	Max128TextMinLength = 1
-	Max128TextMaxLength = 128
-)
-
-// IsValid checks if Max128Text of type String is valid
-func (t Max128Text) IsValid(optional bool) bool {
-
-	valid := xsdt.String(t).IsValid(optional)
-
-	if optional && t == Max128TextZero {
-		return valid
-	}
-	valid = valid && isLengthRestrictionValid(t.String(), Max128TextLength, Max128TextMinLength, Max128TextMaxLength)
-
-	return valid
-}
-
-// String method for easy conversion
-func (t Max128Text) String() string {
-	return string(t)
-}
-
-// ToMax128Text method for easy conversion with application of restrictions
-func ToMax128Text(i interface{}) (Max128Text, error) {
-
-	s := ""
-	switch ti := i.(type) {
-	case fmt.Stringer:
-		s = ti.String()
-	case string:
-		s = ti
-	default:
-		return "", fmt.Errorf("")
-	}
-	if !isLengthRestrictionValid(s, Max128TextLength, Max128TextMinLength, Max128TextMaxLength) {
-		return "", fmt.Errorf("cannot satisfy length restriction for %s of type Max128Text", s)
-	}
-
-	return Max128Text(s), nil
-}
-
-// MustToMax128Text method for easy conversion with application of restrictions. Panics on error.
-func MustToMax128Text(s interface{}) Max128Text {
-	v, err := ToMax128Text(s)
-	if err != nil {
-		panic(err)
-	}
-
-	return v
-}
-
-/*
- * Max34Text Ops
- */
-
-const (
-	Max34TextZero      = ""
-	Max34TextSample    = "uEWmaNvhHLITWJcJK"
-	Max34TextLength    = 0
-	Max34TextMinLength = 1
-	Max34TextMaxLength = 34
-)
-
-// IsValid checks if Max34Text of type String is valid
-func (t Max34Text) IsValid(optional bool) bool {
-
-	valid := xsdt.String(t).IsValid(optional)
-
-	if optional && t == Max34TextZero {
-		return valid
-	}
-	valid = valid && isLengthRestrictionValid(t.String(), Max34TextLength, Max34TextMinLength, Max34TextMaxLength)
-
-	return valid
-}
-
-// String method for easy conversion
-func (t Max34Text) String() string {
-	return string(t)
-}
-
-// ToMax34Text method for easy conversion with application of restrictions
-func ToMax34Text(i interface{}) (Max34Text, error) {
-
-	s := ""
-	switch ti := i.(type) {
-	case fmt.Stringer:
-		s = ti.String()
-	case string:
-		s = ti
-	default:
-		return "", fmt.Errorf("")
-	}
-	if !isLengthRestrictionValid(s, Max34TextLength, Max34TextMinLength, Max34TextMaxLength) {
-		return "", fmt.Errorf("cannot satisfy length restriction for %s of type Max34Text", s)
-	}
-
-	return Max34Text(s), nil
-}
-
-// MustToMax34Text method for easy conversion with application of restrictions. Panics on error.
-func MustToMax34Text(s interface{}) Max34Text {
-	v, err := ToMax34Text(s)
-	if err != nil {
-		panic(err)
-	}
-
-	return v
-}
-
-/*
- * ExternalPurpose1Code Ops
- */
-
-const (
-	ExternalPurpose1CodeZero      = ""
-	ExternalPurpose1CodeSample    = "zJ"
-	ExternalPurpose1CodeLength    = 0
-	ExternalPurpose1CodeMinLength = 1
-	ExternalPurpose1CodeMaxLength = 4
-)
-
-// IsValid checks if ExternalPurpose1Code of type String is valid
-func (t ExternalPurpose1Code) IsValid(optional bool) bool {
-
-	valid := xsdt.String(t).IsValid(optional)
-
-	if optional && t == ExternalPurpose1CodeZero {
-		return valid
-	}
-	valid = valid && isLengthRestrictionValid(t.String(), ExternalPurpose1CodeLength, ExternalPurpose1CodeMinLength, ExternalPurpose1CodeMaxLength)
-
-	return valid
-}
-
-// String method for easy conversion
-func (t ExternalPurpose1Code) String() string {
-	return string(t)
-}
-
-// ToExternalPurpose1Code method for easy conversion with application of restrictions
-func ToExternalPurpose1Code(i interface{}) (ExternalPurpose1Code, error) {
-
-	s := ""
-	switch ti := i.(type) {
-	case fmt.Stringer:
-		s = ti.String()
-	case string:
-		s = ti
-	default:
-		return "", fmt.Errorf("")
-	}
-	if !isLengthRestrictionValid(s, ExternalPurpose1CodeLength, ExternalPurpose1CodeMinLength, ExternalPurpose1CodeMaxLength) {
-		return "", fmt.Errorf("cannot satisfy length restriction for %s of type ExternalPurpose1Code", s)
-	}
-
-	return ExternalPurpose1Code(s), nil
-}
-
-// MustToExternalPurpose1Code method for easy conversion with application of restrictions. Panics on error.
-func MustToExternalPurpose1Code(s interface{}) ExternalPurpose1Code {
-	v, err := ToExternalPurpose1Code(s)
-	if err != nil {
-		panic(err)
-	}
-
-	return v
-}
-
-/*
- * ChargeBearerType1Code Ops
- */
-
-const (
-	ChargeBearerType1CodeZero   = ""
-	ChargeBearerType1CodeSample = "SHAR"
-	ChargeBearerType1CodeDEBT   = "DEBT"
-	ChargeBearerType1CodeCRED   = "CRED"
-	ChargeBearerType1CodeSHAR   = "SHAR"
-	ChargeBearerType1CodeSLEV   = "SLEV"
-)
-
-var ChargeBearerType1CodeEnumRestriction = []string{ChargeBearerType1CodeDEBT, ChargeBearerType1CodeCRED, ChargeBearerType1CodeSHAR, ChargeBearerType1CodeSLEV}
-
-// IsValid checks if ChargeBearerType1Code of type String is valid
-func (t ChargeBearerType1Code) IsValid(optional bool) bool {
-
-	valid := xsdt.String(t).IsValid(optional)
-
-	if optional && t == ChargeBearerType1CodeZero {
-		return valid
-	}
-	valid = valid && isEnumRestrictionValid(t.String(), ChargeBearerType1CodeEnumRestriction)
-
-	return valid
-}
-
-// String method for easy conversion
-func (t ChargeBearerType1Code) String() string {
-	return string(t)
-}
-
-// ToChargeBearerType1Code method for easy conversion with application of restrictions
-func ToChargeBearerType1Code(i interface{}) (ChargeBearerType1Code, error) {
-
-	s := ""
-	switch ti := i.(type) {
-	case fmt.Stringer:
-		s = ti.String()
-	case string:
-		s = ti
-	default:
-		return "", fmt.Errorf("")
-	}
-	if !isEnumRestrictionValid(s, ChargeBearerType1CodeEnumRestriction) {
-		return "", fmt.Errorf("cannot satisfy enum restriction for %s of type ChargeBearerType1Code", s)
-	}
-
-	return ChargeBearerType1Code(s), nil
-}
-
-// MustToChargeBearerType1Code method for easy conversion with application of restrictions. Panics on error.
-func MustToChargeBearerType1Code(s interface{}) ChargeBearerType1Code {
-	v, err := ToChargeBearerType1Code(s)
-	if err != nil {
-		panic(err)
-	}
-
-	return v
-}
-
-/*
- * CountryCode Ops
- */
-
-const (
-	CountryCodeZero   = ""
-	CountryCodeSample = "YJ"
-)
-
-var CountryCodePatternRestriction = regexp.MustCompile(`[A-Z]{2,2}`)
-
-// IsValid checks if CountryCode of type String is valid
-func (t CountryCode) IsValid(optional bool) bool {
-
-	valid := xsdt.String(t).IsValid(optional)
-
-	if optional && t == CountryCodeZero {
-		return valid
-	}
-	valid = valid && isPatternRestrictionValid(t.String(), CountryCodePatternRestriction)
-
-	return valid
-}
-
-// String method for easy conversion
-func (t CountryCode) String() string {
-	return string(t)
-}
-
-// ToCountryCode method for easy conversion with application of restrictions
-func ToCountryCode(i interface{}) (CountryCode, error) {
-
-	s := ""
-	switch ti := i.(type) {
-	case fmt.Stringer:
-		s = ti.String()
-	case string:
-		s = ti
-	default:
-		return "", fmt.Errorf("")
-	}
-	if !isPatternRestrictionValid(s, CountryCodePatternRestriction) {
-		return "", fmt.Errorf("cannot satisfy pattern restriction for %s of type CountryCode", s)
-	}
-
-	return CountryCode(s), nil
-}
-
-// MustToCountryCode method for easy conversion with application of restrictions. Panics on error.
-func MustToCountryCode(s interface{}) CountryCode {
-	v, err := ToCountryCode(s)
-	if err != nil {
-		panic(err)
-	}
-
-	return v
-}
-
-/*
- * Max140Text Ops
- */
-
-const (
-	Max140TextZero      = ""
-	Max140TextSample    = "sRPeJbpTqWPUlWAcidRlufmYWddEktBDrWMYZTPdmDAVCuvQutLDKFBGRxnyDNYuRKWsmZ"
-	Max140TextLength    = 0
-	Max140TextMinLength = 1
-	Max140TextMaxLength = 140
-)
-
-// IsValid checks if Max140Text of type String is valid
-func (t Max140Text) IsValid(optional bool) bool {
-
-	valid := xsdt.String(t).IsValid(optional)
-
-	if optional && t == Max140TextZero {
-		return valid
-	}
-	valid = valid && isLengthRestrictionValid(t.String(), Max140TextLength, Max140TextMinLength, Max140TextMaxLength)
-
-	return valid
-}
-
-// String method for easy conversion
-func (t Max140Text) String() string {
-	return string(t)
-}
-
-// ToMax140Text method for easy conversion with application of restrictions
-func ToMax140Text(i interface{}) (Max140Text, error) {
-
-	s := ""
-	switch ti := i.(type) {
-	case fmt.Stringer:
-		s = ti.String()
-	case string:
-		s = ti
-	default:
-		return "", fmt.Errorf("")
-	}
-	if !isLengthRestrictionValid(s, Max140TextLength, Max140TextMinLength, Max140TextMaxLength) {
-		return "", fmt.Errorf("cannot satisfy length restriction for %s of type Max140Text", s)
-	}
-
-	return Max140Text(s), nil
-}
-
-// MustToMax140Text method for easy conversion with application of restrictions. Panics on error.
-func MustToMax140Text(s interface{}) Max140Text {
-	v, err := ToMax140Text(s)
-	if err != nil {
-		panic(err)
-	}
-
-	return v
-}
-
-/*
  * ExternalLocalInstrument1Code Ops
  */
 
 const (
 	ExternalLocalInstrument1CodeZero      = ""
-	ExternalLocalInstrument1CodeSample    = "nOYgSLPSsuMMmvYmaF"
+	ExternalLocalInstrument1CodeSample    = "lMZxcxWxtuKOMWJPKL"
 	ExternalLocalInstrument1CodeLength    = 0
 	ExternalLocalInstrument1CodeMinLength = 1
 	ExternalLocalInstrument1CodeMaxLength = 35
@@ -2133,37 +3197,38 @@ func MustToDocumentType6Code(s interface{}) DocumentType6Code {
 }
 
 /*
- * ExternalDocumentFormat1Code Ops
+ * PaymentMethod7Code Ops
  */
 
 const (
-	ExternalDocumentFormat1CodeZero      = ""
-	ExternalDocumentFormat1CodeSample    = "Ej"
-	ExternalDocumentFormat1CodeLength    = 0
-	ExternalDocumentFormat1CodeMinLength = 1
-	ExternalDocumentFormat1CodeMaxLength = 4
+	PaymentMethod7CodeZero   = ""
+	PaymentMethod7CodeSample = "TRF"
+	PaymentMethod7CodeCHK    = "CHK"
+	PaymentMethod7CodeTRF    = "TRF"
 )
 
-// IsValid checks if ExternalDocumentFormat1Code of type String is valid
-func (t ExternalDocumentFormat1Code) IsValid(optional bool) bool {
+var PaymentMethod7CodeEnumRestriction = []string{PaymentMethod7CodeCHK, PaymentMethod7CodeTRF}
+
+// IsValid checks if PaymentMethod7Code of type String is valid
+func (t PaymentMethod7Code) IsValid(optional bool) bool {
 
 	valid := xsdt.String(t).IsValid(optional)
 
-	if optional && t == ExternalDocumentFormat1CodeZero {
+	if optional && t == PaymentMethod7CodeZero {
 		return valid
 	}
-	valid = valid && isLengthRestrictionValid(t.String(), ExternalDocumentFormat1CodeLength, ExternalDocumentFormat1CodeMinLength, ExternalDocumentFormat1CodeMaxLength)
+	valid = valid && isEnumRestrictionValid(t.String(), PaymentMethod7CodeEnumRestriction)
 
 	return valid
 }
 
 // String method for easy conversion
-func (t ExternalDocumentFormat1Code) String() string {
+func (t PaymentMethod7Code) String() string {
 	return string(t)
 }
 
-// ToExternalDocumentFormat1Code method for easy conversion with application of restrictions
-func ToExternalDocumentFormat1Code(i interface{}) (ExternalDocumentFormat1Code, error) {
+// ToPaymentMethod7Code method for easy conversion with application of restrictions
+func ToPaymentMethod7Code(i interface{}) (PaymentMethod7Code, error) {
 
 	s := ""
 	switch ti := i.(type) {
@@ -2174,371 +3239,16 @@ func ToExternalDocumentFormat1Code(i interface{}) (ExternalDocumentFormat1Code, 
 	default:
 		return "", fmt.Errorf("")
 	}
-	if !isLengthRestrictionValid(s, ExternalDocumentFormat1CodeLength, ExternalDocumentFormat1CodeMinLength, ExternalDocumentFormat1CodeMaxLength) {
-		return "", fmt.Errorf("cannot satisfy length restriction for %s of type ExternalDocumentFormat1Code", s)
+	if !isEnumRestrictionValid(s, PaymentMethod7CodeEnumRestriction) {
+		return "", fmt.Errorf("cannot satisfy enum restriction for %s of type PaymentMethod7Code", s)
 	}
 
-	return ExternalDocumentFormat1Code(s), nil
+	return PaymentMethod7Code(s), nil
 }
 
-// MustToExternalDocumentFormat1Code method for easy conversion with application of restrictions. Panics on error.
-func MustToExternalDocumentFormat1Code(s interface{}) ExternalDocumentFormat1Code {
-	v, err := ToExternalDocumentFormat1Code(s)
-	if err != nil {
-		panic(err)
-	}
-
-	return v
-}
-
-/*
- * ExternalDiscountAmountType1Code Ops
- */
-
-const (
-	ExternalDiscountAmountType1CodeZero      = ""
-	ExternalDiscountAmountType1CodeSample    = "Lg"
-	ExternalDiscountAmountType1CodeLength    = 0
-	ExternalDiscountAmountType1CodeMinLength = 1
-	ExternalDiscountAmountType1CodeMaxLength = 4
-)
-
-// IsValid checks if ExternalDiscountAmountType1Code of type String is valid
-func (t ExternalDiscountAmountType1Code) IsValid(optional bool) bool {
-
-	valid := xsdt.String(t).IsValid(optional)
-
-	if optional && t == ExternalDiscountAmountType1CodeZero {
-		return valid
-	}
-	valid = valid && isLengthRestrictionValid(t.String(), ExternalDiscountAmountType1CodeLength, ExternalDiscountAmountType1CodeMinLength, ExternalDiscountAmountType1CodeMaxLength)
-
-	return valid
-}
-
-// String method for easy conversion
-func (t ExternalDiscountAmountType1Code) String() string {
-	return string(t)
-}
-
-// ToExternalDiscountAmountType1Code method for easy conversion with application of restrictions
-func ToExternalDiscountAmountType1Code(i interface{}) (ExternalDiscountAmountType1Code, error) {
-
-	s := ""
-	switch ti := i.(type) {
-	case fmt.Stringer:
-		s = ti.String()
-	case string:
-		s = ti
-	default:
-		return "", fmt.Errorf("")
-	}
-	if !isLengthRestrictionValid(s, ExternalDiscountAmountType1CodeLength, ExternalDiscountAmountType1CodeMinLength, ExternalDiscountAmountType1CodeMaxLength) {
-		return "", fmt.Errorf("cannot satisfy length restriction for %s of type ExternalDiscountAmountType1Code", s)
-	}
-
-	return ExternalDiscountAmountType1Code(s), nil
-}
-
-// MustToExternalDiscountAmountType1Code method for easy conversion with application of restrictions. Panics on error.
-func MustToExternalDiscountAmountType1Code(s interface{}) ExternalDiscountAmountType1Code {
-	v, err := ToExternalDiscountAmountType1Code(s)
-	if err != nil {
-		panic(err)
-	}
-
-	return v
-}
-
-/*
- * RemittanceLocationMethod2Code Ops
- */
-
-const (
-	RemittanceLocationMethod2CodeZero   = ""
-	RemittanceLocationMethod2CodeSample = "EMAL"
-	RemittanceLocationMethod2CodeFAXI   = "FAXI"
-	RemittanceLocationMethod2CodeEDIC   = "EDIC"
-	RemittanceLocationMethod2CodeURID   = "URID"
-	RemittanceLocationMethod2CodeEMAL   = "EMAL"
-	RemittanceLocationMethod2CodePOST   = "POST"
-	RemittanceLocationMethod2CodeSMSM   = "SMSM"
-)
-
-var RemittanceLocationMethod2CodeEnumRestriction = []string{RemittanceLocationMethod2CodeFAXI, RemittanceLocationMethod2CodeEDIC, RemittanceLocationMethod2CodeURID, RemittanceLocationMethod2CodeEMAL, RemittanceLocationMethod2CodePOST, RemittanceLocationMethod2CodeSMSM}
-
-// IsValid checks if RemittanceLocationMethod2Code of type String is valid
-func (t RemittanceLocationMethod2Code) IsValid(optional bool) bool {
-
-	valid := xsdt.String(t).IsValid(optional)
-
-	if optional && t == RemittanceLocationMethod2CodeZero {
-		return valid
-	}
-	valid = valid && isEnumRestrictionValid(t.String(), RemittanceLocationMethod2CodeEnumRestriction)
-
-	return valid
-}
-
-// String method for easy conversion
-func (t RemittanceLocationMethod2Code) String() string {
-	return string(t)
-}
-
-// ToRemittanceLocationMethod2Code method for easy conversion with application of restrictions
-func ToRemittanceLocationMethod2Code(i interface{}) (RemittanceLocationMethod2Code, error) {
-
-	s := ""
-	switch ti := i.(type) {
-	case fmt.Stringer:
-		s = ti.String()
-	case string:
-		s = ti
-	default:
-		return "", fmt.Errorf("")
-	}
-	if !isEnumRestrictionValid(s, RemittanceLocationMethod2CodeEnumRestriction) {
-		return "", fmt.Errorf("cannot satisfy enum restriction for %s of type RemittanceLocationMethod2Code", s)
-	}
-
-	return RemittanceLocationMethod2Code(s), nil
-}
-
-// MustToRemittanceLocationMethod2Code method for easy conversion with application of restrictions. Panics on error.
-func MustToRemittanceLocationMethod2Code(s interface{}) RemittanceLocationMethod2Code {
-	v, err := ToRemittanceLocationMethod2Code(s)
-	if err != nil {
-		panic(err)
-	}
-
-	return v
-}
-
-/*
- * ISODateTime Ops
- */
-
-const (
-	ISODateTimeSample = "Value"
-	ISODateTimeZero   = ""
-)
-
-// IsValid checks if ISODateTime of type DateTime is valid
-func (t ISODateTime) IsValid(optional bool) bool {
-
-	valid := xsdt.DateTime(t).IsValid(optional)
-	if optional && t == ISODateTimeZero {
-		return valid
-	}
-	return valid
-}
-
-// String method for easy conversion
-func (t ISODateTime) String() string {
-	return string(t)
-}
-
-// ToISODateTime method for easy conversion from time.Time
-func ToISODateTime(tm interface{}) (ISODateTime, error) {
-
-	switch typedTm := tm.(type) {
-	case time.Time:
-		return ISODateTime(typedTm.Format(time.RFC3339)), nil
-	case string:
-		return ISODateTime(typedTm), nil
-	case ISODateTime:
-		return typedTm, nil
-	}
-
-	return "", fmt.Errorf("cannot convert %v to ISODateTime", tm)
-}
-
-func MustToISODateTime(tm interface{}) ISODateTime {
-	d, err := ToISODateTime(tm)
-	if err != nil {
-		panic(err)
-	}
-
-	return d
-}
-
-// ISODateTimeExample method for generation of valid sample data
-func ISODateTimeExample() ISODateTime {
-	return ISODateTime(time.Now().Format(time.RFC3339))
-}
-
-/*
- * ExternalCategoryPurpose1Code Ops
- */
-
-const (
-	ExternalCategoryPurpose1CodeZero      = ""
-	ExternalCategoryPurpose1CodeSample    = "Sv"
-	ExternalCategoryPurpose1CodeLength    = 0
-	ExternalCategoryPurpose1CodeMinLength = 1
-	ExternalCategoryPurpose1CodeMaxLength = 4
-)
-
-// IsValid checks if ExternalCategoryPurpose1Code of type String is valid
-func (t ExternalCategoryPurpose1Code) IsValid(optional bool) bool {
-
-	valid := xsdt.String(t).IsValid(optional)
-
-	if optional && t == ExternalCategoryPurpose1CodeZero {
-		return valid
-	}
-	valid = valid && isLengthRestrictionValid(t.String(), ExternalCategoryPurpose1CodeLength, ExternalCategoryPurpose1CodeMinLength, ExternalCategoryPurpose1CodeMaxLength)
-
-	return valid
-}
-
-// String method for easy conversion
-func (t ExternalCategoryPurpose1Code) String() string {
-	return string(t)
-}
-
-// ToExternalCategoryPurpose1Code method for easy conversion with application of restrictions
-func ToExternalCategoryPurpose1Code(i interface{}) (ExternalCategoryPurpose1Code, error) {
-
-	s := ""
-	switch ti := i.(type) {
-	case fmt.Stringer:
-		s = ti.String()
-	case string:
-		s = ti
-	default:
-		return "", fmt.Errorf("")
-	}
-	if !isLengthRestrictionValid(s, ExternalCategoryPurpose1CodeLength, ExternalCategoryPurpose1CodeMinLength, ExternalCategoryPurpose1CodeMaxLength) {
-		return "", fmt.Errorf("cannot satisfy length restriction for %s of type ExternalCategoryPurpose1Code", s)
-	}
-
-	return ExternalCategoryPurpose1Code(s), nil
-}
-
-// MustToExternalCategoryPurpose1Code method for easy conversion with application of restrictions. Panics on error.
-func MustToExternalCategoryPurpose1Code(s interface{}) ExternalCategoryPurpose1Code {
-	v, err := ToExternalCategoryPurpose1Code(s)
-	if err != nil {
-		panic(err)
-	}
-
-	return v
-}
-
-/*
- * CreditDebitCode Ops
- */
-
-const (
-	CreditDebitCodeZero   = ""
-	CreditDebitCodeSample = "DBIT"
-	CreditDebitCodeCRDT   = "CRDT"
-	CreditDebitCodeDBIT   = "DBIT"
-)
-
-var CreditDebitCodeEnumRestriction = []string{CreditDebitCodeCRDT, CreditDebitCodeDBIT}
-
-// IsValid checks if CreditDebitCode of type String is valid
-func (t CreditDebitCode) IsValid(optional bool) bool {
-
-	valid := xsdt.String(t).IsValid(optional)
-
-	if optional && t == CreditDebitCodeZero {
-		return valid
-	}
-	valid = valid && isEnumRestrictionValid(t.String(), CreditDebitCodeEnumRestriction)
-
-	return valid
-}
-
-// String method for easy conversion
-func (t CreditDebitCode) String() string {
-	return string(t)
-}
-
-// ToCreditDebitCode method for easy conversion with application of restrictions
-func ToCreditDebitCode(i interface{}) (CreditDebitCode, error) {
-
-	s := ""
-	switch ti := i.(type) {
-	case fmt.Stringer:
-		s = ti.String()
-	case string:
-		s = ti
-	default:
-		return "", fmt.Errorf("")
-	}
-	if !isEnumRestrictionValid(s, CreditDebitCodeEnumRestriction) {
-		return "", fmt.Errorf("cannot satisfy enum restriction for %s of type CreditDebitCode", s)
-	}
-
-	return CreditDebitCode(s), nil
-}
-
-// MustToCreditDebitCode method for easy conversion with application of restrictions. Panics on error.
-func MustToCreditDebitCode(s interface{}) CreditDebitCode {
-	v, err := ToCreditDebitCode(s)
-	if err != nil {
-		panic(err)
-	}
-
-	return v
-}
-
-/*
- * Priority2Code Ops
- */
-
-const (
-	Priority2CodeZero   = ""
-	Priority2CodeSample = "NORM"
-	Priority2CodeHIGH   = "HIGH"
-	Priority2CodeNORM   = "NORM"
-)
-
-var Priority2CodeEnumRestriction = []string{Priority2CodeHIGH, Priority2CodeNORM}
-
-// IsValid checks if Priority2Code of type String is valid
-func (t Priority2Code) IsValid(optional bool) bool {
-
-	valid := xsdt.String(t).IsValid(optional)
-
-	if optional && t == Priority2CodeZero {
-		return valid
-	}
-	valid = valid && isEnumRestrictionValid(t.String(), Priority2CodeEnumRestriction)
-
-	return valid
-}
-
-// String method for easy conversion
-func (t Priority2Code) String() string {
-	return string(t)
-}
-
-// ToPriority2Code method for easy conversion with application of restrictions
-func ToPriority2Code(i interface{}) (Priority2Code, error) {
-
-	s := ""
-	switch ti := i.(type) {
-	case fmt.Stringer:
-		s = ti.String()
-	case string:
-		s = ti
-	default:
-		return "", fmt.Errorf("")
-	}
-	if !isEnumRestrictionValid(s, Priority2CodeEnumRestriction) {
-		return "", fmt.Errorf("cannot satisfy enum restriction for %s of type Priority2Code", s)
-	}
-
-	return Priority2Code(s), nil
-}
-
-// MustToPriority2Code method for easy conversion with application of restrictions. Panics on error.
-func MustToPriority2Code(s interface{}) Priority2Code {
-	v, err := ToPriority2Code(s)
+// MustToPaymentMethod7Code method for easy conversion with application of restrictions. Panics on error.
+func MustToPaymentMethod7Code(s interface{}) PaymentMethod7Code {
+	v, err := ToPaymentMethod7Code(s)
 	if err != nil {
 		panic(err)
 	}
@@ -2552,7 +3262,7 @@ func MustToPriority2Code(s interface{}) Priority2Code {
 
 const (
 	ExternalCashAccountType1CodeZero      = ""
-	ExternalCashAccountType1CodeSample    = "nd"
+	ExternalCashAccountType1CodeSample    = "dP"
 	ExternalCashAccountType1CodeLength    = 0
 	ExternalCashAccountType1CodeMinLength = 1
 	ExternalCashAccountType1CodeMaxLength = 4
@@ -2606,36 +3316,37 @@ func MustToExternalCashAccountType1Code(s interface{}) ExternalCashAccountType1C
 }
 
 /*
- * ActiveCurrencyCode Ops
+ * ExternalDiscountAmountType1Code Ops
  */
 
 const (
-	ActiveCurrencyCodeZero   = ""
-	ActiveCurrencyCodeSample = "YSS"
+	ExternalDiscountAmountType1CodeZero      = ""
+	ExternalDiscountAmountType1CodeSample    = "ag"
+	ExternalDiscountAmountType1CodeLength    = 0
+	ExternalDiscountAmountType1CodeMinLength = 1
+	ExternalDiscountAmountType1CodeMaxLength = 4
 )
 
-var ActiveCurrencyCodePatternRestriction = regexp.MustCompile(`[A-Z]{3,3}`)
-
-// IsValid checks if ActiveCurrencyCode of type String is valid
-func (t ActiveCurrencyCode) IsValid(optional bool) bool {
+// IsValid checks if ExternalDiscountAmountType1Code of type String is valid
+func (t ExternalDiscountAmountType1Code) IsValid(optional bool) bool {
 
 	valid := xsdt.String(t).IsValid(optional)
 
-	if optional && t == ActiveCurrencyCodeZero {
+	if optional && t == ExternalDiscountAmountType1CodeZero {
 		return valid
 	}
-	valid = valid && isPatternRestrictionValid(t.String(), ActiveCurrencyCodePatternRestriction)
+	valid = valid && isLengthRestrictionValid(t.String(), ExternalDiscountAmountType1CodeLength, ExternalDiscountAmountType1CodeMinLength, ExternalDiscountAmountType1CodeMaxLength)
 
 	return valid
 }
 
 // String method for easy conversion
-func (t ActiveCurrencyCode) String() string {
+func (t ExternalDiscountAmountType1Code) String() string {
 	return string(t)
 }
 
-// ToActiveCurrencyCode method for easy conversion with application of restrictions
-func ToActiveCurrencyCode(i interface{}) (ActiveCurrencyCode, error) {
+// ToExternalDiscountAmountType1Code method for easy conversion with application of restrictions
+func ToExternalDiscountAmountType1Code(i interface{}) (ExternalDiscountAmountType1Code, error) {
 
 	s := ""
 	switch ti := i.(type) {
@@ -2646,727 +3357,16 @@ func ToActiveCurrencyCode(i interface{}) (ActiveCurrencyCode, error) {
 	default:
 		return "", fmt.Errorf("")
 	}
-	if !isPatternRestrictionValid(s, ActiveCurrencyCodePatternRestriction) {
-		return "", fmt.Errorf("cannot satisfy pattern restriction for %s of type ActiveCurrencyCode", s)
+	if !isLengthRestrictionValid(s, ExternalDiscountAmountType1CodeLength, ExternalDiscountAmountType1CodeMinLength, ExternalDiscountAmountType1CodeMaxLength) {
+		return "", fmt.Errorf("cannot satisfy length restriction for %s of type ExternalDiscountAmountType1Code", s)
 	}
 
-	return ActiveCurrencyCode(s), nil
+	return ExternalDiscountAmountType1Code(s), nil
 }
 
-// MustToActiveCurrencyCode method for easy conversion with application of restrictions. Panics on error.
-func MustToActiveCurrencyCode(s interface{}) ActiveCurrencyCode {
-	v, err := ToActiveCurrencyCode(s)
-	if err != nil {
-		panic(err)
-	}
-
-	return v
-}
-
-/*
- * ExternalPersonIdentification1Code Ops
- */
-
-const (
-	ExternalPersonIdentification1CodeZero      = ""
-	ExternalPersonIdentification1CodeSample    = "Te"
-	ExternalPersonIdentification1CodeLength    = 0
-	ExternalPersonIdentification1CodeMinLength = 1
-	ExternalPersonIdentification1CodeMaxLength = 4
-)
-
-// IsValid checks if ExternalPersonIdentification1Code of type String is valid
-func (t ExternalPersonIdentification1Code) IsValid(optional bool) bool {
-
-	valid := xsdt.String(t).IsValid(optional)
-
-	if optional && t == ExternalPersonIdentification1CodeZero {
-		return valid
-	}
-	valid = valid && isLengthRestrictionValid(t.String(), ExternalPersonIdentification1CodeLength, ExternalPersonIdentification1CodeMinLength, ExternalPersonIdentification1CodeMaxLength)
-
-	return valid
-}
-
-// String method for easy conversion
-func (t ExternalPersonIdentification1Code) String() string {
-	return string(t)
-}
-
-// ToExternalPersonIdentification1Code method for easy conversion with application of restrictions
-func ToExternalPersonIdentification1Code(i interface{}) (ExternalPersonIdentification1Code, error) {
-
-	s := ""
-	switch ti := i.(type) {
-	case fmt.Stringer:
-		s = ti.String()
-	case string:
-		s = ti
-	default:
-		return "", fmt.Errorf("")
-	}
-	if !isLengthRestrictionValid(s, ExternalPersonIdentification1CodeLength, ExternalPersonIdentification1CodeMinLength, ExternalPersonIdentification1CodeMaxLength) {
-		return "", fmt.Errorf("cannot satisfy length restriction for %s of type ExternalPersonIdentification1Code", s)
-	}
-
-	return ExternalPersonIdentification1Code(s), nil
-}
-
-// MustToExternalPersonIdentification1Code method for easy conversion with application of restrictions. Panics on error.
-func MustToExternalPersonIdentification1Code(s interface{}) ExternalPersonIdentification1Code {
-	v, err := ToExternalPersonIdentification1Code(s)
-	if err != nil {
-		panic(err)
-	}
-
-	return v
-}
-
-/*
- * Max2048Text Ops
- */
-
-const (
-	Max2048TextZero      = ""
-	Max2048TextSample    = "ranxGMNCcCdlEBYqxqrgAieJuFVZUsgPmweLRmsdTIwtLUDqoBSNtPRViLXLCrSAZCjxTCaZnfHRhEbbvlLkCbvOlRrOWJFNwNQBqyozKVGeninyrTgqubNiIzWcEZsdyUJTDAODnRKcTqZThaTJmRVAClOEaCEmEUmEtNTDVBbvMBtQBeDBVyDFfPWGaZQntPiyJbzjrRNLRzGpzDszPvweGxRQcoxpAQxuFkaowCKoRccTyTJHeKKokJNwUaqKCBRxMSdypnuVQlXTxlLUfRUssUCbZClckQhhyMmVTDwokzVJUlvROmQBJTVsrIgXXlvECpbDIWegrUuUYynIaqJjgVXQtZptcLZIVmypNpLbbaxHYDmKrYnEbqbvWLjZZAHQHWIGRYPwqfeXSWmRncQZpTAzceEsIpdYbrhfkVRdPhRXJzEKTBNCvokhNhSeFRvuKeklvsHwabufMjYxuvCIeoMjxivfYHKXcwedxkRvEookKzpacqgBiXejXjTJPhMQsmGzinFnyUVhVOydnINYczGVyZhBRwWAXjuufUoPJlNOFUvANpjrlwiuIbjJbgkIxMkImqLfMdmksNxvjgyEJAjrjcQDUlVTuFKDLjgBjrpEBlRzIZVSUAgxlZPBVcodWJbYmpBEprbxsRnSFqRIjOBrNaxVzTtXlnbdWOKzddfZvtzFRwXkWBBNMmMfCraUahSxpTkppSxjPLhPnxeSCjulnkeSRvUtXaQHrOqxrwbCXRiWGXOyolORPasKWOdANVLTUjsQCqRuNsAzgVRDgWTxeohgOVmZWEReHPcpuWoyejNDNtfSJWCidgAfEcoSKFvxTVCZoKMHuKFgkhaujRMxfcNGDjkbfeENRdnZuYVnOFfaKgXcxfcXVutzuIkhdUMOniOqWYIJMqLchMkCJZHSenoYIFnHZyTzEfMSdhUvtMBlfUoZYLEdqkoZCuTuRpLKzzuuFjTKIOTjSnLTFioYayJwBotODVVVIrFCqrhOGVehnNZfARfsBVGB"
-	Max2048TextLength    = 0
-	Max2048TextMinLength = 1
-	Max2048TextMaxLength = 2048
-)
-
-// IsValid checks if Max2048Text of type String is valid
-func (t Max2048Text) IsValid(optional bool) bool {
-
-	valid := xsdt.String(t).IsValid(optional)
-
-	if optional && t == Max2048TextZero {
-		return valid
-	}
-	valid = valid && isLengthRestrictionValid(t.String(), Max2048TextLength, Max2048TextMinLength, Max2048TextMaxLength)
-
-	return valid
-}
-
-// String method for easy conversion
-func (t Max2048Text) String() string {
-	return string(t)
-}
-
-// ToMax2048Text method for easy conversion with application of restrictions
-func ToMax2048Text(i interface{}) (Max2048Text, error) {
-
-	s := ""
-	switch ti := i.(type) {
-	case fmt.Stringer:
-		s = ti.String()
-	case string:
-		s = ti
-	default:
-		return "", fmt.Errorf("")
-	}
-	if !isLengthRestrictionValid(s, Max2048TextLength, Max2048TextMinLength, Max2048TextMaxLength) {
-		return "", fmt.Errorf("cannot satisfy length restriction for %s of type Max2048Text", s)
-	}
-
-	return Max2048Text(s), nil
-}
-
-// MustToMax2048Text method for easy conversion with application of restrictions. Panics on error.
-func MustToMax2048Text(s interface{}) Max2048Text {
-	v, err := ToMax2048Text(s)
-	if err != nil {
-		panic(err)
-	}
-
-	return v
-}
-
-/*
- * ExternalTaxAmountType1Code Ops
- */
-
-const (
-	ExternalTaxAmountType1CodeZero      = ""
-	ExternalTaxAmountType1CodeSample    = "Ra"
-	ExternalTaxAmountType1CodeLength    = 0
-	ExternalTaxAmountType1CodeMinLength = 1
-	ExternalTaxAmountType1CodeMaxLength = 4
-)
-
-// IsValid checks if ExternalTaxAmountType1Code of type String is valid
-func (t ExternalTaxAmountType1Code) IsValid(optional bool) bool {
-
-	valid := xsdt.String(t).IsValid(optional)
-
-	if optional && t == ExternalTaxAmountType1CodeZero {
-		return valid
-	}
-	valid = valid && isLengthRestrictionValid(t.String(), ExternalTaxAmountType1CodeLength, ExternalTaxAmountType1CodeMinLength, ExternalTaxAmountType1CodeMaxLength)
-
-	return valid
-}
-
-// String method for easy conversion
-func (t ExternalTaxAmountType1Code) String() string {
-	return string(t)
-}
-
-// ToExternalTaxAmountType1Code method for easy conversion with application of restrictions
-func ToExternalTaxAmountType1Code(i interface{}) (ExternalTaxAmountType1Code, error) {
-
-	s := ""
-	switch ti := i.(type) {
-	case fmt.Stringer:
-		s = ti.String()
-	case string:
-		s = ti
-	default:
-		return "", fmt.Errorf("")
-	}
-	if !isLengthRestrictionValid(s, ExternalTaxAmountType1CodeLength, ExternalTaxAmountType1CodeMinLength, ExternalTaxAmountType1CodeMaxLength) {
-		return "", fmt.Errorf("cannot satisfy length restriction for %s of type ExternalTaxAmountType1Code", s)
-	}
-
-	return ExternalTaxAmountType1Code(s), nil
-}
-
-// MustToExternalTaxAmountType1Code method for easy conversion with application of restrictions. Panics on error.
-func MustToExternalTaxAmountType1Code(s interface{}) ExternalTaxAmountType1Code {
-	v, err := ToExternalTaxAmountType1Code(s)
-	if err != nil {
-		panic(err)
-	}
-
-	return v
-}
-
-/*
- * Max4Text Ops
- */
-
-const (
-	Max4TextZero      = ""
-	Max4TextSample    = "Hj"
-	Max4TextLength    = 0
-	Max4TextMinLength = 1
-	Max4TextMaxLength = 4
-)
-
-// IsValid checks if Max4Text of type String is valid
-func (t Max4Text) IsValid(optional bool) bool {
-
-	valid := xsdt.String(t).IsValid(optional)
-
-	if optional && t == Max4TextZero {
-		return valid
-	}
-	valid = valid && isLengthRestrictionValid(t.String(), Max4TextLength, Max4TextMinLength, Max4TextMaxLength)
-
-	return valid
-}
-
-// String method for easy conversion
-func (t Max4Text) String() string {
-	return string(t)
-}
-
-// ToMax4Text method for easy conversion with application of restrictions
-func ToMax4Text(i interface{}) (Max4Text, error) {
-
-	s := ""
-	switch ti := i.(type) {
-	case fmt.Stringer:
-		s = ti.String()
-	case string:
-		s = ti
-	default:
-		return "", fmt.Errorf("")
-	}
-	if !isLengthRestrictionValid(s, Max4TextLength, Max4TextMinLength, Max4TextMaxLength) {
-		return "", fmt.Errorf("cannot satisfy length restriction for %s of type Max4Text", s)
-	}
-
-	return Max4Text(s), nil
-}
-
-// MustToMax4Text method for easy conversion with application of restrictions. Panics on error.
-func MustToMax4Text(s interface{}) Max4Text {
-	v, err := ToMax4Text(s)
-	if err != nil {
-		panic(err)
-	}
-
-	return v
-}
-
-/*
- * ExternalProxyAccountType1Code Ops
- */
-
-const (
-	ExternalProxyAccountType1CodeZero      = ""
-	ExternalProxyAccountType1CodeSample    = "fF"
-	ExternalProxyAccountType1CodeLength    = 0
-	ExternalProxyAccountType1CodeMinLength = 1
-	ExternalProxyAccountType1CodeMaxLength = 4
-)
-
-// IsValid checks if ExternalProxyAccountType1Code of type String is valid
-func (t ExternalProxyAccountType1Code) IsValid(optional bool) bool {
-
-	valid := xsdt.String(t).IsValid(optional)
-
-	if optional && t == ExternalProxyAccountType1CodeZero {
-		return valid
-	}
-	valid = valid && isLengthRestrictionValid(t.String(), ExternalProxyAccountType1CodeLength, ExternalProxyAccountType1CodeMinLength, ExternalProxyAccountType1CodeMaxLength)
-
-	return valid
-}
-
-// String method for easy conversion
-func (t ExternalProxyAccountType1Code) String() string {
-	return string(t)
-}
-
-// ToExternalProxyAccountType1Code method for easy conversion with application of restrictions
-func ToExternalProxyAccountType1Code(i interface{}) (ExternalProxyAccountType1Code, error) {
-
-	s := ""
-	switch ti := i.(type) {
-	case fmt.Stringer:
-		s = ti.String()
-	case string:
-		s = ti
-	default:
-		return "", fmt.Errorf("")
-	}
-	if !isLengthRestrictionValid(s, ExternalProxyAccountType1CodeLength, ExternalProxyAccountType1CodeMinLength, ExternalProxyAccountType1CodeMaxLength) {
-		return "", fmt.Errorf("cannot satisfy length restriction for %s of type ExternalProxyAccountType1Code", s)
-	}
-
-	return ExternalProxyAccountType1Code(s), nil
-}
-
-// MustToExternalProxyAccountType1Code method for easy conversion with application of restrictions. Panics on error.
-func MustToExternalProxyAccountType1Code(s interface{}) ExternalProxyAccountType1Code {
-	v, err := ToExternalProxyAccountType1Code(s)
-	if err != nil {
-		panic(err)
-	}
-
-	return v
-}
-
-/*
- * RegulatoryReportingType1Code Ops
- */
-
-const (
-	RegulatoryReportingType1CodeZero   = ""
-	RegulatoryReportingType1CodeSample = "DEBT"
-	RegulatoryReportingType1CodeCRED   = "CRED"
-	RegulatoryReportingType1CodeDEBT   = "DEBT"
-	RegulatoryReportingType1CodeBOTH   = "BOTH"
-)
-
-var RegulatoryReportingType1CodeEnumRestriction = []string{RegulatoryReportingType1CodeCRED, RegulatoryReportingType1CodeDEBT, RegulatoryReportingType1CodeBOTH}
-
-// IsValid checks if RegulatoryReportingType1Code of type String is valid
-func (t RegulatoryReportingType1Code) IsValid(optional bool) bool {
-
-	valid := xsdt.String(t).IsValid(optional)
-
-	if optional && t == RegulatoryReportingType1CodeZero {
-		return valid
-	}
-	valid = valid && isEnumRestrictionValid(t.String(), RegulatoryReportingType1CodeEnumRestriction)
-
-	return valid
-}
-
-// String method for easy conversion
-func (t RegulatoryReportingType1Code) String() string {
-	return string(t)
-}
-
-// ToRegulatoryReportingType1Code method for easy conversion with application of restrictions
-func ToRegulatoryReportingType1Code(i interface{}) (RegulatoryReportingType1Code, error) {
-
-	s := ""
-	switch ti := i.(type) {
-	case fmt.Stringer:
-		s = ti.String()
-	case string:
-		s = ti
-	default:
-		return "", fmt.Errorf("")
-	}
-	if !isEnumRestrictionValid(s, RegulatoryReportingType1CodeEnumRestriction) {
-		return "", fmt.Errorf("cannot satisfy enum restriction for %s of type RegulatoryReportingType1Code", s)
-	}
-
-	return RegulatoryReportingType1Code(s), nil
-}
-
-// MustToRegulatoryReportingType1Code method for easy conversion with application of restrictions. Panics on error.
-func MustToRegulatoryReportingType1Code(s interface{}) RegulatoryReportingType1Code {
-	v, err := ToRegulatoryReportingType1Code(s)
-	if err != nil {
-		panic(err)
-	}
-
-	return v
-}
-
-/*
- * Max35Text Ops
- */
-
-const (
-	Max35TextZero      = ""
-	Max35TextSample    = "cQtXovQyXbjAyWbspg"
-	Max35TextLength    = 0
-	Max35TextMinLength = 1
-	Max35TextMaxLength = 35
-)
-
-// IsValid checks if Max35Text of type String is valid
-func (t Max35Text) IsValid(optional bool) bool {
-
-	valid := xsdt.String(t).IsValid(optional)
-
-	if optional && t == Max35TextZero {
-		return valid
-	}
-	valid = valid && isLengthRestrictionValid(t.String(), Max35TextLength, Max35TextMinLength, Max35TextMaxLength)
-
-	return valid
-}
-
-// String method for easy conversion
-func (t Max35Text) String() string {
-	return string(t)
-}
-
-// ToMax35Text method for easy conversion with application of restrictions
-func ToMax35Text(i interface{}) (Max35Text, error) {
-
-	s := ""
-	switch ti := i.(type) {
-	case fmt.Stringer:
-		s = ti.String()
-	case string:
-		s = ti
-	default:
-		return "", fmt.Errorf("")
-	}
-	if !isLengthRestrictionValid(s, Max35TextLength, Max35TextMinLength, Max35TextMaxLength) {
-		return "", fmt.Errorf("cannot satisfy length restriction for %s of type Max35Text", s)
-	}
-
-	return Max35Text(s), nil
-}
-
-// MustToMax35Text method for easy conversion with application of restrictions. Panics on error.
-func MustToMax35Text(s interface{}) Max35Text {
-	v, err := ToMax35Text(s)
-	if err != nil {
-		panic(err)
-	}
-
-	return v
-}
-
-/*
- * Max70Text Ops
- */
-
-const (
-	Max70TextZero      = ""
-	Max70TextSample    = "heqXXumwlaMkvqgeVNsLyylTpEsGuymNstQ"
-	Max70TextLength    = 0
-	Max70TextMinLength = 1
-	Max70TextMaxLength = 70
-)
-
-// IsValid checks if Max70Text of type String is valid
-func (t Max70Text) IsValid(optional bool) bool {
-
-	valid := xsdt.String(t).IsValid(optional)
-
-	if optional && t == Max70TextZero {
-		return valid
-	}
-	valid = valid && isLengthRestrictionValid(t.String(), Max70TextLength, Max70TextMinLength, Max70TextMaxLength)
-
-	return valid
-}
-
-// String method for easy conversion
-func (t Max70Text) String() string {
-	return string(t)
-}
-
-// ToMax70Text method for easy conversion with application of restrictions
-func ToMax70Text(i interface{}) (Max70Text, error) {
-
-	s := ""
-	switch ti := i.(type) {
-	case fmt.Stringer:
-		s = ti.String()
-	case string:
-		s = ti
-	default:
-		return "", fmt.Errorf("")
-	}
-	if !isLengthRestrictionValid(s, Max70TextLength, Max70TextMinLength, Max70TextMaxLength) {
-		return "", fmt.Errorf("cannot satisfy length restriction for %s of type Max70Text", s)
-	}
-
-	return Max70Text(s), nil
-}
-
-// MustToMax70Text method for easy conversion with application of restrictions. Panics on error.
-func MustToMax70Text(s interface{}) Max70Text {
-	v, err := ToMax70Text(s)
-	if err != nil {
-		panic(err)
-	}
-
-	return v
-}
-
-/*
- * Max350Text Ops
- */
-
-const (
-	Max350TextZero      = ""
-	Max350TextSample    = "zxPbmXGYPZRoCcAjYwjicELciiQYDuPezahlBGYsXsQyazOWcrSbAuTepBSUGepQDYBzMBKXUbWscOLULiIiQtPiPomlXcvuojfHBHOQiGrmoSuelNipGLXawNpUCRNoVMTKOGgxNQPpRiWmNuFOPctLBlMZxcxWxtuKOMWJPKLdPag"
-	Max350TextLength    = 0
-	Max350TextMinLength = 1
-	Max350TextMaxLength = 350
-)
-
-// IsValid checks if Max350Text of type String is valid
-func (t Max350Text) IsValid(optional bool) bool {
-
-	valid := xsdt.String(t).IsValid(optional)
-
-	if optional && t == Max350TextZero {
-		return valid
-	}
-	valid = valid && isLengthRestrictionValid(t.String(), Max350TextLength, Max350TextMinLength, Max350TextMaxLength)
-
-	return valid
-}
-
-// String method for easy conversion
-func (t Max350Text) String() string {
-	return string(t)
-}
-
-// ToMax350Text method for easy conversion with application of restrictions
-func ToMax350Text(i interface{}) (Max350Text, error) {
-
-	s := ""
-	switch ti := i.(type) {
-	case fmt.Stringer:
-		s = ti.String()
-	case string:
-		s = ti
-	default:
-		return "", fmt.Errorf("")
-	}
-	if !isLengthRestrictionValid(s, Max350TextLength, Max350TextMinLength, Max350TextMaxLength) {
-		return "", fmt.Errorf("cannot satisfy length restriction for %s of type Max350Text", s)
-	}
-
-	return Max350Text(s), nil
-}
-
-// MustToMax350Text method for easy conversion with application of restrictions. Panics on error.
-func MustToMax350Text(s interface{}) Max350Text {
-	v, err := ToMax350Text(s)
-	if err != nil {
-		panic(err)
-	}
-
-	return v
-}
-
-/*
- * Instruction3Code Ops
- */
-
-const (
-	Instruction3CodeZero   = ""
-	Instruction3CodeSample = "PHOB"
-	Instruction3CodeCHQB   = "CHQB"
-	Instruction3CodeHOLD   = "HOLD"
-	Instruction3CodePHOB   = "PHOB"
-	Instruction3CodeTELB   = "TELB"
-)
-
-var Instruction3CodeEnumRestriction = []string{Instruction3CodeCHQB, Instruction3CodeHOLD, Instruction3CodePHOB, Instruction3CodeTELB}
-
-// IsValid checks if Instruction3Code of type String is valid
-func (t Instruction3Code) IsValid(optional bool) bool {
-
-	valid := xsdt.String(t).IsValid(optional)
-
-	if optional && t == Instruction3CodeZero {
-		return valid
-	}
-	valid = valid && isEnumRestrictionValid(t.String(), Instruction3CodeEnumRestriction)
-
-	return valid
-}
-
-// String method for easy conversion
-func (t Instruction3Code) String() string {
-	return string(t)
-}
-
-// ToInstruction3Code method for easy conversion with application of restrictions
-func ToInstruction3Code(i interface{}) (Instruction3Code, error) {
-
-	s := ""
-	switch ti := i.(type) {
-	case fmt.Stringer:
-		s = ti.String()
-	case string:
-		s = ti
-	default:
-		return "", fmt.Errorf("")
-	}
-	if !isEnumRestrictionValid(s, Instruction3CodeEnumRestriction) {
-		return "", fmt.Errorf("cannot satisfy enum restriction for %s of type Instruction3Code", s)
-	}
-
-	return Instruction3Code(s), nil
-}
-
-// MustToInstruction3Code method for easy conversion with application of restrictions. Panics on error.
-func MustToInstruction3Code(s interface{}) Instruction3Code {
-	v, err := ToInstruction3Code(s)
-	if err != nil {
-		panic(err)
-	}
-
-	return v
-}
-
-/*
- * UUIDv4Identifier Ops
- */
-
-const (
-	UUIDv4IdentifierZero   = ""
-	UUIDv4IdentifierSample = "8be31729-0962-4af7-9e40-1c6347788a2c"
-)
-
-var UUIDv4IdentifierPatternRestriction = regexp.MustCompile(`[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}`)
-
-// IsValid checks if UUIDv4Identifier of type String is valid
-func (t UUIDv4Identifier) IsValid(optional bool) bool {
-
-	valid := xsdt.String(t).IsValid(optional)
-
-	if optional && t == UUIDv4IdentifierZero {
-		return valid
-	}
-	valid = valid && isPatternRestrictionValid(t.String(), UUIDv4IdentifierPatternRestriction)
-
-	return valid
-}
-
-// String method for easy conversion
-func (t UUIDv4Identifier) String() string {
-	return string(t)
-}
-
-// ToUUIDv4Identifier method for easy conversion with application of restrictions
-func ToUUIDv4Identifier(i interface{}) (UUIDv4Identifier, error) {
-
-	s := ""
-	switch ti := i.(type) {
-	case fmt.Stringer:
-		s = ti.String()
-	case string:
-		s = ti
-	default:
-		return "", fmt.Errorf("")
-	}
-	if !isPatternRestrictionValid(s, UUIDv4IdentifierPatternRestriction) {
-		return "", fmt.Errorf("cannot satisfy pattern restriction for %s of type UUIDv4Identifier", s)
-	}
-
-	return UUIDv4Identifier(s), nil
-}
-
-// MustToUUIDv4Identifier method for easy conversion with application of restrictions. Panics on error.
-func MustToUUIDv4Identifier(s interface{}) UUIDv4Identifier {
-	v, err := ToUUIDv4Identifier(s)
-	if err != nil {
-		panic(err)
-	}
-
-	return v
-}
-
-/*
- * IBAN2007Identifier Ops
- */
-
-const (
-	IBAN2007IdentifierZero   = ""
-	IBAN2007IdentifierSample = "XT24f"
-)
-
-var IBAN2007IdentifierPatternRestriction = regexp.MustCompile(`[A-Z]{2,2}[0-9]{2,2}[a-zA-Z0-9]{1,30}`)
-
-// IsValid checks if IBAN2007Identifier of type String is valid
-func (t IBAN2007Identifier) IsValid(optional bool) bool {
-
-	valid := xsdt.String(t).IsValid(optional)
-
-	if optional && t == IBAN2007IdentifierZero {
-		return valid
-	}
-	valid = valid && isPatternRestrictionValid(t.String(), IBAN2007IdentifierPatternRestriction)
-
-	return valid
-}
-
-// String method for easy conversion
-func (t IBAN2007Identifier) String() string {
-	return string(t)
-}
-
-// ToIBAN2007Identifier method for easy conversion with application of restrictions
-func ToIBAN2007Identifier(i interface{}) (IBAN2007Identifier, error) {
-
-	s := ""
-	switch ti := i.(type) {
-	case fmt.Stringer:
-		s = ti.String()
-	case string:
-		s = ti
-	default:
-		return "", fmt.Errorf("")
-	}
-	if !isPatternRestrictionValid(s, IBAN2007IdentifierPatternRestriction) {
-		return "", fmt.Errorf("cannot satisfy pattern restriction for %s of type IBAN2007Identifier", s)
-	}
-
-	return IBAN2007Identifier(s), nil
-}
-
-// MustToIBAN2007Identifier method for easy conversion with application of restrictions. Panics on error.
-func MustToIBAN2007Identifier(s interface{}) IBAN2007Identifier {
-	v, err := ToIBAN2007Identifier(s)
+// MustToExternalDiscountAmountType1Code method for easy conversion with application of restrictions. Panics on error.
+func MustToExternalDiscountAmountType1Code(s interface{}) ExternalDiscountAmountType1Code {
+	v, err := ToExternalDiscountAmountType1Code(s)
 	if err != nil {
 		panic(err)
 	}

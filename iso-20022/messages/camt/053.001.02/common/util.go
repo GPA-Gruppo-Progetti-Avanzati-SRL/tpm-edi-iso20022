@@ -346,18 +346,12 @@ func FieldByIndexesAndPathInfoReadOnly(v reflect.Value, indexes []int, dotPath d
 				targetNdx := 0
 				switch dotPath.Elems[i].IndexingType {
 				case dotnotation.None:
-					if i == len(indexes)-1 {
-						return v, true
-					}
-				case dotnotation.Empty:
 				case dotnotation.First:
 				case dotnotation.Last:
 					targetNdx = v.Len() - 1
 				case dotnotation.IndexValue:
 					if dotPath.Elems[i].IndexingValue >= v.Len() {
-						// May be should return the nil false..... and not the last...
-						// targetNdx = v.Len() - 1
-						return v, false
+						targetNdx = v.Len() - 1
 					} else {
 						targetNdx = dotPath.Elems[i].IndexingValue
 					}
