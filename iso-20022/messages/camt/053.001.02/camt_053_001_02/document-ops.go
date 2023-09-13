@@ -14,8 +14,9 @@ import (
 )
 
 type SetOpOptions struct {
-	logVerbose  bool
-	skipIfEmpty bool
+	logVerbose       bool
+	skipIfEmpty      bool
+	isClearOperation bool
 }
 
 type SetOpOption func(opts *SetOpOptions)
@@ -29,6 +30,12 @@ func SetOpWithLog(b bool) SetOpOption {
 func SetOpWithSkipIfEmpty(b bool) SetOpOption {
 	return func(opts *SetOpOptions) {
 		opts.skipIfEmpty = b
+	}
+}
+
+func SetOpWithIsClear(b bool) SetOpOption {
+	return func(opts *SetOpOptions) {
+		opts.isClearOperation = b
 	}
 }
 
@@ -106,6 +113,48 @@ func isEmpty(i interface{}) bool {
 	return b
 }
 
+func (d *Document) ClearPath(p string, opts ...SetOpOption) error {
+
+	const semLogContext = "camt_053_001_02::clear-path"
+
+	options := SetOpOptions{}
+	for _, o := range opts {
+		o(&options)
+	}
+
+	pt, err := PathType(p)
+	if err != nil {
+		if options.logVerbose {
+			log.Error().Err(err).Str("path", string(p)).Msg(semLogContext)
+		}
+
+		return err
+	}
+
+	switch pt {
+	case PathTypeProperty:
+		i, err := d.GetProperty(p)
+		if err != nil {
+			return err
+		}
+
+		if i != nil {
+			err = d.SetProperty(p, "", SetOpWithIsClear(true), SetOpWithLog(true))
+		}
+	case PathTypeArrayItem:
+		err = fmt.Errorf("unsupported operation on array items")
+		if options.logVerbose {
+			log.Error().Err(err).Str("path", string(p)).Msg(semLogContext)
+		}
+	case PathTypeArray:
+		fallthrough
+	case PathTypeStruct:
+		err = d.ClearNode(p, SetOpWithLog(true))
+	}
+
+	return err
+}
+
 // Get
 // Deprecated: the simply calls the GetProperty method
 func (d *Document) Get(path string, opts ...GetOpOption) (interface{}, error) {
@@ -170,7 +219,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToActiveOrHistoricCurrencyCode(src)
+		if options.isClearOperation {
+			*typedDest = common.ActiveOrHistoricCurrencyCodeZero
+		} else {
+			*typedDest, err = common.ToActiveOrHistoricCurrencyCode(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -184,7 +238,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToAddressType2Code(src)
+		if options.isClearOperation {
+			*typedDest = common.AddressType2CodeZero
+		} else {
+			*typedDest, err = common.ToAddressType2Code(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -198,7 +257,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToAnyBICIdentifier(src)
+		if options.isClearOperation {
+			*typedDest = common.AnyBICIdentifierZero
+		} else {
+			*typedDest, err = common.ToAnyBICIdentifier(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -212,7 +276,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToBICIdentifier(src)
+		if options.isClearOperation {
+			*typedDest = common.BICIdentifierZero
+		} else {
+			*typedDest, err = common.ToBICIdentifier(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -226,7 +295,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToBalanceType12Code(src)
+		if options.isClearOperation {
+			*typedDest = common.BalanceType12CodeZero
+		} else {
+			*typedDest, err = common.ToBalanceType12Code(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -240,7 +314,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToCashAccountType4Code(src)
+		if options.isClearOperation {
+			*typedDest = common.CashAccountType4CodeZero
+		} else {
+			*typedDest, err = common.ToCashAccountType4Code(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -254,7 +333,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToChargeBearerType1Code(src)
+		if options.isClearOperation {
+			*typedDest = common.ChargeBearerType1CodeZero
+		} else {
+			*typedDest, err = common.ToChargeBearerType1Code(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -268,7 +352,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToChargeType1Code(src)
+		if options.isClearOperation {
+			*typedDest = common.ChargeType1CodeZero
+		} else {
+			*typedDest, err = common.ToChargeType1Code(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -282,7 +371,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToCopyDuplicate1Code(src)
+		if options.isClearOperation {
+			*typedDest = common.CopyDuplicate1CodeZero
+		} else {
+			*typedDest, err = common.ToCopyDuplicate1Code(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -296,7 +390,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToCountryCode(src)
+		if options.isClearOperation {
+			*typedDest = common.CountryCodeZero
+		} else {
+			*typedDest, err = common.ToCountryCode(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -310,7 +409,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToCreditDebitCode(src)
+		if options.isClearOperation {
+			*typedDest = common.CreditDebitCodeZero
+		} else {
+			*typedDest, err = common.ToCreditDebitCode(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -324,7 +428,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToDocumentType3Code(src)
+		if options.isClearOperation {
+			*typedDest = common.DocumentType3CodeZero
+		} else {
+			*typedDest, err = common.ToDocumentType3Code(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -338,7 +447,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToDocumentType5Code(src)
+		if options.isClearOperation {
+			*typedDest = common.DocumentType5CodeZero
+		} else {
+			*typedDest, err = common.ToDocumentType5Code(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -352,7 +466,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToEntryStatus2Code(src)
+		if options.isClearOperation {
+			*typedDest = common.EntryStatus2CodeZero
+		} else {
+			*typedDest, err = common.ToEntryStatus2Code(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -366,7 +485,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToExternalAccountIdentification1Code(src)
+		if options.isClearOperation {
+			*typedDest = common.ExternalAccountIdentification1CodeZero
+		} else {
+			*typedDest, err = common.ToExternalAccountIdentification1Code(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -380,7 +504,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToExternalBalanceSubType1Code(src)
+		if options.isClearOperation {
+			*typedDest = common.ExternalBalanceSubType1CodeZero
+		} else {
+			*typedDest, err = common.ToExternalBalanceSubType1Code(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -394,7 +523,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToExternalBankTransactionDomain1Code(src)
+		if options.isClearOperation {
+			*typedDest = common.ExternalBankTransactionDomain1CodeZero
+		} else {
+			*typedDest, err = common.ToExternalBankTransactionDomain1Code(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -408,7 +542,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToExternalBankTransactionFamily1Code(src)
+		if options.isClearOperation {
+			*typedDest = common.ExternalBankTransactionFamily1CodeZero
+		} else {
+			*typedDest, err = common.ToExternalBankTransactionFamily1Code(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -422,7 +561,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToExternalBankTransactionSubFamily1Code(src)
+		if options.isClearOperation {
+			*typedDest = common.ExternalBankTransactionSubFamily1CodeZero
+		} else {
+			*typedDest, err = common.ToExternalBankTransactionSubFamily1Code(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -436,7 +580,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToExternalClearingSystemIdentification1Code(src)
+		if options.isClearOperation {
+			*typedDest = common.ExternalClearingSystemIdentification1CodeZero
+		} else {
+			*typedDest, err = common.ToExternalClearingSystemIdentification1Code(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -450,7 +599,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToExternalFinancialInstitutionIdentification1Code(src)
+		if options.isClearOperation {
+			*typedDest = common.ExternalFinancialInstitutionIdentification1CodeZero
+		} else {
+			*typedDest, err = common.ToExternalFinancialInstitutionIdentification1Code(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -464,7 +618,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToExternalOrganisationIdentification1Code(src)
+		if options.isClearOperation {
+			*typedDest = common.ExternalOrganisationIdentification1CodeZero
+		} else {
+			*typedDest, err = common.ToExternalOrganisationIdentification1Code(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -478,7 +637,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToExternalPersonIdentification1Code(src)
+		if options.isClearOperation {
+			*typedDest = common.ExternalPersonIdentification1CodeZero
+		} else {
+			*typedDest, err = common.ToExternalPersonIdentification1Code(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -492,7 +656,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToExternalPurpose1Code(src)
+		if options.isClearOperation {
+			*typedDest = common.ExternalPurpose1CodeZero
+		} else {
+			*typedDest, err = common.ToExternalPurpose1Code(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -506,7 +675,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToExternalReportingSource1Code(src)
+		if options.isClearOperation {
+			*typedDest = common.ExternalReportingSource1CodeZero
+		} else {
+			*typedDest, err = common.ToExternalReportingSource1Code(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -520,7 +694,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToExternalReturnReason1Code(src)
+		if options.isClearOperation {
+			*typedDest = common.ExternalReturnReason1CodeZero
+		} else {
+			*typedDest, err = common.ToExternalReturnReason1Code(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -534,7 +713,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToExternalTechnicalInputChannel1Code(src)
+		if options.isClearOperation {
+			*typedDest = common.ExternalTechnicalInputChannel1CodeZero
+		} else {
+			*typedDest, err = common.ToExternalTechnicalInputChannel1Code(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -548,7 +732,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToIBAN2007Identifier(src)
+		if options.isClearOperation {
+			*typedDest = common.IBAN2007IdentifierZero
+		} else {
+			*typedDest, err = common.ToIBAN2007Identifier(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -562,7 +751,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToISINIdentifier(src)
+		if options.isClearOperation {
+			*typedDest = common.ISINIdentifierZero
+		} else {
+			*typedDest, err = common.ToISINIdentifier(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -576,7 +770,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToISODate(src)
+		if options.isClearOperation {
+			*typedDest = common.ISODateZero
+		} else {
+			*typedDest, err = common.ToISODate(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -590,7 +789,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToISODateTime(src)
+		if options.isClearOperation {
+			*typedDest = common.ISODateTimeZero
+		} else {
+			*typedDest, err = common.ToISODateTime(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -604,7 +808,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToInterestType1Code(src)
+		if options.isClearOperation {
+			*typedDest = common.InterestType1CodeZero
+		} else {
+			*typedDest, err = common.ToInterestType1Code(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -618,7 +827,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToMax105Text(src)
+		if options.isClearOperation {
+			*typedDest = common.Max105TextZero
+		} else {
+			*typedDest, err = common.ToMax105Text(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -632,7 +846,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToMax140Text(src)
+		if options.isClearOperation {
+			*typedDest = common.Max140TextZero
+		} else {
+			*typedDest, err = common.ToMax140Text(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -646,7 +865,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToMax15NumericText(src)
+		if options.isClearOperation {
+			*typedDest = common.Max15NumericTextZero
+		} else {
+			*typedDest, err = common.ToMax15NumericText(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -660,7 +884,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToMax15PlusSignedNumericText(src)
+		if options.isClearOperation {
+			*typedDest = common.Max15PlusSignedNumericTextZero
+		} else {
+			*typedDest, err = common.ToMax15PlusSignedNumericText(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -674,7 +903,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToMax16Text(src)
+		if options.isClearOperation {
+			*typedDest = common.Max16TextZero
+		} else {
+			*typedDest, err = common.ToMax16Text(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -688,7 +922,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToMax2048Text(src)
+		if options.isClearOperation {
+			*typedDest = common.Max2048TextZero
+		} else {
+			*typedDest, err = common.ToMax2048Text(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -702,7 +941,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToMax34Text(src)
+		if options.isClearOperation {
+			*typedDest = common.Max34TextZero
+		} else {
+			*typedDest, err = common.ToMax34Text(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -716,7 +960,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToMax35Text(src)
+		if options.isClearOperation {
+			*typedDest = common.Max35TextZero
+		} else {
+			*typedDest, err = common.ToMax35Text(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -730,7 +979,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToMax4Text(src)
+		if options.isClearOperation {
+			*typedDest = common.Max4TextZero
+		} else {
+			*typedDest, err = common.ToMax4Text(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -744,7 +998,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToMax500Text(src)
+		if options.isClearOperation {
+			*typedDest = common.Max500TextZero
+		} else {
+			*typedDest, err = common.ToMax500Text(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -758,7 +1017,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToMax5NumericText(src)
+		if options.isClearOperation {
+			*typedDest = common.Max5NumericTextZero
+		} else {
+			*typedDest, err = common.ToMax5NumericText(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -772,7 +1036,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToMax70Text(src)
+		if options.isClearOperation {
+			*typedDest = common.Max70TextZero
+		} else {
+			*typedDest, err = common.ToMax70Text(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -786,7 +1055,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToNamePrefix1Code(src)
+		if options.isClearOperation {
+			*typedDest = common.NamePrefix1CodeZero
+		} else {
+			*typedDest, err = common.ToNamePrefix1Code(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -800,7 +1074,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToPhoneNumber(src)
+		if options.isClearOperation {
+			*typedDest = common.PhoneNumberZero
+		} else {
+			*typedDest, err = common.ToPhoneNumber(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -814,7 +1093,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToRemittanceLocationMethod2Code(src)
+		if options.isClearOperation {
+			*typedDest = common.RemittanceLocationMethod2CodeZero
+		} else {
+			*typedDest, err = common.ToRemittanceLocationMethod2Code(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -828,7 +1112,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = common.ToTaxRecordPeriod1Code(src)
+		if options.isClearOperation {
+			*typedDest = common.TaxRecordPeriod1CodeZero
+		} else {
+			*typedDest, err = common.ToTaxRecordPeriod1Code(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -842,7 +1131,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = xsdt.ToBoolean(src)
+		if options.isClearOperation {
+			*typedDest = xsdt.BooleanZero
+		} else {
+			*typedDest, err = xsdt.ToBoolean(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -856,7 +1150,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 			return err
 		}
 
-		*typedDest, err = xsdt.ToDecimal(src)
+		if options.isClearOperation {
+			*typedDest = xsdt.DecimalZero
+		} else {
+			*typedDest, err = xsdt.ToDecimal(src)
+		}
+
 		if err != nil && options.logVerbose {
 			log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
 		}
@@ -868,7 +1167,6 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
 		}
 		return err
 	}
-
 }
 
 func derefProperty(docPath string, val interface{}) (interface{}, error) {

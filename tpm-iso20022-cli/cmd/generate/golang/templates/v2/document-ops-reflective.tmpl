@@ -19,6 +19,7 @@ import (
 type SetOpOptions struct {
 	logVerbose bool
 	skipIfEmpty bool
+	isClearOperation bool
 }
 
 type SetOpOption func(opts *SetOpOptions)
@@ -32,6 +33,12 @@ func SetOpWithLog(b bool) SetOpOption {
 func SetOpWithSkipIfEmpty(b bool) SetOpOption {
 	return func(opts *SetOpOptions) {
 		opts.skipIfEmpty = b
+	}
+}
+
+func SetOpWithIsClear(b bool) SetOpOption {
+	return func(opts *SetOpOptions) {
+		opts.isClearOperation = b
 	}
 }
 
@@ -109,6 +116,48 @@ func isEmpty(i interface{}) bool {
 	return b
 }
 
+func (d *Document) ClearPath(p string, opts ...SetOpOption) error {
+
+	const semLogContext = "{{.PackageName}}::clear-path"
+
+	options := SetOpOptions{}
+	for _, o := range opts {
+		o(&options)
+	}
+
+	pt, err := PathType(p)
+	if err != nil {
+		if options.logVerbose {
+			log.Error().Err(err).Str("path", string(p)).Msg(semLogContext)
+		}
+
+		return err
+	}
+
+	switch pt {
+	case PathTypeProperty:
+		i, err := d.GetProperty(p)
+		if err != nil {
+			return err
+		}
+
+		if i != nil {
+			err = d.SetProperty(p, "", SetOpWithIsClear(true), SetOpWithLog(true))
+		}
+	case PathTypeArrayItem:
+	    err = fmt.Errorf("unsupported operation on array items")
+	    if options.logVerbose {
+       	  log.Error().Err(err).Str("path", string(p)).Msg(semLogContext)
+        }
+	case PathTypeArray:
+		fallthrough
+	case PathTypeStruct:
+		err = d.ClearNode(p, SetOpWithLog(true))
+	}
+
+	return err
+}
+
 // Get
 // Deprecated: the simply calls the GetProperty method
 func (d *Document) Get(path string, opts ...GetOpOption) (interface{}, error) {
@@ -176,7 +225,12 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
         	return err
 	    }
 
-  		*typedDest, err = {{$tp.NameOfTypeFunction "To" $packageName }}(src)
+        if options.isClearOperation {
+           *typedDest = {{$tp.TypeWithPackageTrimmed $packageName}}Zero
+        } else {
+  		   *typedDest, err = {{$tp.NameOfTypeFunction "To" $packageName }}(src)
+  		}
+
   		if err != nil && options.logVerbose {
         	log.Error().Err(err).Str("path", string(docPath)).Interface("value", src).Msg(semLogContext)
         }
@@ -190,7 +244,6 @@ func copy2Dest(docPath string, dest, src interface{}, options *SetOpOptions) err
         }
         return err
  }
-
 }
 
 func derefProperty(docPath string, val interface{}) (interface{}, error) {

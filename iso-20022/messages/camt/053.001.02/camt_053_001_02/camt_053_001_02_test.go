@@ -13,8 +13,6 @@ import (
 	"testing"
 )
 
-const Example_camt_053_001_02 = "example-document-camt_053_001_02.xml"
-
 func TestDocumentcamt_053_001_02_SetOps(t *testing.T) {
 	doc := camt_053_001_02.NewDocument()
 
@@ -49,24 +47,30 @@ func TestDocumentcamt_053_001_02_SetOps(t *testing.T) {
 	t.Log("value of ", camt_053_001_02.Path_BkToCstmrStmt_GrpHdr_MsgRcpt, getv)
 
 	// clearing a struct
-	err = doc.ClearNode(camt_053_001_02.Path_BkToCstmrStmt_GrpHdr_MsgRcpt)
+	err = doc.ClearPath(camt_053_001_02.Path_BkToCstmrStmt_GrpHdr_MsgRcpt)
+	require.NoError(t, err)
+
+	// clearing a property
+	err = doc.ClearPath(camt_053_001_02.Path_BkToCstmrStmt_GrpHdr_AddtlInf)
 	require.NoError(t, err)
 
 	// This is still a wip since the last path element is an array (in this case an array of structures and the property is indexed...
 	// this ClearNode doesn't clear anything... it adds a new element to the array....
-	err = doc.ClearNode(camt_053_001_02.Path_BkToCstmrStmt_Stmt_Item, camt_053_001_02.SetOpWithLog(true))
+	err = doc.ClearPath(camt_053_001_02.Path_BkToCstmrStmt_Stmt_Item, camt_053_001_02.SetOpWithLog(true))
 	require.Error(t, err)
 
 	// This is still a wip since the last path element is an array (in this case an array of structures and the property is not indexed. It's put by hand since there is no path auto created
 	// this approach can leas to some sort of non backward compatible in some cases.
 	// this ClearNode doesn't clear anything... it adds a new element to the array.... at the end we got three stmt. Clearly not what you want....
-	err = doc.ClearNode(camt_053_001_02.Path_BkToCstmrStmt_Stmt)
+	err = doc.ClearPath(camt_053_001_02.Path_BkToCstmrStmt_Stmt)
 	require.NoError(t, err)
 
 	b, err := doc.ToXML()
 	require.NoError(t, err)
 	t.Log(string(b))
 }
+
+const Example_camt_053_001_02 = "example-document-camt_053_001_02.xml"
 
 func TestDocumentcamt_053_001_02(t *testing.T) {
 

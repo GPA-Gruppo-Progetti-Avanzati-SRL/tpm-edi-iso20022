@@ -24,6 +24,40 @@ const (
 {{- end }}
 )
 
+const (
+	PathTypeProperty = "property"
+	PathTypeStruct = "struct"
+	PathTypeArray = "array"
+	PathTypeArrayItem = "array-item"
+)
+
+var nodeRegistryTypes = map[string]string{
+{{- range $tree.Paths}}
+  {{- $lastNode := .LastItem }}
+  {{- if ne $lastNode.Name "_self" }}
+  {{- if $lastNode.IsArray }}
+      Path_{{ .Identifier }}_Item : PathTypeArrayItem,
+      Path_{{ .Identifier }} : PathTypeArray,
+  {{- else }}
+    {{- if $lastNode.IsStruct }}
+      Path_{{ .Identifier }} : PathTypeStruct,
+     {{- else }}
+      Path_{{ .Identifier }} : PathTypeProperty,
+     {{- end }}
+  {{- end }}
+  {{- end }}
+{{- end }}
+}
+
+func PathType(p string) (string, error) {
+	t, ok := nodeRegistryTypes[p]
+	if !ok {
+		return "", fmt.Errorf("the path %s cannot be recognized as a valid path in {{.PackageName}}", p)
+	}
+
+	return t, nil
+}
+
 func MustSetArrayItemPathModifiers(p string, modifiers []string) string {
 	var err error
 	p, err = SetArrayItemPathModifiers(p, modifiers)
