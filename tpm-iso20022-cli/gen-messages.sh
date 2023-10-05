@@ -6,15 +6,33 @@
      --xsdtPkg "github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/iso-20022/messages/xsdt"
 
 ./tpm-iso20022-cli gen \
+     --xsdfiles "~/iso-20022/schemas/pain.001.001.09.xsd" \
+     -o "~/iso-20022/messages/pain/001.001.09" \
+     --basePkg "github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/iso-20022/messages/pain/001.001.09" \
+     --xsdtPkg "github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/iso-20022/messages/xsdt"
+
+./tpm-iso20022-cli gen \
      --xsdfiles "~/iso-20022/schemas/pain.002.001.03.xsd" \
      -o "~/iso-20022/messages/pain/002.001.03" \
      --basePkg "github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/iso-20022/messages/pain/002.001.03" \
      --xsdtPkg "github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/iso-20022/messages/xsdt"
 
 ./tpm-iso20022-cli gen \
+     --xsdfiles "~/iso-20022/schemas/pain.002.001.10.xsd" \
+     -o "~/iso-20022/messages/pain/002.001.10" \
+     --basePkg "github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/iso-20022/messages/pain/002.001.10" \
+     --xsdtPkg "github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/iso-20022/messages/xsdt"
+
+./tpm-iso20022-cli gen \
      --xsdfiles "~/iso-20022/schemas/pain.008.001.02.xsd" \
      -o "~/iso-20022/messages/pain/008.001.02" \
      --basePkg "github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/iso-20022/messages/pain/008.001.02" \
+     --xsdtPkg "github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/iso-20022/messages/xsdt"
+
+./tpm-iso20022-cli gen \
+     --xsdfiles "~/iso-20022/schemas/pain.008.001.08.xsd" \
+     -o "~/iso-20022/messages/pain/008.001.08" \
+     --basePkg "github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/iso-20022/messages/pain/008.001.08" \
      --xsdtPkg "github.com/GPA-Gruppo-Progetti-Avanzati-SRL/tpm-edi-iso20022/iso-20022/messages/xsdt"
 
 ./tpm-iso20022-cli gen \
