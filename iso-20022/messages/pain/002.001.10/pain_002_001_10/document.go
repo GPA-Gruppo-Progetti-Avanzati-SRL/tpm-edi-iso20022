@@ -18,6 +18,7 @@ const (
 )
 
 type DocumentAdapter func(iso20022Msg *Document) (*Document, error)
+type DocumentsAdapter func(iso20022Msg []*Document) ([]*Document, error)
 
 // Document type definition
 type Document struct {
